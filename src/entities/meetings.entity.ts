@@ -1,8 +1,8 @@
 import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, ManyToOne} from "typeorm";
 import { Areas } from "./Areas";
 
-@Entity("posts")
-export class Posts{
+@Entity("meetings")
+export class Meetings{
     @PrimaryGeneratedColumn("uuid")
     readonly id: string
 
