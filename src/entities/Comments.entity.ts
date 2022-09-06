@@ -1,4 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "./user.entity";
 
 @Entity()
 export class Comments {
@@ -8,9 +9,9 @@ export class Comments {
   @Column("varchar", { length: 500 })
   content: string;
 
-  @ManyToOne((type) => Users, (users) => users.comments)
-  users: Users;
+  @ManyToOne((type) => User, (user) => user.comments)
+  user: User;
 
-  @ManyToOne((type) => Posts, (posts) => posts.comments)
-  posts: Posts;
+  @ManyToOne((type) => Post, (post) => post.comments)
+  posts: Post;
 }

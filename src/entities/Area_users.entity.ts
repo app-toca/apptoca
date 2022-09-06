@@ -5,7 +5,8 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Areas } from "./Areas";
+import { Areas } from "./Areas.entity";
+import { User } from "./user.entity";
 
 @Entity("area_users")
 export class Area_users {
@@ -15,6 +16,6 @@ export class Area_users {
   @ManyToOne((type) => Areas, (area) => area.area_user)
   area_id: Areas;
 
-  @ManyToOne((type) => Users, (user) => user.area_user)
-  user_id: Users;
+  @ManyToOne((type) => User, (user) => user.area_user)
+  user_id: User;
 }

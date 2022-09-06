@@ -5,8 +5,9 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { Organizations } from "./Organizations";
-import { Area_users } from "./Area_users";
+import { Organizations } from "./Organizations.entity";
+import { Area_users } from "./Area_users.entity";
+import { Meetings } from "./meetings.entity";
 
 @Entity("areas")
 export class Areas {
@@ -25,9 +26,9 @@ export class Areas {
   @OneToMany(() => Area_users, (area_user) => area_user.area_id, {
     eager: true,
   })
-  area_user: area_users[];
+  area_user: Area_users[];
 
-  @OneToMany(() => Meetings, (meetings) => meetings.area_id, {
+  @OneToMany(() => Meetings, (meetings) => meetings.area, {
     eager: true,
   })
   meetings: Meetings[];
