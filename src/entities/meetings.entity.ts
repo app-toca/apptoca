@@ -1,8 +1,8 @@
-import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn} from "typeorm";
+import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, ManyToOne} from "typeorm";
+import { Areas } from "./Areas";
 
-
-@Entity("meetings")
-export class Meetings{
+@Entity("posts")
+export class Posts{
     @PrimaryGeneratedColumn("uuid")
     readonly id: string
 
@@ -18,7 +18,7 @@ export class Meetings{
     @ManyToOne(type => User, user => user.meetings)
     user: User
 
-    @ManyToOne(type => Area, area => area.meetings)
-    area: Area
+    @ManyToOne(type => Areas, areas => areas.meetings)
+    area: Areas
 
 }
