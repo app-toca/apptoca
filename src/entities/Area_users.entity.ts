@@ -5,7 +5,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Areas } from "./Areas";
+import { Areas } from "./Areas.entity";
 
 @Entity("area_users")
 export class Area_users {
