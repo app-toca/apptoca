@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
-import { Areas } from "./Areas";
+import { Areas } from "./Areas.entity";
 
-@Entity()
+@Entity("organizations")
 export class Organizations {
   @PrimaryGeneratedColumn("uuid")
   readonly id: string;
