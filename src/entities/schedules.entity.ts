@@ -5,6 +5,7 @@ import {
   OneToOne,
   JoinColumn,
 } from "typeorm";
+import { User } from "./user.entity";
 
 @Entity("schedules")
 export class Schedules {
@@ -32,7 +33,7 @@ export class Schedules {
   @Column()
   sunday: string;
 
-  @OneToOne(() => Users)
+  @OneToOne(() => User)
   @JoinColumn()
-  user: Users;
+  user: User;
 }

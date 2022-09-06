@@ -1,33 +1,43 @@
-import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, ManyToOne, UpdateDateColumn, OneToMany} from "typeorm";
-import { Areas } from "./Areas";
+import {
+  Entity,
+  Column,
+  CreateDateColumn,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  UpdateDateColumn,
+  OneToMany,
+} from "typeorm";
+import { User } from "./user.entity";
+import { Comments } from "./Comments.entity";
+import { Areas } from "./Areas.entity";
 
 @Entity("posts")
-export class Posts{
-    @PrimaryGeneratedColumn("uuid")
-    readonly id: string
+export class Posts {
+  @PrimaryGeneratedColumn("uuid")
+  readonly id: string;
 
-    @Column("varchar", { length: 1000 })
-    content: string
+  @Column("varchar", { length: 1000 })
+  content: string;
 
-    @CreateDateColumn("datetime")
-    created_at: Date
+  @CreateDateColumn("datetime")
+  created_at: Date;
 
-    @UpdateDateColumn("datetime")
-    updated_at: Date
+  @UpdateDateColumn("datetime")
+  updated_at: Date;
 
-    @ManyToOne(type => User, user => user.meetings)
-    user: User
+  @ManyToOne((type) => User, (user) => user.posts)
+  user: User;
 
-    @ManyToOne(type => Areas, areas => areas.meetings)
-    area: Areas
+  @ManyToOne((type) => Areas, (areas) => areas.posts)
+  area: Areas;
 
-    @OneToMany(type => Comments, comments => comments.posts, {
-        eager: true
-    })
-    comments: Comments[]
-
-    @OneToMany(type => Reactions, reactions => reactions.posts, {
-        eager:true
-    })
-    reactions: Reactions[]
+  @OneToMany((type) => Comments, (comments) => comments.post, {
+    eager: true,
+  })
+  comments: Comments[];
 }
+
+//@OneToMany((type) => Reactions, (reactions) => reactions.posts, {
+//     eager: true,
+//   })
+//   reactions: Reactions[];
