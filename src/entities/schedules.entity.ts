@@ -5,7 +5,7 @@ import {
   OneToOne,
   JoinColumn,
 } from "typeorm";
-import { User } from "./user.entity";
+import { User } from "./User.entity";
 
 @Entity("schedules")
 export class Schedules {
@@ -13,25 +13,25 @@ export class Schedules {
   readonly id: string;
 
   @Column()
-  monday: string;
+  monday: string[];
 
   @Column()
-  tuesday: string;
+  tuesday: string[];
 
   @Column()
-  wednesday: string;
+  wednesday: string[];
 
   @Column()
-  thursday: string;
+  thursday: string[];
 
   @Column()
-  friday: string;
+  friday: string[];
 
   @Column()
-  saturday: string;
+  saturday: string[];
 
   @Column()
-  sunday: string;
+  sunday: string[];
 
   @OneToOne(() => User)
   @JoinColumn()
