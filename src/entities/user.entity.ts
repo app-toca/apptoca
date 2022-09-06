@@ -15,6 +15,7 @@ import { Schedules } from "./schedules.entity";
 import { Meetings } from "./meetings.entity";
 import { Comments } from "./Comments.entity";
 import { Area_users } from "./Area_users.entity";
+import { Posts } from "./Posts.entity";
 
 @Entity("users")
 export class User {
@@ -77,6 +78,9 @@ export class User {
     eager: true,
   })
   meetings: Meetings[];
-}
 
-//add meetings
+  @OneToMany(() => Posts, (post) => post.user, {
+    nullable: true,
+  })
+  posts: Posts[];
+}

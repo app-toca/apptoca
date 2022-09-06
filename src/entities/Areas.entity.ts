@@ -8,6 +8,7 @@ import {
 import { Organizations } from "./Organizations.entity";
 import { Area_users } from "./Area_users.entity";
 import { Meetings } from "./meetings.entity";
+import { Posts } from "./Posts.entity";
 
 @Entity("areas")
 export class Areas {
@@ -33,6 +34,8 @@ export class Areas {
   })
   meetings: Meetings[];
 
-  @OneToMany(() => posts, (posts) => posts.area_id)
+  @OneToMany(() => Posts, (posts) => posts.area, {
+    eager: true,
+  })
   posts: Posts[];
 }
