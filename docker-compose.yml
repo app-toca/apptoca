@@ -6,12 +6,8 @@ services:
     build: .
     ports:
       - 3000:3000
-    environment:
-      - DB_HOST=db
-      - DB_PASSWORD=1234
-      - DB=e5
-      - DB_USER=kenzinho
-      - SECRET_KEY=sua_chave_secreta
+    env_file:
+      - .env
     depends_on:
       db:
         condition: service_healthy
@@ -23,10 +19,8 @@ services:
     image: postgres:14
     ports:
       - 5431:5432
-    environment:
-      - POSTGRES_USER=kenzinho
-      - POSTGRES_PASSWORD=1234
-      - POSTGRES_DB=e5
+    env_file:
+      - db.env
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U kenzinho -d e5"]
       interval: 10s
