@@ -7,7 +7,7 @@ import {
 } from "typeorm";
 import { Organizations } from "./Organizations.entity";
 import { Area_users } from "./Area_users.entity";
-import { Meetings } from "./meetings.entity";
+import { Meetings } from "./Meetings.entity";
 import { Posts } from "./Posts.entity";
 
 @Entity("areas")
