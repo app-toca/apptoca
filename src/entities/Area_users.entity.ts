@@ -14,8 +14,8 @@ export class Area_users {
   readonly id: string;
 
   @ManyToOne((type) => Areas, (area) => area.area_user)
-  area_id: Areas;
+  area: Areas;
 
   @ManyToOne((type) => User, (user) => user.area_user)
-  user_id: User;
+  user: User[];
 }

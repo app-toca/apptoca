@@ -4,8 +4,6 @@ import {
   CreateDateColumn,
   Column,
   PrimaryColumn,
-  PrimaryGeneratedColumn,
-  ManyToOne,
   OneToMany,
   OneToOne,
   JoinColumn,
@@ -47,10 +45,10 @@ export class User {
   phrase: string;
 
   @Column({ type: "boolean", nullable: false })
-  isAdm: boolean;
+  is_adm: boolean;
 
   @Column({ type: "boolean", nullable: false })
-  isActive: boolean;
+  is_active: boolean;
 
   @Column({ type: "varchar" })
   img: string;
@@ -65,14 +63,13 @@ export class User {
   @JoinColumn()
   organization: Organizations;
 
-  @OneToOne(() => Schedules)
-  @JoinColumn()
+  @OneToMany(() => Schedules, (schedules) => schedules.user_id)
   schedule: Schedules;
 
   @OneToMany(() => Comments, (comment) => comment.user)
   comments: Comments[];
 
-  @OneToMany(() => Area_users, (area_user) => area_user.user_id, {
+  @OneToMany(() => Area_users, (area_user) => area_user.user, {
     eager: true,
   })
   area_user: Area_users[];
