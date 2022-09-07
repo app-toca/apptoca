@@ -2,6 +2,10 @@ import { DataSource } from "typeorm";
 import AppDataSource from "../../../data-source";
 import request from "supertest"
 import app from "../../../app";
+import { adminUser, nonAdminUser, userAdmin2, userAdmin2Login, userDifferentEmail, userNonAdmin2, userNonAdmin2Login } from "../../mocks";
+
+let userAdminCreated 
+let userNonAdminCreated
 
 
 describe("/users", () => {
@@ -23,38 +27,68 @@ describe("/users", () => {
         expect(1+1).toBe(2)
     })
 
-    /*test("POST /users -  Must be able to create a user",async () => {
-        const response = await request(app).post('/users').send(mockedUser)
+    test("POST /users -  Must be able to create a admin user",async () => {
+        const response = await request(app).post('/users').send(adminUser)
 
         expect(response.body).toHaveProperty("id")
         expect(response.body).toHaveProperty("name")
         expect(response.body).toHaveProperty("email")
-        expect(response.body).toHaveProperty("isAdm")
-        expect(response.body).toHaveProperty("isActive")
-        expect(response.body).toHaveProperty("createdAt")
-        expect(response.body).toHaveProperty("updatedAt")
+        expect(response.body).toHaveProperty("is_adm")
+        expect(response.body).toHaveProperty("is_active")
+        expect(response.body).toHaveProperty("created_at")
+        expect(response.body).toHaveProperty("updated_at")
         expect(response.body).not.toHaveProperty("password")
-        expect(response.body.name).toEqual("Joana")
-        expect(response.body.email).toEqual("joana@mail.com")
-        expect(response.body.isAdm).toEqual(false)
-        expect(response.body.isActive).toEqual(true)
-        expect(response.status).toBe(201)        
+        expect(response.body.name).toEqual("Ana")
+        expect(response.body.email).toEqual("anavitoriacisn314@gmail.com")
+        expect(response.body.is_adm).toEqual(true)
+        expect(response.body.is_active).toEqual(true)
+        expect(response.status).toBe(201)   
+        
+        userAdminCreated = response.body
+    })
+
+    test("POST /users -  Must be able to create a non admin user",async () => {
+        const response = await request(app).post('/users').send(nonAdminUser)
+
+        expect(response.body.is_adm).toEqual(false)
+        expect(response.body.is_active).toEqual(true)
+        expect(response.status).toBe(201) 
+        
+        userNonAdminCreated = response.body
+
     })
 
     test("POST /users -  should not be able to create a user that already exists",async () => {
-        const response = await request(app).post('/users').send(mockedUser)
+        const response = await request(app).post('/users').send(adminUser)
 
         expect(response.body).toHaveProperty("message")
         expect(response.status).toBe(400)
              
     })
 
-    test("GET /users -  Must be able to list users",async () => {
-        await request(app).post('/users').send(mockedAdmin)
-        const adminLoginResponse = await request(app).post("/login").send(mockedAdminLogin);
+    test("POST /users -  should be able to create a user with a different email",async () => {
+        const response = await request(app).post('/users').send(userDifferentEmail)
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(400)
+             
+    })
+
+    test("GET /users -  Must be able to list users with a non admin user",async () => {
+        await request(app).post('/users').send(userNonAdmin2)
+        const nonAdminLoginResponse = await request(app).post("/login").send(userNonAdmin2Login);
+        const response = await request(app).get('/users').set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`)
+
+        expect(response.body).toHaveLength(4)
+     
+    })
+
+    test("GET /users -  Must be able to list users with an admin user",async () => {
+        await request(app).post('/users').send(userAdmin2)
+        const adminLoginResponse = await request(app).post("/login").send(userAdmin2Login);
         const response = await request(app).get('/users').set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
 
-        expect(response.body).toHaveLength(2)
+        expect(response.body).toHaveLength(5)
      
     })
 
@@ -65,6 +99,24 @@ describe("/users", () => {
         expect(response.status).toBe(401)
              
     })
+
+    /*test("POST /users -  should be able to create a user without img",async () => {
+        const response = await request(app).post('/users').send(userSameEmail)
+
+        expect(response.body).toHaveProperty("message")
+        expect(response.status).toBe(400)
+             
+    })*/
+
+
+
+
+
+    /*
+
+    
+
+    
 
     test("GET /users -  should not be able to list users not being admin",async () => {
         const userLoginResponse = await request(app).post("/login").send(mockedUserLogin);

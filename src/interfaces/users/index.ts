@@ -9,5 +9,12 @@ export interface IUserRequest {
     course: string
     phrase: string
     isAdm: boolean
-    img: string
+    img?: string 
 }
+
+export interface IUserLoginRequest {
+    email: string
+    password: string
+}
+
+
