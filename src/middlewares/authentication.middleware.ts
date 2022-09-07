@@ -28,8 +28,10 @@ const authenticationMiddleware = (
       }
 
       req.user = {
-        isAdm: decoded.isAdm,
+        is_adm: decoded.is_adm,
+        is_owner: decoded.is_owner,
         id: decoded.sub,
+        organization: decoded.organization,
       };
 
       next();
