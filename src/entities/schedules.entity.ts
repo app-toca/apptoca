@@ -4,7 +4,10 @@ import {
   PrimaryGeneratedColumn,
   OneToOne,
   JoinColumn,
+  ManyToOne,
 } from "typeorm";
+import { Days } from "./days.entity";
+import { Hours } from "./hours.entity";
 import { User } from "./User.entity";
 
 @Entity("schedules")
@@ -12,28 +15,15 @@ export class Schedules {
   @PrimaryGeneratedColumn("uuid")
   readonly id: string;
 
-  @Column()
-  monday: string[];
+  @ManyToOne(() => User, user => user.schedule)
+  user_id: User;
 
-  @Column()
-  tuesday: string[];
-
-  @Column()
-  wednesday: string[];
-
-  @Column()
-  thursday: string[];
-
-  @Column()
-  friday: string[];
-
-  @Column()
-  saturday: string[];
-
-  @Column()
-  sunday: string[];
-
-  @OneToOne(() => User)
+  @OneToOne(() => Days)
   @JoinColumn()
-  user: User;
+  day: Days
+
+  @OneToOne(() => Hours)
+  @JoinColumn()
+  hour: Hours
+   
 }
