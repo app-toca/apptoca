@@ -25,5 +25,4 @@ export class Schedules {
   @OneToOne(() => Hours)
   @JoinColumn()
   hour: Hours
-   
 }

@@ -69,8 +69,8 @@ export class User {
   @OneToMany(() => Comments, (comment) => comment.user)
   comments: Comments[];
 
-  @OneToMany(() => Area_users, (area_user) => area_user.user_id, {
-  eager: true,
+  @OneToMany(() => Area_users, (area_user) => area_user.user, {
+    eager: true,
   })
   area_user: Area_users[];
 

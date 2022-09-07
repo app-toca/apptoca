@@ -24,10 +24,10 @@ export class Areas {
   @ManyToOne(() => Organizations)
   organization_id: string;
 
-  @OneToMany(() => Area_users, (area_user) => area_user.area_id, {
+  @OneToMany(() => Area_users, (area_user) => area_user.area, {
     eager: true,
   })
-  area_user: Area_users[];
+  area_user: Area_users;
 
   @OneToMany(() => Meetings, (meetings) => meetings.area, {
     eager: true,
