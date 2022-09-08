@@ -8,21 +8,21 @@ import {
 } from "typeorm";
 import { Days } from "./days.entity";
 import { Hours } from "./hours.entity";
-import { User } from "./User.entity";
+import { User } from "./user.entity";
 
 @Entity("schedules")
 export class Schedules {
   @PrimaryGeneratedColumn("uuid")
   readonly id: string;
 
-  @ManyToOne(() => User, user => user.schedule)
+  @ManyToOne(() => User, (user) => user.schedule)
   user_id: User;
 
   @OneToOne(() => Days)
   @JoinColumn()
-  day: Days
+  day: Days;
 
   @OneToOne(() => Hours)
   @JoinColumn()
-  hour: Hours
+  hour: Hours;
 }

@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from "typeorm";
-import { User } from "./User.entity";
+import { User } from "./user.entity";
 import { Comments } from "./Comments.entity";
 import { Areas } from "./Areas.entity";
 

@@ -6,7 +6,7 @@ import {
   ManyToOne,
 } from "typeorm";
 import { Areas } from "./Areas.entity";
-import { User } from "./User.entity";
+import { User } from "./user.entity";
 
 @Entity("meetings")
 export class Meetings {

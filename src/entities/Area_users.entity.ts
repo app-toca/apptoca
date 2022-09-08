@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Areas } from "./Areas.entity";
-import { User } from "./User.entity";
+import { User } from "./user.entity";
 
 @Entity("area_users")
 export class Area_users {
