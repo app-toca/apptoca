@@ -7,7 +7,6 @@ export interface IUserRequest {
   year: number;
   course: string;
   phrase: string;
-  isAdm: boolean;
   img: string;
 }
 

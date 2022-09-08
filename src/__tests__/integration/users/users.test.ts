@@ -79,6 +79,20 @@ describe("/users", () => {
     });
   });
 
+  test("POST /users -  Must be able to create a owner user",async () => {
+    const response = await request(app).post(`/users/${organization.id}/${organizationToca.password}`).send(userOwner)
+
+    expect(response.body.is_adm).toEqual(true)
+    expect(response.body.is_active).toEqual(true)
+    expect(response.body.is_owner).toEqual(true);
+    expect(response.body.organization.id).toEqual(organization.id);
+    expect(response.body.email).toEqual("anavitoriacisn@gmail.com");
+    expect(response.status).toBe(201) 
+    
+    userOwnerCreated = response.body
+
+})
+
   test("POST /users -  Must be able to create a admin user", async () => {
         const response = await request(app).post(`/users/${organization.id}/${organizationToca.password}`).send(adminUser);
     
@@ -116,19 +130,6 @@ describe("/users", () => {
     
         })
 
-        test("POST /users -  Must be able to create a owner user",async () => {
-            const response = await request(app).post(`/users/${organization.id}/${organizationToca.password}`).send(userOwner)
-    
-            expect(response.body.is_adm).toEqual(true)
-            expect(response.body.is_active).toEqual(true)
-            expect(response.body.is_owner).toEqual(true);
-            expect(response.body.organization.id).toEqual(organization.id);
-            expect(response.body.email).toEqual("anavitoriacisn@gmail.com");
-            expect(response.status).toBe(201) 
-            
-            userOwnerCreated = response.body
-    
-        })
 
   test("POST /users -  should not be able to create a user that already exists", async () => {
     const response = await request(app).post(`/users/${organization.id}/${organizationToca.password}`).send(adminUser);

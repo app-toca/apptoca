@@ -45,7 +45,6 @@ export const userOwner: IUserRequest = {
   year: 2,
   course: "ESPN",
   phrase: "Nenhum obstáculo é grande demais para quem desiste",
-  is_owner: true,
   img: "https://thumbs.dreamstime.com/b/love-coding-girl-women-hand-drawn-illustration-cute-monster-love-coding-girl-women-hand-drawn-illustration-cute-monster-144914862.jpg",  
 }
 
