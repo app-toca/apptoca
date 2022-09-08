@@ -1,11 +1,11 @@
 export interface iAreaRequest {
   name: string;
   description: string;
-  organization_id: string;
+  organization: string;
 }
 
 export interface iAreaResponse extends iAreaRequest {
-  id: string
+  id: string;
 }
 
 export interface iAreaUpdateRequest {

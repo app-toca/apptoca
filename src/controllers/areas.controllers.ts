@@ -7,7 +7,8 @@ import listUsersInAreaService from "../services/areas/listUsersInArea.service";
 import updateAreaService from "../services/areas/updateArea.service";
 
 const listAreasController = async (req: Request, res: Response) => {
-  const areas = await listAreasService();
+  const { organization } = req.user;
+  const areas = await listAreasService(organization);
   return res.status(200).json(areas);
 };
 //acesso : todo usuário logado
@@ -27,8 +28,9 @@ const listUsersInAreaController = async (req: Request, res: Response) => {
 //acesso : todo usuário logado
 
 const createAreaController = async (req: Request, res: Response) => {
-  const { name, description, organization_id } = req.body;
-  const area = await createAreaService(name, description, organization_id);
+  const { name, description } = req.body;
+  const { organization } = req.user;
+  const area = await createAreaService({ name, description, organization });
   return res.status(201).json(area);
 };
 //acesso : admins
