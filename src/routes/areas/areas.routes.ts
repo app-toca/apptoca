@@ -8,6 +8,7 @@ import {
   updateAreaController,
 } from "../../controllers/areas.controllers";
 
+
 export const areasRoutes = (app: Express) => {
   app.get("/areas", listAreasController);
   app.get("/areas/:area_id", listOneAreaController);
