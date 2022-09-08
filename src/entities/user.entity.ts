@@ -10,7 +10,7 @@ import {
 } from "typeorm";
 import { Organizations } from "./Organizations.entity";
 import { Schedules } from "./schedules.entity";
-import { Meetings } from "./Meetings.entity";
+import { Meetings } from "./meetings.entity";
 import { Comments } from "./Comments.entity";
 import { Area_users } from "./Area_users.entity";
 import { Posts } from "./Posts.entity";
@@ -63,7 +63,7 @@ export class User {
   @JoinColumn()
   organization: Organizations;
 
-  @OneToMany(() => Schedules, schedules => schedules.user_id)
+  @OneToMany(() => Schedules, (schedules) => schedules.user_id)
   schedule: Schedules;
 
   @OneToMany(() => Comments, (comment) => comment.user)
@@ -80,7 +80,7 @@ export class User {
   meetings: Meetings[];
 
   @OneToMany(() => Posts, (post) => post.user, {
-  nullable: true,
+    nullable: true,
   })
   posts: Posts[];
 }
