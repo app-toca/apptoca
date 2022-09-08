@@ -4,12 +4,11 @@ import { AppError } from "../../error/global";
 
 const listOneAreaService = async (area_id: string): Promise<Areas> => {
   const areasRepository = AppDataSource.getRepository(Areas);
-  let area: Areas | null;
-  try {
-    area = await areasRepository.findOne({ where: { id: area_id } });
-  } catch (error: any) {
-    throw new AppError(error.statusCode, error.message);
-  }
+
+  const area: Areas | null = await areasRepository.findOne({
+    where: { id: area_id },
+  });
+
   if (!area) {
     throw new AppError(404, "Area not found");
   }
