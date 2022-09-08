@@ -6,11 +6,33 @@ import {
   updateCommentController,
   deleteCommentController,
 } from "../../controllers/comments.controllers";
+import isAdmMiddleware from "../../middlewares/isAdm.middleware";
+import authenticationMiddleware from "../../middlewares/authentication.middleware";
 
 export const areasRoutes = (app: Express) => {
-  app.get("/comments/:user_id", listUserCommentsController);
-  app.get("/comments/:post_id", listPostCommentsController);
-  app.post("/comments/:post_id", createPostCommentController);
-  app.patch("/comments/:comment_id", updateCommentController);
-  app.delete("/comments/:comment_id", deleteCommentController);
+  app.get(
+    "/comments/:user_id",
+    authenticationMiddleware,
+    listUserCommentsController
+  );
+  app.get(
+    "/comments/:post_id",
+    authenticationMiddleware,
+    listPostCommentsController
+  );
+  app.post(
+    "/comments/:post_id",
+    authenticationMiddleware,
+    createPostCommentController
+  );
+  app.patch(
+    "/comments/:comment_id",
+    authenticationMiddleware,
+    updateCommentController
+  );
+  app.delete(
+    "/comments/:comment_id",
+    authenticationMiddleware,
+    deleteCommentController
+  );
 };

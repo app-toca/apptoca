@@ -1,12 +1,13 @@
 import AppDataSource from "../../data-source";
 import { Areas } from "../../entities/Areas.entity";
 import { AppError } from "../../error/global";
+import { iAreaRequest } from "../../interfaces/areas";
 
-const createAreaService = async (
-  name: string,
-  description: string,
-  organization_id: string
-): Promise<Areas> => {
+const createAreaService = async ({
+  name,
+  description,
+  organization,
+}: iAreaRequest): Promise<Areas> => {
   const areasRepository = AppDataSource.getRepository(Areas);
 
   const areaAlreadyExists: Areas | null = await areasRepository.findOne({
@@ -20,7 +21,7 @@ const createAreaService = async (
   const area = new Areas();
   area.name = name;
   area.description = description;
-  area.organization_id = organization_id;
+  area.organization_id = organization;
 
   let areaCreated: Areas | null;
 

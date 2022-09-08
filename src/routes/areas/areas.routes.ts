@@ -7,12 +7,34 @@ import {
   deleteAreaController,
   updateAreaController,
 } from "../../controllers/areas.controllers";
+import authenticationMiddleware from "../../middlewares/authentication.middleware";
+import isAdmMiddleware from "../../middlewares/isAdm.middleware";
+import isOwnerMiddleware from "../../middlewares/isOwner.middleware";
 
 export const areasRoutes = (app: Express) => {
-  app.get("/areas", listAreasController);
-  app.get("/areas/:area_id", listOneAreaController);
-  app.get("/areas/:area_id/users", listUsersInAreaController);
-  app.post("/areas", createAreaController);
-  app.delete("/areas/:area_id", deleteAreaController);
-  app.patch("/areas/:area_id", updateAreaController);
+  app.get("/areas", authenticationMiddleware, listAreasController);
+  app.get("/areas/:area_id", authenticationMiddleware, listOneAreaController);
+  app.get(
+    "/areas/:area_id/users",
+    authenticationMiddleware,
+    listUsersInAreaController
+  );
+  app.post(
+    "/areas",
+    authenticationMiddleware,
+    isOwnerMiddleware,
+    createAreaController
+  );
+  app.delete(
+    "/areas/:area_id",
+    authenticationMiddleware,
+    isOwnerMiddleware,
+    deleteAreaController
+  );
+  app.patch(
+    "/areas/:area_id",
+    authenticationMiddleware,
+    isOwnerMiddleware,
+    updateAreaController
+  );
 };
