@@ -5,7 +5,7 @@ export const listMeetingsByAreaController = async (req: Request, res: Response) 
 
     const { id } = req.params;
 
-    const meetings = listMeetingsByAreaService({ id });
+    const meetings = await listMeetingsByAreaService({ id });
 
     return res.status(200).json(meetings);
 

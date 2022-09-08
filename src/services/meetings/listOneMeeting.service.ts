@@ -6,7 +6,7 @@ export const listOneMeetingService = async ({ id }: IOneMeetingRequest) => {
 
     const meetingsRepository = AppDataSource.getRepository(Meetings);
 
-    const meeting = meetingsRepository.findOne({ where: { id: id } });
+    const meeting = await meetingsRepository.findOne({ where: { id: id } });
 
     return meeting;
 

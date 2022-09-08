@@ -5,7 +5,7 @@ export const listOneMeetingController = async (req: Request, res: Response) => {
 
     const { id } = req.params;
 
-    const meeting = listOneMeetingService({ id });
+    const meeting = await listOneMeetingService({ id });
 
     return res.status(200).json(meeting)
 

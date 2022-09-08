@@ -6,7 +6,7 @@ export const listAllMeetingsService = async () => {
 
     const meetingsRepository = AppDataSource.getRepository(Meetings);
 
-    const meetings = meetingsRepository.find();
+    const meetings = await meetingsRepository.find();
 
     if(!meetings){
         return new AppError(404, "Meetings not found")
