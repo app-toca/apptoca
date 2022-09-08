@@ -43,10 +43,6 @@ describe("/users", () => {
     await connection.destroy();
   });
 
-  test("sum", () => {
-    expect(1 + 1).toBe(2);
-  });
-
   /*----------------*/
 
   beforeAll(() => {
@@ -197,6 +193,19 @@ describe("/users", () => {
     
   })
 
+  test("PATCH /users/:id -  should not be able to change the property is_active",async () => {
+
+    const ownerLoginResponse = await request(app).post("/login").send(userOwnerLogin);
+    const response = await request(app).patch(`/users/${userAdminCreated.id}`).send({is_active: false, name: 'Renata ingrata'}).set("Authorization", `Bearer ${ownerLoginResponse.body.token}`)
+    const findUser = await request(app).get(`/users/${userAdminCreated.id}`).set("Authorization", `Bearer ${ownerLoginResponse.body.token}`)
+
+    expect(response.body).toHaveProperty("message")
+    expect(response.status).toBe(403)   
+    expect(findUser.body.is_active).toBe(true)
+    expect(findUser.body.name).toBe(userAdminCreated.name)
+    
+  })
+
   test("PATCH /users/:id -  should not be able to change the property is_adm if is not an owner even if you're an admin ",async () => {
     
     const adminLoginResponse = await request(app).post("/login").send(userAdminLogin);
@@ -312,6 +321,45 @@ expect(response.body).toHaveProperty("message")
     expect(response.body).toHaveProperty("id");
     expect(response.body.id).toEqual(userNonAdminCreated.id);
     expect(response.body.email).toEqual(userNonAdminCreated.email);
+  });
+
+  test("GET /users -  Must be able to list areas of another user if is admin", async () => {
+    const adminLoginResponse = await request(app)
+      .post("/login")
+      .send(userAdminLogin);
+    const response = await request(app)
+      .get(`/users/${userNonAdminCreated.id}/areas`)
+      .set("Authorization", `Bearer ${adminLoginResponse.body.token}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveLength(0);
+
+  });
+
+  test("GET /users -  should be able to list areas of your own user", async () => {
+    const nonAdminLoginResponse = await request(app)
+      .post("/login")
+      .send(userAdminLogin);
+    const response = await request(app)
+      .get(`/users/${userNonAdminCreated.id}/areas`)
+      .set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`);
+    
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveLength(0);
+
+  });
+
+  test("GET /users -  should not be able to list areas of another user if isn't admin", async () => {
+    const nonAdminLoginResponse = await request(app)
+      .post("/login")
+      .send(userAdminLogin);
+    const response = await request(app)
+      .get(`/users/${userAdminCreated.id}/areas`)
+      .set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`);
+
+    expect(response.status).toBe(401);
+    expect(response.body).toHaveProperty("message");
+
   });
 
   test("GET /users -  should not be able to list users without authentication", async () => {
