@@ -1,12 +1,13 @@
 import { Comments } from "../../entities/Comments.entity";
 import AppDataSource from "../../data-source";
 import { AppError } from "../../error/global";
+import { UpdateResult } from "typeorm";
 
 const updateCommentService = async (
   comment_id: string,
   user_id: string,
   content: string
-): Promise<Comments> => {
+): Promise<UpdateResult> => {
   const commentsRepository = AppDataSource.getRepository(Comments);
   const comment = await commentsRepository.findOne({
     where: { id: comment_id },
@@ -19,12 +20,12 @@ const updateCommentService = async (
     throw new AppError(400, "This comment doesn't belogn to this user");
   }
 
-  comment.content = content;
-
-  let updatedComment: Comments | null;
+  let updatedComment: UpdateResult | null;
 
   try {
-    updatedComment = await commentsRepository.save(comment);
+    updatedComment = await commentsRepository.update(comment_id, {
+      content: content,
+    });
   } catch (error: any) {
     throw new AppError(error.statusCode, error.message);
   }

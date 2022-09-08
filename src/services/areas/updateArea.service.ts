@@ -1,3 +1,4 @@
+import { UpdateResult } from "typeorm";
 import AppDataSource from "../../data-source";
 import { Areas } from "../../entities/Areas.entity";
 import { AppError } from "../../error/global";
@@ -7,38 +8,27 @@ const updateAreaService = async ({
   area_id,
   name,
   description,
-}: iAreaUpdateRequest): Promise<Areas> => {
+}: iAreaUpdateRequest): Promise<UpdateResult> => {
   const areaRepository = AppDataSource.getRepository(Areas);
 
   const area: Areas | null = await areaRepository.findOne({
     where: { id: area_id },
   });
 
-  !area &&
-    (() => {
-      throw new AppError(404, "Area not found");
-    });
-
-  let areaUpdated: Areas;
-
-  if (name && description) {
-    areaUpdated = await areaRepository.save({
-      id: area_id,
-      name: name,
-      description: description,
-    });
-  }
-  if (name && !description) {
-    areaUpdated = await areaRepository.save({
-      id: area_id,
-      name: name,
-    });
+  if (!area) {
+    throw new AppError(404, "Area not found");
   }
 
-  areaUpdated = await areaRepository.save({
-    id: area_id,
-    description: description,
-  });
+  let areaUpdated: UpdateResult | null;
+
+  try {
+    areaUpdated = await areaRepository.update(area.id, {
+      name: name ? name : area.name,
+      description: description ? description : area.description,
+    });
+  } catch (error: any) {
+    throw new AppError(error.statusCode, error.message);
+  }
 
   return areaUpdated;
 };

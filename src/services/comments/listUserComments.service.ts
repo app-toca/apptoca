@@ -4,7 +4,8 @@ import { Comments } from "../../entities/Comments.entity";
 
 const listUserCommentsService = async (user_id: string) => {
   const commentsRepository = AppDataSource.getRepository(Comments);
-  const comments: Comments[] | null = await commentsRepository.find({
+
+  const comments = await commentsRepository.find({
     relations: { user: true },
     where: { id: user_id },
   });
