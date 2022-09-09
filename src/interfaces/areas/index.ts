@@ -12,3 +12,9 @@ export interface iAreaUpdateRequest {
   name?: string;
   description?: string;
 }
+
+export interface IAreaTest {
+  id?: string;
+  name: string;
+  description: string;
+}
