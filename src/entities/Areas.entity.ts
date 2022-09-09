@@ -22,7 +22,7 @@ export class Areas {
   description: string;
 
   @ManyToOne(() => Organizations)
-  organization_id: string;
+  organization: string;
 
   @OneToMany(() => Area_users, (area_user) => area_user.area, {
     eager: true,

@@ -16,7 +16,7 @@ export class Schedules {
   readonly id: string;
 
   @ManyToOne(() => User, (user) => user.schedule)
-  user_id: User;
+  user: User;
 
   @OneToOne(() => Days)
   @JoinColumn()

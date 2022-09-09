@@ -19,10 +19,10 @@ export class Posts {
   @Column("varchar", { length: 1000 })
   content: string;
 
-  @CreateDateColumn("datetime")
+  @CreateDateColumn()
   created_at: Date;
 
-  @UpdateDateColumn("datetime")
+  @UpdateDateColumn()
   updated_at: Date;
 
   @ManyToOne((type) => User, (user) => user.posts)
