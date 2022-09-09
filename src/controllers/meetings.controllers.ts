@@ -12,11 +12,11 @@ export const createMeetingController = async(req: Request, res: Response) => {
 
     const { area_id } = req.params;
 
-    const { description, duration } = req.body;
+    const { description, duration, ata, date_time } = req.body;
 
-    const { id } = req.user;
+    const user_id = req.body.id;
 
-    const meeting = await createMeetingService({ description, duration, id, area_id });
+    const meeting = await createMeetingService({ area_id, ata, date_time, description, duration, user_id });
 
     return res.status(201).json(meeting);
 
