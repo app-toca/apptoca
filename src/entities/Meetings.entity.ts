@@ -19,7 +19,7 @@ export class Meetings {
   @CreateDateColumn()
   created_at: Date;
 
-  @Column({type: 'timestamptz'})
+  @Column({type: 'date'})
   date_time: Date
 
   @Column()
