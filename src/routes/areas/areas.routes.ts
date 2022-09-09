@@ -11,6 +11,7 @@ import authenticationMiddleware from "../../middlewares/authentication.middlewar
 import isAdmMiddleware from "../../middlewares/isAdm.middleware";
 import isOwnerMiddleware from "../../middlewares/isOwner.middleware";
 
+
 export const areasRoutes = (app: Express) => {
   app.get("/areas", authenticationMiddleware, listAreasController);
   app.get("/areas/:area_id", authenticationMiddleware, listOneAreaController);
