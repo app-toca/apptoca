@@ -30,7 +30,7 @@ const listUsersInAreaController = async (req: Request, res: Response) => {
 const createAreaController = async (req: Request, res: Response) => {
   const { name, description } = req.body;
   const { organization } = req.user;
-  const area = await createAreaService({ name, description, organization });
+  const area = await createAreaService({ name, description, organization});
   return res.status(201).json(area);
 };
 //acesso : admins

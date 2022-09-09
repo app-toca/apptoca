@@ -6,7 +6,7 @@ import {
   ManyToOne,
 } from "typeorm";
 import { Areas } from "./Areas.entity";
-import { User } from "./user.entity";
+import { User } from "./User.entity";
 
 @Entity("meetings")
 export class Meetings {
@@ -18,6 +18,12 @@ export class Meetings {
 
   @CreateDateColumn("datetime")
   created_at: Date;
+
+  @Column("datetime")
+  date_time: Date
+
+  @Column()
+  duration: string
 
   @Column("varchar")
   ata: string;

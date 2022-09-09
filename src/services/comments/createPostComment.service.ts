@@ -3,7 +3,7 @@ import AppDataSource from "../../data-source";
 import { Comments } from "../../entities/Comments.entity";
 import { Posts } from "../../entities/Posts.entity";
 import { AppError } from "../../error/global";
-import { User } from "../../entities/user.entity";
+import { User } from "../../entities/User.entity";
 
 const createPostCommentService = async ({
   user_id,

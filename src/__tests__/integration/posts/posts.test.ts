@@ -9,7 +9,7 @@ import { IUserResponse } from "../../../interfaces/users";
 import { iAreaResponse } from "../../../interfaces/areas";
 import { nonAdminUser, organizationToca, userAdminLogin, userNonAdminLogin, userOwner } from "../../mocks/users";
 import { IPostResponse } from "../../../interfaces/posts";
-import { Schedules } from "../../../entities/schedules.entity";
+import { Schedules } from "../../../entities/Schedules.entity";
 
 
 

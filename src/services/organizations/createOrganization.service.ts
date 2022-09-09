@@ -1,12 +1,12 @@
 import AppDataSource from "../../data-source";
 import { Organizations } from "../../entities/Organizations.entity";
 import { AppError } from "../../error/global";
-import { iOrganizationRequest } from "../../interfaces/organizations";
+import { IOrganizationRequest } from "../../interfaces/organizations";
 
 const createOrganizationService = async ({
   name,
   password,
-}: iOrganizationRequest): Promise<Organizations> => {
+}: IOrganizationRequest): Promise<Organizations> => {
   const organizationsRepository = AppDataSource.getRepository(Organizations);
 
   const orgAlreadyexists: Organizations | null =

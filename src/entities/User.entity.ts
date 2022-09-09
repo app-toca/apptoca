@@ -9,8 +9,8 @@ import {
   JoinColumn,
 } from "typeorm";
 import { Organizations } from "./Organizations.entity";
-import { Schedules } from "./schedules.entity";
-import { Meetings } from "./meetings.entity";
+import { Schedules } from "./Schedules.entity";
+import { Meetings } from "./Meetings.entity";
 import { Comments } from "./Comments.entity";
 import { Area_users } from "./Area_users.entity";
 import { Posts } from "./Posts.entity";

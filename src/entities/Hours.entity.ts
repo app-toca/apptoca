@@ -1,14 +1,13 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from "typeorm";
-import { JoinAttribute } from "typeorm/query-builder/JoinAttribute";
-import { Schedules } from "./schedules.entity";
+import { Schedules } from "./Schedules.entity";
 
-@Entity("days")
-export class Days {
+@Entity("hours")
+export class Hours {
     @PrimaryGeneratedColumn("uuid")
     readonly id: string;
 
     @Column({  })
-    name: number;
+    hour: string;
 
     @OneToOne(() => Schedules)
     @JoinColumn()

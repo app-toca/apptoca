@@ -1,6 +1,6 @@
 import { IUserUpdate } from "../../interfaces/users";
 import AppDataSource from "../../data-source";
-import { User } from "../../entities/user.entity";
+import { User } from "../../entities/User.entity";
 
 export const patchUserService = async (id: string, req: IUserUpdate) => {
   const userRepository = AppDataSource.getRepository(User);
