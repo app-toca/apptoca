@@ -11,12 +11,12 @@ import isAdmMiddleware from "../../middlewares/isAdm.middleware";
 const routes = Router();
 
 export const meetingsRoutes = () => {
-  routes.post("/meetings/:area_id", authenticationMiddleware, createMeetingController);
-  routes.get("/meetings", authenticationMiddleware, listAllMeetingsController);
-  routes.get("/meetings/:meeting_id", authenticationMiddleware, listOneMeetingController);
-  routes.get("/meetings/areas/:area_id", authenticationMiddleware, listMeetingsByAreaController);
-  routes.patch("/meetings/:meeting_id", authenticationMiddleware, isAdmMiddleware, updateMeetingController);
-  routes.delete("/meetings/:meeting_id", authenticationMiddleware, isAdmMiddleware, deleteMeetingController);
+  routes.post("/:area_id", authenticationMiddleware, createMeetingController);
+  routes.get("", authenticationMiddleware, listAllMeetingsController);
+  routes.get("/:meeting_id", authenticationMiddleware, listOneMeetingController);
+  routes.get("/areas/:area_id", authenticationMiddleware, listMeetingsByAreaController);
+  routes.patch("/:meeting_id", authenticationMiddleware, isAdmMiddleware, updateMeetingController);
+  routes.delete("/:meeting_id", authenticationMiddleware, isAdmMiddleware, deleteMeetingController);
 
   return routes;
 };

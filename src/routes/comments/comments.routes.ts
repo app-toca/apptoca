@@ -1,4 +1,4 @@
-import { Express } from "express";
+import { Router } from "express";
 import {
   listUserCommentsController,
   listPostCommentsController,
@@ -9,30 +9,34 @@ import {
 import isAdmMiddleware from "../../middlewares/isAdm.middleware";
 import authenticationMiddleware from "../../middlewares/authentication.middleware";
 
-export const areasRoutes = (app: Express) => {
-  app.get(
-    "/comments/:user_id",
+const routes = Router();
+
+export const commentsRoutes = () => {
+  routes.get(
+    "/:user_id",
     authenticationMiddleware,
     listUserCommentsController
   );
-  app.get(
-    "/comments/:post_id",
+  routes.get(
+    "/:post_id",
     authenticationMiddleware,
     listPostCommentsController
   );
-  app.post(
-    "/comments/:post_id",
+  routes.post(
+    "/:post_id",
     authenticationMiddleware,
     createPostCommentController
   );
-  app.patch(
-    "/comments/:comment_id",
+  routes.patch(
+    "/:comment_id",
     authenticationMiddleware,
     updateCommentController
   );
-  app.delete(
-    "/comments/:comment_id",
+  routes.delete(
+    "/:comment_id",
     authenticationMiddleware,
     deleteCommentController
   );
+
+  return routes;
 };

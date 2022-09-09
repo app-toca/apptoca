@@ -9,7 +9,7 @@ import {
 
 const routes = Router();
 
-export const routeRoutes = () => {
+export const usersRoutes = () => {
   routes.post("/:organization_id/:password_org", createUserController);
   routes.get("", getAllUsersController);
   routes.get("/:id", getOneUserController);
