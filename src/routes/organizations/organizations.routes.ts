@@ -1,4 +1,4 @@
-import { Express } from "express";
+import { Router } from "express";
 import {
   listOrganizationsController,
   listOneOrganizationController,
@@ -9,15 +9,18 @@ import authenticationMiddleware from "../../middlewares/authentication.middlewar
 import isOwnerMiddleware from "../../middlewares/isOwner.middleware";
 import checkOrganizationMiddleware from "../../middlewares/checkOrganization.middleware";
 
-export const organizationsRoutes = (app: Express) => {
-  app.get("/organizations", listOrganizationsController);
-  app.get("/organizations/:org_id", listOneOrganizationController);
-  app.post("/organization", createOrganizationController);
-  app.patch(
-    "/organization/:org_id",
+const routes = Router();
+
+export const organizationsRoutes = () => {
+  routes.get("", listOrganizationsController);
+  routes.get("/:org_id", listOneOrganizationController);
+  routes.post("", createOrganizationController);
+  routes.patch("/:org_id",
     authenticationMiddleware,
     isOwnerMiddleware,
     checkOrganizationMiddleware,
     updateOrganizationController
   );
+
+  return routes
 };

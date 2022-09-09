@@ -1,4 +1,4 @@
-import { application, Express } from "express";
+import { application, Express, Router } from "express";
 import {
   listAreasController,
   listOneAreaController,
@@ -11,31 +11,34 @@ import authenticationMiddleware from "../../middlewares/authentication.middlewar
 import isAdmMiddleware from "../../middlewares/isAdm.middleware";
 import isOwnerMiddleware from "../../middlewares/isOwner.middleware";
 
+const routes = Router();
 
-export const areasRoutes = (app: Express) => {
-  app.get("/areas", authenticationMiddleware, listAreasController);
-  app.get("/areas/:area_id", authenticationMiddleware, listOneAreaController);
-  app.get(
-    "/areas/:area_id/users",
+export const areasRoutes = () => {
+  routes.get("/areas", authenticationMiddleware, listAreasController);
+  routes.get("/areas/:area_id", authenticationMiddleware, listOneAreaController);
+  routes.get(
+    "/:area_id/users",
     authenticationMiddleware,
     listUsersInAreaController
   );
-  app.post(
-    "/areas",
+  routes.post(
+    "",
     authenticationMiddleware,
     isOwnerMiddleware,
     createAreaController
   );
-  app.delete(
-    "/areas/:area_id",
+  routes.delete(
+    "/:area_id",
     authenticationMiddleware,
     isOwnerMiddleware,
     deleteAreaController
   );
-  app.patch(
-    "/areas/:area_id",
+  routes.patch(
+    "/:area_id",
     authenticationMiddleware,
     isOwnerMiddleware,
     updateAreaController
   );
+
+  return routes
 };
