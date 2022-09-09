@@ -22,7 +22,7 @@ services:
     env_file:
       - db.env
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U kenzinho -d e5"]
+      test: ["CMD-SHELL", "pg_isready -U gustavocs -d app_toca"]
       interval: 10s
       timeout: 5s
       retries: 5
