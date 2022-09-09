@@ -25,7 +25,7 @@ const createAreaService = async ({
   const area = new Areas();
   area.name = name;
   area.description = description;
-  area.organization_id = organization;
+  area.organization = organization;
 
   let areaCreated: Areas | null;
 
