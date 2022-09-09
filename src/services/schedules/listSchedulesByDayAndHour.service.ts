@@ -1,8 +1,8 @@
 import AppDataSource from "../../data-source";
-import { Schedules } from "../../entities/schedules.entity";
+import { Schedules } from "../../entities/Schedules.entity";
 import { ISchedulesRequest } from "../../interfaces/schedules";
 
-export const listSchedulesByDayAndHourService = async({ hour, day }: ISchedulesRequest) => {
+export const listSchedulesByDayAndHourService = async( hour: string, day: number ) => {
 
     const schedulesRepository = AppDataSource.getRepository(Schedules);
 
