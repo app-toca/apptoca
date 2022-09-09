@@ -12,7 +12,8 @@ import {
   organizationToca,
   organizationUnknow,
   userOwner,
-  userOwnerUnknow,
+  userOfUnknowOrg,
+  userOfUnknowOrgLogin,
   userOwnerLogin,
 } from "../../mocks/users";
 
@@ -39,7 +40,7 @@ describe("/areas", () => {
       .send(userOwner);
     await request(app)
       .post(`/users/${orgUnknow.body.id}/${organizationUnknow.password}`)
-      .send(userOwnerUnknow);
+      .send(userOfUnknowOrg);
     await request(app)
       .post(`/users/${orgToca.body.id}/${organizationToca.password}`)
       .send(nonAdminUser);
@@ -65,12 +66,12 @@ describe("/areas", () => {
   });
 
   test("POST /areas - Must be able to create a area to other organization", async () => {
-    const userOwnerUnknowLoginResponse = await request(app)
+    const userOfUnknowOrgLoginResponse = await request(app)
       .post("/login")
-      .send(userOwnerUnknow);
+      .send(userOfUnknowOrgLogin);
     const response = await request(app)
       .post("/areas")
-      .set("Authorization", `Bearer ${userOwnerUnknowLoginResponse.body.token}`)
+      .set("Authorization", `Bearer ${userOfUnknowOrgLoginResponse.body.token}`)
       .send(marketingAreaUnkown);
     marketingAreaUnkown.id = response.body.id;
 
@@ -231,14 +232,14 @@ describe("/areas", () => {
   });
 
   test("DELETE /areas/:area_id - Must be able to delete  area", async () => {
-    const userOwnerUnknowLoginResponse = await request(app)
+    const userOfUnknowOrgLoginResponse = await request(app)
       .post("/login")
-      .send(userOwnerUnknow);
+      .send(userOfUnknowOrgLogin);
     const response = await request(app)
       .delete(`/areas/${marketingAreaUnkown.id}`)
       .set(
         "Authorization",
-        `Bearer ${userOwnerUnknowLoginResponse.body.token}`
+        `Bearer ${userOfUnknowOrgLoginResponse.body.token}`
       );
 
     expect(response.status).toBe(204);

@@ -14,8 +14,8 @@ export const adminUser: IUserRequest = {
 };
 
 export const userAdminLogin: IUserLoginRequest = {
-    email: "anavitoriacisn314@gmail.com",
-    password: "senhaFortíssima123",
+  email: "anavitoriacisn314@gmail.com",
+  password: "senhaFortíssima123",
 };
 
 export const nonAdminUser: IUserRequest = {
@@ -31,12 +31,11 @@ export const nonAdminUser: IUserRequest = {
 };
 
 export const userNonAdminLogin: IUserLoginRequest = {
-    email: "joao.porto.ismart@gmail.com",
-    password: "senhaNãoTãoForte123",
+  email: "joao.porto.ismart@gmail.com",
+  password: "senhaNãoTãoForte123",
 };
 
 export const userOwner: IUserRequest = {
-
   name: "Ana",
   nickname: "Cisne",
   email: "anavitoriacisn@gmail.com",
@@ -45,12 +44,12 @@ export const userOwner: IUserRequest = {
   year: 2,
   course: "ESPN",
   phrase: "Nenhum obstáculo é grande demais para quem desiste",
-  img: "https://thumbs.dreamstime.com/b/love-coding-girl-women-hand-drawn-illustration-cute-monster-love-coding-girl-women-hand-drawn-illustration-cute-monster-144914862.jpg",  
-}
+  img: "https://thumbs.dreamstime.com/b/love-coding-girl-women-hand-drawn-illustration-cute-monster-love-coding-girl-women-hand-drawn-illustration-cute-monster-144914862.jpg",
+};
 
 export const userOwnerLogin: IUserLoginRequest = {
-    email: "anavitoriacisn@gmail.com",
-    password: "senhaFortíssima12",
+  email: "anavitoriacisn@gmail.com",
+  password: "senhaFortíssima12",
 };
 
 export const userDifferentEmail: IUserRequest = {
@@ -65,11 +64,10 @@ export const userDifferentEmail: IUserRequest = {
   img: "https://thumbs.dreamstime.com/b/coding-fun-hand-drawn-vector-illustration-cute-programmer-cartoon-minimalism-style-cap-party-coding-fun-hand-drawn-157572614.jpg",
 };
 
-export const userDifferentEmailLogin : IUserLoginRequest = {
+export const userDifferentEmailLogin: IUserLoginRequest = {
   email: "joao.ismart@gmail.com",
-  password: "senhaNãoTãoForte123"
-
-}
+  password: "senhaNãoTãoForte123",
+};
 
 export const userOfUnknowOrg: IUserRequest = {
   name: "Joãozin",
@@ -81,6 +79,11 @@ export const userOfUnknowOrg: IUserRequest = {
   course: "RBD",
   phrase: "Não deixe para fazer hoje aquilo que pode procrastinar amanhã",
   img: "https://thumbs.dreamstime.com/b/coding-fun-hand-drawn-vector-illustration-cute-programmer-cartoon-minimalism-style-cap-party-coding-fun-hand-drawn-157572614.jpg",
+};
+
+export const userOfUnknowOrgLogin: IUserLoginRequest = {
+  email: "joao.ismart@gmail.com",
+  password: "senhaNãoTãoForte123",
 };
 
 export const userToBeDeteleted: IUserRequest = {
