@@ -45,34 +45,19 @@ describe("/users", () => {
 
   /*----------------*/
 
-  beforeAll(() => {
-    test("create organization", async () => {
+  beforeAll(async() => {
       const response = await request(app)
         .post("/organizations")
         .send(organizationToca);
-
-      expect(response.body).toHaveProperty("id");
-
-      expect(response.body).toHaveProperty("name");
-      expect(response.body).not.toHaveProperty("password");
-      expect(response.body.name).toEqual("Toca");
-      //guardar hash da senha mas não retorná-la
+      
       organization = response.body;
-    });
 
-    test("create another organization", async () => {
-      const response = await request(app)
+      const response2 = await request(app)
         .post("/organizations")
         .send(organizationUnknow);
-
-      expect(response.body).toHaveProperty("id");
-
-      expect(response.body).toHaveProperty("name");
-      expect(response.body).not.toHaveProperty("password");
-      expect(response.body.name).toEqual("Unknow");
       
-      organization2 = response.body;
-    });
+      organization2 = response2.body;
+
   });
 
   test("POST /users -  Must be able to create a owner user",async () => {
