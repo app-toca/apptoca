@@ -23,6 +23,14 @@ export const createUserService = async (
   const usersRepository = AppDataSource.getRepository(User);
   const organizationRepository = AppDataSource.getRepository(Organizations);
 
+  const findEmail = await usersRepository.findOneBy({
+    email: email,
+  });
+
+  if (findEmail) {
+    throw new AppError(400, "User Already Exists");
+  }
+
   const organizationFind = await organizationRepository.findOneBy({
     id: organizationId,
   });
@@ -48,7 +56,7 @@ export const createUserService = async (
     organization: { id: organizationId },
   });
 
-  if (!organizationFind.users) {
+  if (organizationFind.users.length === 0) {
     newUser.is_owner = true;
     newUser.is_adm = true;
   }

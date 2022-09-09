@@ -3,11 +3,9 @@ import {
   UpdateDateColumn,
   CreateDateColumn,
   Column,
-  PrimaryColumn,
   OneToMany,
-  OneToOne,
-  JoinColumn,
   ManyToOne,
+  PrimaryGeneratedColumn,
 } from "typeorm";
 import { Organizations } from "./Organizations.entity";
 import { Schedules } from "./Schedules.entity";
@@ -19,7 +17,7 @@ import { Exclude } from "class-transformer";
 
 @Entity("users")
 export class User {
-  @PrimaryColumn("uuid")
+  @PrimaryGeneratedColumn("uuid")
   readonly id: string;
 
   @Column({ nullable: false })
