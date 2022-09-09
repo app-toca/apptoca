@@ -2,6 +2,8 @@ import AppDataSource from "../../data-source";
 import { User } from "../../entities/User.entity";
 import { IUserRequest } from "../../interfaces/users";
 import * as bycrypt from "bcryptjs";
+import { Organizations } from "../../entities/Organizations.entity";
+import { AppError } from "../../error/global";
 
 export const createUserService = async (
   {
@@ -13,11 +15,23 @@ export const createUserService = async (
     year,
     course,
     phrase,
-    img
+    img,
   }: IUserRequest,
-  organizationId: string
+  organizationId: string,
+  password_org: string
 ) => {
   const usersRepository = AppDataSource.getRepository(User);
+  const organizationRepository = AppDataSource.getRepository(Organizations);
+
+  const organizationFind = await organizationRepository.findOneBy({
+    id: organizationId,
+  });
+
+  if (!organizationFind) {
+    throw new AppError(404, "Invalid Id");
+  } else if (organizationFind?.password !== password_org) {
+    throw new AppError(401, "Invalid Password");
+  }
 
   const hashedPassword = await bycrypt.hash(password, 10);
 
@@ -34,7 +48,10 @@ export const createUserService = async (
     organization: { id: organizationId },
   });
 
-  //não retornar password na resposta
+  if (!organizationFind.users) {
+    newUser.is_owner = true;
+    newUser.is_adm = true;
+  }
 
   await usersRepository.save(newUser);
 
