@@ -4,7 +4,7 @@ import { AppError } from "../../error/global";
 import { iAreaRequest } from "../../interfaces/areas";
 
 interface IRequestAreaOrganization extends iAreaRequest {
-  organization: string
+  organization: string;
 }
 
 const createAreaService = async ({
