@@ -53,7 +53,7 @@ export const createUserService = async (
     course,
     phrase,
     img,
-    organization: { id: organizationId },
+    organization: organizationFind,
   });
 
   if (organizationFind.users.length === 0) {
