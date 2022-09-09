@@ -4,7 +4,7 @@ import { AppError } from "../../error/global";
 import { iAreaRequest } from "../../interfaces/areas";
 
 interface IRequestAreaOrganization extends iAreaRequest {
-  organization: string
+  organization: string;
 }
 
 const createAreaService = async ({
@@ -25,7 +25,7 @@ const createAreaService = async ({
   const area = new Areas();
   area.name = name;
   area.description = description;
-  area.organization_id = organization;
+  area.organization = organization;
 
   let areaCreated: Areas | null;
 
