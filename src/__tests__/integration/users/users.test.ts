@@ -181,6 +181,7 @@ describe("/users", () => {
 
   /*------------*/
 
+
   test("PATCH users/:user_id -  should be able to change the property is_adm if is an owner",async () => {
 
     const ownerLoginResponse = await request(app).post("/login").send(userOwnerLogin);
@@ -194,7 +195,9 @@ describe("/users", () => {
     
   })
 
+
   test("PATCH users/:user_id -  should not be able to change the property is_active",async () => {
+
 
     const ownerLoginResponse = await request(app).post("/login").send(userOwnerLogin);
     const response = await request(app).patch(`/users/${userAdminCreated.id}`).send({is_active: false, name: 'Renata ingrata'}).set("Authorization", `Bearer ${ownerLoginResponse.body.token}`)
@@ -207,7 +210,9 @@ describe("/users", () => {
     
   })
 
+
   test("PATCH users/:user_id -  should not be able to change the property is_adm if is not an owner even if you're an admin ",async () => {
+
     
     const adminLoginResponse = await request(app).post("/login").send(userAdminLogin);
     const response = await request(app).patch(`/users/${userNonAdminCreated.id}`).send({is_adm: true}).set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
@@ -218,7 +223,9 @@ describe("/users", () => {
     expect(findUser.body.is_adm).toBe(false)
   })
 
+
   test("PATCH users/:user_id -  should not be able to change the property is_adm of yourself if you aren't an owner",async () => {
+
 
     const nonAdminLoginResponse = await request(app).post("/login").send(userNonAdminLogin);
     const response = await request(app).patch(`/users/${userNonAdminCreated.id}`).send({is_adm: true}).set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`)
@@ -230,20 +237,24 @@ describe("/users", () => {
     
   })
 
+
   test("PATCH users/:user_id -  should not be able to update another user if not being admin",async () => {
+
     
     const nonAdminLoginResponse = await request(app).post("/login").send(userNonAdminLogin);
     const response = await request(app).patch(`/users/${userAdminCreated.id}`).send({name: 'Teste'}).set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`)
-    const findUser = await request(app).get(`/users/${userNonAdminCreated.id}`).set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`)
+    const findUser = await request(app).get(`/users/${userAdminCreated.id}`).set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`)
     
-    expect(findUser.body.name).toBe(userNonAdminCreated.name)
+    expect(findUser.body.name).toBe(userAdminCreated.name)
     expect(response.body).toHaveProperty("message")
     expect(response.status).toBe(401)    
 
   })
 
 
+
 test("PATCH users/:user_id -  Must be able to update another user if being admin",async () => {
+
     
   const adminLoginResponse = await request(app).post("/login").send(userAdminLogin);
   const response = await request(app).patch(`/users/${userNonAdminCreated.id}`).send({age: 24}).set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
@@ -257,6 +268,7 @@ test("PATCH users/:user_id -  Must be able to update another user if being admin
     expect(findUser.body.is_adm).toBe(false)  
     expect(findUser.body.age).toBe(24)    
 })
+
 
 test("PATCH users/:user_id -  Must be able to update your own user",async () => {
 
@@ -278,8 +290,9 @@ test("PATCH users/:user_id -  Must be able to update your own user",async () => 
 })
 
 
+
 test("PATCH users/:user_id -  should not be able to update user with invalid id",async () => {
-  
+
   const adminLoginResponse = await request(app).post("/login").send(userAdminLogin);
   const response = await request(app).patch(`/users/1242435`).send({age: 22}).set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
   
@@ -337,7 +350,9 @@ expect(response.body).toHaveProperty("message")
 
   });
 
+
   test("GET /users/:user_id/areas -  should be able to list areas of your own user", async () => {
+
     const nonAdminLoginResponse = await request(app)
       .post("/login")
       .send(userAdminLogin);
@@ -384,7 +399,7 @@ test("DELETE /users/:user_id -  Must be able to soft delete your own user",async
 
   const nonAdminLoginResponse = await request(app).post("/login").send(userDifferentEmailLogin);
   const users = await request(app).get('/users').set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`)
-  const response = await request(app).delete(`/users/${users.body[3].id}`).set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`)
+  const response = await request(app).delete(`/users/${users.body[3].user_}`).set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`)
 
   const findUser = await request(app).get('/users').set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`)
   
@@ -393,16 +408,29 @@ test("DELETE /users/:user_id -  Must be able to soft delete your own user",async
  
 })
 
+
 test("DELETE /users/:user_id -  should be able to soft delete another user if being admin",async () => {
+
   const userToDelete =  await request(app).post(`/users/${organization.id}/${organizationToca.password}`).send(userToBeDeteleted);
   const adminLoginResponse = await request(app).post("/login").send(userAdminLogin);
-  const response = await request(app).delete(`/users/${userToDelete}`).set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
+  const response = await request(app).delete(`/users/${userToDelete.body.id}`).set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
   
-  const findUser = await request(app).get('/users').set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
+  const findUser = await request(app).get(`/users/${userToDelete.body.id}`).set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
   
   expect(response.status).toBe(204)
-  expect(findUser.body[4].is_active).toBe(false)    
+  expect(findUser.body.is_active).toBe(false)    
 })
+
+
+/*test("DELETE /users/:id -  shouldn't be able to delete user with is_active = false",async () => {
+    await request(app).post('/users').send(mockedAdmin)
+    const adminLoginResponse = await request(app).post("/login").send(mockedAdminLogin);
+    const UserTobeDeleted = await request(app).get('/users').set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
+    const response = await request(app).delete(`/users/${UserTobeDeleted.body[0].id}`).set("Authorization", `Bearer ${adminLoginResponse.body.token}`)
+    expect(response.status).toBe(400)
+    expect(response.body).toHaveProperty("message")
+ 
+})*/
 
 test("DELETE users/:user_id -  should not be able to delete user with invalid id",async () => {
     
