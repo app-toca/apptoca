@@ -1,21 +1,31 @@
 import { IUserUpdate } from "../../interfaces/users";
 import AppDataSource from "../../data-source";
 import { User } from "../../entities/User.entity";
+import { AppError } from "../../error/global";
 
-export const patchUserService = async (id: string, req: IUserUpdate) => {
-  const userRepository = AppDataSource.getRepository(User);
+export const patchUserService = async (
+  user_id: string,
+  req: IUserUpdate,
+  id: string,
+  is_owner: boolean
+) => {
+  const usersRepository = AppDataSource.getRepository(User);
 
-  const users = await userRepository.find();
+  const userFind = await usersRepository.findOneBy({
+    id: id,
+  });
 
-  const userFind = users.find((user) => user.id === id);
+  if (is_owner === true || user_id === userFind?.id) {
+    if (!userFind) {
+      throw new Error("User not exists");
+    }
 
-  if (!userFind) {
-    throw new Error("User not exists");
+    req.updated_at = new Date();
+
+    await usersRepository.update(id, req);
+
+    return req;
+  } else {
+    throw new AppError(404, "Invalid User");
   }
-
-  req.updated_at = new Date();
-
-  await userRepository.update(id, req);
-
-  return req;
 };

@@ -7,6 +7,7 @@ import {
   OneToMany,
   OneToOne,
   JoinColumn,
+  ManyToOne,
 } from "typeorm";
 import { Organizations } from "./Organizations.entity";
 import { Schedules } from "./Schedules.entity";
@@ -14,6 +15,7 @@ import { Meetings } from "./Meetings.entity";
 import { Comments } from "./Comments.entity";
 import { Area_users } from "./Area_users.entity";
 import { Posts } from "./Posts.entity";
+import { Exclude } from "class-transformer";
 
 @Entity("users")
 export class User {
@@ -27,12 +29,13 @@ export class User {
   email: string;
 
   @Column({ nullable: false })
-  surname: string;
+  nickname: string;
 
   @Column({ type: "integer" })
   age: number;
 
   @Column({ nullable: false, type: "varchar" })
+  @Exclude()
   password: string;
 
   @Column({ nullable: false, type: "integer" })
@@ -44,11 +47,14 @@ export class User {
   @Column({ type: "varchar", length: 500 })
   phrase: string;
 
-  @Column({ type: "boolean", nullable: false })
+  @Column({ type: "boolean", nullable: false, default: false })
   is_adm: boolean;
 
-  @Column({ type: "boolean", nullable: false })
+  @Column({ type: "boolean", nullable: false, default: true })
   is_active: boolean;
+
+  @Column("boolean", { default: false })
+  is_owner: boolean;
 
   @Column({ type: "varchar" })
   img: string;
@@ -59,8 +65,7 @@ export class User {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @OneToOne(() => Organizations)
-  @JoinColumn()
+  @ManyToOne((type) => Organizations, (organization) => organization.users)
   organization: Organizations;
 
   @OneToMany(() => Schedules, (schedules) => schedules.user_id)
