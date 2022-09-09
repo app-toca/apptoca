@@ -4,7 +4,7 @@ export interface iAreaRequest {
 }
 
 export interface iAreaResponse extends iAreaRequest {
-  id: string
+  id: string;
 }
 
 export interface iAreaUpdateRequest {

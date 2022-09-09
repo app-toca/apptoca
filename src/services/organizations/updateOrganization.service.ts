@@ -1,5 +1,5 @@
 import { Organizations } from "../../entities/Organizations.entity";
-import { iOrganizationUpdateRequest } from "../../interfaces/organizations";
+import { IOrganizationUpdateRequest } from "../../interfaces/organizations";
 import AppDataSource from "../../data-source";
 import { AppError } from "../../error/global";
 import { UpdateResult } from "typeorm";
@@ -7,7 +7,7 @@ import { UpdateResult } from "typeorm";
 const updateOrganizationService = async ({
   org_id,
   name,
-}: iOrganizationUpdateRequest): Promise<UpdateResult> => {
+}: IOrganizationUpdateRequest): Promise<UpdateResult> => {
   const organizationsRepository = AppDataSource.getRepository(Organizations);
 
   const org: Organizations | null = await organizationsRepository.findOne({
