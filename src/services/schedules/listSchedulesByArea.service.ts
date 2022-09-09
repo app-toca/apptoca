@@ -1,6 +1,6 @@
 import AppDataSource from "../../data-source";
 import { Areas } from "../../entities/Areas.entity";
-import { Schedules } from "../../entities/schedules.entity";
+import { Schedules } from "../../entities/Schedules.entity";
 import { AppError } from "../../error/global";
 import { ISchedulesRequest } from "../../interfaces/schedules";
 

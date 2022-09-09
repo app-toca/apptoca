@@ -47,7 +47,7 @@ export const listSchedulesByDayController = async(req: Request, res: Response) =
 
     const { day } = req.params;
 
-    const schedules = await listSchedulesByDayService({ day });
+    const schedules = await listSchedulesByDayService( Number(day) );
 
     return res.status(200).json(schedules);
 
@@ -59,7 +59,7 @@ export const listSchedulesByDayAndHourController = async(req: Request, res: Resp
 
     const { hour, day } = req.params;
 
-    const schedules = await listSchedulesByDayAndHourService({ hour, day });
+    const schedules = await listSchedulesByDayAndHourService( hour, Number(day) );
 
     return res.status(200).json(schedules);
 

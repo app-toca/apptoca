@@ -1,5 +1,5 @@
 import AppDataSource from "../../data-source";
-import { Schedules } from "../../entities/schedules.entity";
+import { Schedules } from "../../entities/Schedules.entity";
 import { IReportSchedule } from "../../interfaces/schedules";
 
 export const countUsersByHourService = async ({ area_id }: any) => {
