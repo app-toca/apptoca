@@ -4,7 +4,7 @@ import request from "supertest"
 import app from "../../../app";
 import { IUserResponse } from "../../../interfaces/users";
 import { IOrganizationResponse } from "../../../interfaces/organizations";
-import { nonAdminUser, organizationToca, userNonAdminLogin, userOwner, userOwnerLogin } from "../../mocks/users";
+import { nonAdminUser, organizationToca, organizationUnknow, userNonAdminLogin, userOfUnknowOrg, userOwner, userOwnerLogin } from "../../mocks/users";
 import { iAreaResponse } from "../../../interfaces/areas";
 import { marketingArea } from "../../mocks/areas";
 
@@ -13,8 +13,10 @@ let userOwnerCreated: IUserResponse
 let organization: IOrganizationResponse
 let marketingAreaCreated: iAreaResponse
 let userNonAdminCreated : IUserResponse
+let organization2: IOrganizationResponse
+let userOfUnknowOrgCreated: IUserResponse
 
-describe("/posts", () => {
+describe("/administration/area", () => {
     let connection: DataSource
 
     beforeAll(async() => {
@@ -53,7 +55,17 @@ describe("/posts", () => {
         .post(`/areas`)
         .send(marketingArea);
 
-        marketingAreaCreated = responseArea.body   
+        marketingAreaCreated = responseArea.body  
+        
+        const responseOrg2 = await request(app)
+        .post("/organizations")
+        .send(organizationUnknow);
+      
+        organization2 = responseOrg2.body;
+
+        const responseUserOrg2 = await request(app).post(`/users/${organization2.id}/${organizationUnknow.password}`).send(userOfUnknowOrg);
+
+        userOfUnknowOrgCreated = responseUserOrg2.body
     
     })
 
@@ -66,7 +78,6 @@ describe("/posts", () => {
       .get(`/users/${userNonAdminCreated.id}/areas`)
       .set("Authorization", `Bearer ${loginAdmin.body.token}`);
       
-      //expect(response.body).toHaveProperty("token")
       expect(response.status).toBe(201)        
       expect(responseAreasOfUser.body).toHaveLength(1);
     })
@@ -99,6 +110,36 @@ describe("/posts", () => {
         
         expect(response.body).toHaveProperty('message')
         expect(response.status).toBe(404)     
+    })
+
+    test("POST /administration/area -  Should not be able to create the relation with user and area if the user is from another organization",async () => {
+        const loginAdmin = await request(app).post("/login").send(userOwnerLogin);
+        const body = {user_id: userOfUnknowOrgCreated.id, area_id: marketingAreaCreated.id }
+        const response = await request(app).post('/administration/area').send(body).set("Authorization", `Bearer ${loginAdmin.body.token}`)
+
+        
+        expect(response.body).toHaveProperty('message')
+        expect(response.status).toBe(403)    
+    })
+
+    test("DELETE /administration/area/:user_id/:area_id -  Must be able to create the relation with user and area",async () => {
+        const loginAdmin = await request(app).post("/login").send(userOwnerLogin);
+        const response = await request(app).delete(`/administration/area/${userNonAdminCreated.id}/${marketingAreaCreated.id}`).set("Authorization", `Bearer ${loginAdmin.body.token}`)
+
+        const responseAreasOfUser = await request(app)
+      .get(`/users/${userNonAdminCreated.id}/areas`)
+      .set("Authorization", `Bearer ${loginAdmin.body.token}`);
+      
+      expect(response.status).toBe(204)        
+      expect(responseAreasOfUser.body).toHaveLength(0);
+    })
+
+    test("DELETE /administration/area/:user_id/:area_id -  Should not be able to create the relation without authentication",async () => {
+        
+        const response = await request(app).delete(`/administration/area/${userNonAdminCreated.id}/${marketingAreaCreated.id}`)
+      
+      expect(response.status).toBe(401)        
+      expect(response.body).toHaveProperty('message');
     })
 
 
