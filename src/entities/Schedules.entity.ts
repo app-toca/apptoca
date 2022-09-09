@@ -6,9 +6,9 @@ import {
   JoinColumn,
   ManyToOne,
 } from "typeorm";
-import { Days } from "./days.entity";
-import { Hours } from "./hours.entity";
-import { User } from "./user.entity";
+import { Days } from "./Days.entity";
+import { Hours } from "./Hours.entity";
+import { User } from "./User.entity";
 
 @Entity("schedules")
 export class Schedules {

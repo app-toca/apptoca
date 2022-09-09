@@ -1,5 +1,5 @@
 import AppDataSource from "../../data-source";
-import { User } from "../../entities/user.entity";
+import { User } from "../../entities/User.entity";
 import { IUserRequest } from "../../interfaces/users";
 import * as bycrypt from "bcryptjs";
 
@@ -13,8 +13,7 @@ export const createUserService = async (
     year,
     course,
     phrase,
-    isAdm,
-    img,
+    img
   }: IUserRequest,
   organizationId: string
 ) => {
@@ -34,6 +33,8 @@ export const createUserService = async (
     img,
     organization: { id: organizationId },
   });
+
+  //não retornar password na resposta
 
   await usersRepository.save(newUser);
 

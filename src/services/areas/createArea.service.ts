@@ -3,11 +3,15 @@ import { Areas } from "../../entities/Areas.entity";
 import { AppError } from "../../error/global";
 import { iAreaRequest } from "../../interfaces/areas";
 
+interface IRequestAreaOrganization extends iAreaRequest {
+  organization: string
+}
+
 const createAreaService = async ({
   name,
   description,
   organization,
-}: iAreaRequest): Promise<Areas> => {
+}: IRequestAreaOrganization): Promise<Areas> => {
   const areasRepository = AppDataSource.getRepository(Areas);
 
   const areaAlreadyExists: Areas | null = await areasRepository.findOne({

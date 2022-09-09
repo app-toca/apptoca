@@ -3,13 +3,14 @@ export interface IOneMeetingRequest {
 }
 
 export interface IMeetingRequest {
-    description: string, 
-    duration: number, 
-    id: string,
-    area_id: string
+    description: string
+    duration: string
+    ata: string
+    date_time: Date
+    
 }
 
 export interface IMeetingUpdateRequest {
-    description?: string,
+    description?: string
     meeting_id: string
 }

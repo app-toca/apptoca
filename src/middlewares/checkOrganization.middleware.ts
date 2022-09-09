@@ -2,9 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import AppDataSource from "../data-source";
 import { Areas } from "../entities/Areas.entity";
 import { Comments } from "../entities/Comments.entity";
-import { Meetings } from "../entities/meetings.entity";
+import { Meetings } from "../entities/Meetings.entity";
 import { Posts } from "../entities/Posts.entity";
-import { User } from "../entities/user.entity";
+import { User } from "../entities/User.entity";
 
 const checkOrganizationMiddleware = async (
   req: Request,
@@ -23,7 +23,7 @@ const checkOrganizationMiddleware = async (
   if (user_id) {
     const user = await userRepository.findOneBy({ id: user_id });
 
-    if (user?.organization !== organization) {
+    if (user?.organization.id !== organization) {
       return res.status(403).json({
         message: "Você não tem permissão",
       });
