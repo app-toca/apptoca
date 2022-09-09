@@ -16,10 +16,10 @@ export class Meetings {
   @Column("varchar", { length: 500 })
   description: string;
 
-  @CreateDateColumn("datetime")
+  @CreateDateColumn()
   created_at: Date;
 
-  @Column("datetime")
+  @Column({type: 'timestamptz'})
   date_time: Date
 
   @Column()

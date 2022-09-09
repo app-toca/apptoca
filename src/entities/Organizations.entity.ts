@@ -13,7 +13,7 @@ export class Organizations {
   @Column()
   password: string;
 
-  @OneToMany(() => Areas, (areas) => areas.organization_id, {
+  @OneToMany(() => Areas, (areas) => areas.organization, {
     eager: true,
   })
   areas: Areas[];

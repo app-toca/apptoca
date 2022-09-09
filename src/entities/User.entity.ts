@@ -68,7 +68,7 @@ export class User {
   @ManyToOne((type) => Organizations, (organization) => organization.users)
   organization: Organizations;
 
-  @OneToMany(() => Schedules, (schedules) => schedules.user_id)
+  @OneToMany(() => Schedules, (schedules) => schedules.user)
   schedule: Schedules;
 
   @OneToMany(() => Comments, (comment) => comment.user)
