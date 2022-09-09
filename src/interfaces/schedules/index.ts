@@ -5,3 +5,8 @@ export interface ISchedulesRequest {
     day?: string
 }
 
+export interface IReportSchedule {
+    day?: number
+    hour?: string
+    qtt_users?: number
+  }

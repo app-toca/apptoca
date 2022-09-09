@@ -8,7 +8,7 @@ import {
 } from "typeorm";
 import { Days } from "./days.entity";
 import { Hours } from "./hours.entity";
-import { User } from "./user.entity";
+import { User } from "./User.entity";
 
 @Entity("schedules")
 export class Schedules {
