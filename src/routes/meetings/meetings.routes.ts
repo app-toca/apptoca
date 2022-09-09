@@ -1,10 +1,5 @@
 import { Router } from "express";
-import { createMeetingController } from "../../controllers/meetings/createMeeting.controller";
-import { deleteMeetingController } from "../../controllers/meetings/deleteMeeting.controller";
-import { listAllMeetingsController } from "../../controllers/meetings/listAllMeetings.controller";
-import { listMeetingsByAreaController } from "../../controllers/meetings/listMeetingsByArea.controller";
-import { listOneMeetingController } from "../../controllers/meetings/listOneMeeting.controller";
-import { updateMeetingController } from "../../controllers/meetings/updateMeeting.controller";
+import { createMeetingController, deleteMeetingController, listAllMeetingsController, listMeetingsByAreaController, listOneMeetingController, updateMeetingController } from "../../controllers/meetings.controllers";
 import authenticationMiddleware from "../../middlewares/authentication.middleware";
 import isAdmMiddleware from "../../middlewares/isAdm.middleware";
 

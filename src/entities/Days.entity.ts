@@ -8,7 +8,7 @@ export class Days {
     readonly id: string;
 
     @Column({  })
-    name: string;
+    name: number;
 
     @OneToOne(() => Schedules)
     @JoinColumn()
