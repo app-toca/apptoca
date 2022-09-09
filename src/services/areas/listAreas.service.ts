@@ -7,7 +7,7 @@ const listAreasService = async (organization: string): Promise<Areas[]> => {
   let areas: Areas[];
   try {
     areas = await areasRepository.find({
-      where: { organization_id: organization },
+      where: { organization: organization },
     });
   } catch (error: any) {
     throw new AppError(error.statusCode, error.message);
