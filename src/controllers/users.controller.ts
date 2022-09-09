@@ -26,7 +26,7 @@ export const createUserController = async (req: Request, res: Response) => {
   const user: IUserRequest = req.body;
   const { organization_id, password_org } = req.params;
 
-  const newUser = createUserService(user, organization_id, password_org);
+  const newUser = await createUserService(user, organization_id, password_org);
 
   return res.status(201).send(instanceToPlain(newUser));
 };
