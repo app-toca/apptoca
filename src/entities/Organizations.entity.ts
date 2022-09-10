@@ -13,13 +13,9 @@ export class Organizations {
   @Column()
   password: string;
 
-  @OneToMany(() => Areas, (areas) => areas.organization, {
-    eager: true,
-  })
+  @OneToMany(() => Areas, (areas) => areas.organization)
   areas: Areas[];
 
-  @OneToMany(() => User, (users) => users.organization, {
-    eager: true,
-  })
+  @OneToMany(() => User, (users) => users.organization)
   users: User[];
 }

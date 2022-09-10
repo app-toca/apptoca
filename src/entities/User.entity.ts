@@ -14,7 +14,7 @@ import { Comments } from "./Comments.entity";
 import { Area_users } from "./Area_users.entity";
 import { Posts } from "./Posts.entity";
 import { Exclude } from "class-transformer";
-import { v4 as uuid } from "uuid"
+import { v4 as uuid } from "uuid";
 
 @Entity("users")
 export class User {
@@ -64,7 +64,9 @@ export class User {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @ManyToOne((type) => Organizations, (organization) => organization.users)
+  @ManyToOne((type) => Organizations, (organization) => organization.users, {
+    eager: true,
+  })
   organization: Organizations;
 
   @OneToMany(() => Schedules, (schedules) => schedules.user)
@@ -88,7 +90,7 @@ export class User {
 
   constructor() {
     if (!this.id) {
-        this.id = uuid();
+      this.id = uuid();
     }
-}
+  }
 }
