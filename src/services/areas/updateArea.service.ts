@@ -8,7 +8,7 @@ const updateAreaService = async ({
   area_id,
   name,
   description,
-}: iAreaUpdateRequest): Promise<UpdateResult> => {
+}: iAreaUpdateRequest): Promise<Areas> => {
   const areaRepository = AppDataSource.getRepository(Areas);
 
   const area: Areas | null = await areaRepository.findOne({
@@ -30,6 +30,14 @@ const updateAreaService = async ({
     throw new AppError(error.statusCode, error.message);
   }
 
-  return areaUpdated;
+  const areaUpdatedd: Areas | null = await areaRepository.findOne({
+    where: { id: area_id },
+  });
+
+  if (!areaUpdatedd) {
+    throw new AppError(404, "Area not found");
+  }
+
+  return areaUpdatedd;
 };
 export default updateAreaService;
