@@ -56,7 +56,13 @@ export const createUserService = async (
     organization: organizationFind,
   });
 
-  if (organizationFind.users.length === 0) {
+  const usersByOrganization = await usersRepository.find({
+    where: {
+      organization: organizationFind,
+    },
+  });
+
+  if (usersByOrganization.length === 0) {
     newUser.is_owner = true;
     newUser.is_adm = true;
   }
@@ -64,4 +70,4 @@ export const createUserService = async (
   await usersRepository.save(newUser);
 
   return newUser;
-};
+}; 
