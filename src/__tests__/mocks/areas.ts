@@ -7,7 +7,7 @@ export const marketingArea: IAreaTest = {
 
 export const marketingAreaUpdated: IAreaTest = {
   name: "Markting",
-  description: "Nos fazemos arte",
+  description: "Nos fazemos muita arte",
 };
 
 export const marketingAreaUnkown: IAreaTest = {
