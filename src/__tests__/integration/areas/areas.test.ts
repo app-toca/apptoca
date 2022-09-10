@@ -7,10 +7,9 @@ import {
   marketingAreaUnkown,
   marketingAreaUpdated,
 } from "../../mocks/areas";
+import { organizationToca, organizationUnknow } from "../../mocks/organization";
 import {
   nonAdminUser,
-  organizationToca,
-  organizationUnknow,
   userOwner,
   userOfUnknowOrg,
   userOfUnknowOrgLogin,

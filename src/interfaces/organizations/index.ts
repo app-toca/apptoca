@@ -3,9 +3,15 @@ export interface IOrganizationRequest {
   password: string;
 }
 
+export interface IOrganizationTest {
+  name: string;
+  password: string;
+  id?: string;
+}
+
 export interface IOrganizationResponse {
-  id: string
-  name: string
+  id: string;
+  name: string;
 }
 
 export interface IOrganizationUpdateRequest {

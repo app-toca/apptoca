@@ -1,5 +1,4 @@
 import { IUserLoginRequest, IUserRequest } from "../../interfaces/users";
-import { IOrganizationRequest } from "../../interfaces/organizations";
 
 export const adminUser: IUserRequest = {
   name: "Ana",
@@ -96,14 +95,4 @@ export const userToBeDeteleted: IUserRequest = {
   course: "RBD",
   phrase: "Não deixe para fazer hoje aquilo que pode procrastinar amanhã",
   img: "https://thumbs.dreamstime.com/b/coding-fun-hand-drawn-vector-illustration-cute-programmer-cartoon-minimalism-style-cap-party-coding-fun-hand-drawn-157572614.jpg",
-};
-
-export const organizationToca: IOrganizationRequest = {
-  name: "Toca",
-  password: "Toca-0912",
-};
-
-export const organizationUnknow: IOrganizationRequest = {
-  name: "Unknow",
-  password: "unk-0913",
 };
