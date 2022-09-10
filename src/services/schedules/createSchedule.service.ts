@@ -21,7 +21,7 @@ export const createScheduleService = async (
     throw new AppError(404, "User not found!");
   }
 
-  const schedulesSaved = await schedules.map(async (schedules, index) => {
+  const schedulesSaved = await schedules.map(async (schedules) => {
     const day = await daysRepository.create({ name: schedules.day.name });
     const hour = await hoursRepository.create({ hour: schedules.hour.hour });
     const schedule = await schedulesRepository.create({ day, hour, user });
