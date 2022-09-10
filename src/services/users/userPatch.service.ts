@@ -15,11 +15,11 @@ export const patchUserService = async (
     id: id,
   });
 
-  if (is_owner === true || user_id === userFind?.id) {
-    if (!userFind) {
-      throw new Error("User not exists");
-    }
+  if (!userFind) {
+    throw new Error("User not exists");
+  }
 
+  if (is_owner === true || user_id === userFind?.id) {
     req.updated_at = new Date();
 
     await usersRepository.update(id, req);
