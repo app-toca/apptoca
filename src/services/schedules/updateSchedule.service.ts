@@ -26,7 +26,7 @@ export const updateScheduleService = async (
     where: { user: { id: user_id } },
   });
 
-  if (!schedulesFounded) {
+  if (schedulesFounded.length === 0) {
     throw new AppError(404, "Schedules not founded for this user!");
   }
 
