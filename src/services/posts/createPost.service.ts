@@ -31,8 +31,6 @@ const createPostService = async ({content}: IPostRequest, area_id: string,user_i
 
     }
 
-    console.log('test')
-
     const newPost = new Posts()
 
     newPost.user = user!
