@@ -21,8 +21,10 @@ export class Areas {
   @Column()
   description: string;
 
-  @ManyToOne(() => Organizations)
-  organization: string;
+  @ManyToOne(() => Organizations, {
+    eager: true,
+  })
+  organization: Organizations;
 
   @OneToMany(() => Area_users, (area_user) => area_user.area)
   area_user: Area_users[];

@@ -27,7 +27,7 @@ const loginService = async (email: string, password: string) => {
       is_adm: user.is_adm,
       is_owner: user.is_owner,
       id: user.id,
-      organization: user.organization,
+      organization: user.organization.id,
     },
     process.env.SECRET_KEY!,
     { expiresIn: "24h" }
