@@ -7,18 +7,6 @@ import { listSchedulesByDayAndHourService } from "../services/schedules/listSche
 import { listSchedulesByHourService } from "../services/schedules/listSchedulesByHour.service";
 import { listSchedulesByUserService } from "../services/schedules/listSchedulesByUser.service";
 
-//Retorna os usuário por hora
-
-export const countUsersByHourController = async(req: Request, res: Response) => {
-
-    const { area_id } = req.params;
-
-    const usersQuantity = countUsersByHourService({ area_id });
-
-    return res.status(200).json(usersQuantity);
-
-}
-
 //Lista todas as schedules
 
 export const listSchedulesController = async(req: Request, res: Response) => {
@@ -41,18 +29,6 @@ export const listSchedulesByAreaController = async(req: Request, res: Response) 
 
 }
 
-//Lista schedules por dia
-
-export const listSchedulesByDayController = async(req: Request, res: Response) => {
-
-    const { day } = req.params;
-
-    const schedules = await listSchedulesByDayService( Number(day) );
-
-    return res.status(200).json(schedules);
-
-}
-
 //Lista schedules por dia e por hora
 
 export const listSchedulesByDayAndHourController = async(req: Request, res: Response) => {
@@ -60,18 +36,6 @@ export const listSchedulesByDayAndHourController = async(req: Request, res: Resp
     const { hour, day } = req.params;
 
     const schedules = await listSchedulesByDayAndHourService( hour, Number(day) );
-
-    return res.status(200).json(schedules);
-
-}
-
-//Lista as schedules por hora
-
-export const listSchedulesByHourController = async(req: Request, res: Response) => {
-
-    const { hour } = req.params;
-
-    const schedules = await listSchedulesByHourService({ hour });
 
     return res.status(200).json(schedules);
 
