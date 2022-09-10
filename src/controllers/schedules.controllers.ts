@@ -5,6 +5,7 @@ import { listSchedulesService } from "../services/schedules/listSchedules.servic
 import { listSchedulesByAreaService } from "../services/schedules/listSchedulesByArea.service";
 import { listSchedulesByDayAndHourService } from "../services/schedules/listSchedulesByDayAndHour.service";
 import { listSchedulesByUserService } from "../services/schedules/listSchedulesByUser.service";
+import { updateScheduleService } from "../services/schedules/updateSchedule.service";
 
 //Retorna os usuário por hora contabilizados
 
@@ -78,4 +79,16 @@ export const createScheduleController = async(req: Request, res: Response) => {
 
     return res.status(200).json(schedulesCreated);
 
+}
+
+//Atualiza a schedule do usuário
+
+export const updateScheduleController = async (req: Request, res: Response) => {
+    const schedules = req.body;
+
+    const user_id = req.user.id;
+
+    const schedulesUpdated = await updateScheduleService({ schedules }, user_id );
+
+    return res.status(200).json(schedulesUpdated);
 }
