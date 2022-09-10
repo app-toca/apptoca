@@ -5,7 +5,7 @@ import {
   Column,
   OneToMany,
   ManyToOne,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
 } from "typeorm";
 import { Organizations } from "./Organizations.entity";
 import { Schedules } from "./Schedules.entity";
@@ -14,10 +14,11 @@ import { Comments } from "./Comments.entity";
 import { Area_users } from "./Area_users.entity";
 import { Posts } from "./Posts.entity";
 import { Exclude } from "class-transformer";
+import { v4 as uuid } from "uuid"
 
 @Entity("users")
 export class User {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryColumn("uuid")
   readonly id: string;
 
   @Column({ nullable: false })
@@ -86,4 +87,10 @@ export class User {
     nullable: true,
   })
   posts: Posts[];
+
+  constructor() {
+    if (!this.id) {
+        this.id = uuid();
+    }
+}
 }

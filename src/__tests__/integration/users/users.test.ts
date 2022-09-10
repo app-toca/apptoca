@@ -122,32 +122,19 @@ describe("/users", () => {
   test("POST /users -  should be able to create a user with a different email", async () => {
     const response = await request(app).post(`/users/${organization.id}/${organizationToca.password}`).send(userDifferentEmail);
 
-    expect(response.body).toHaveProperty("message");
-    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty("id");
+    expect(response.body.organization.id).toEqual(organization.id);
+    expect(response.status).toBe(201);
   });
 
   test("POST /users -  should be able to create an user on other organization", async () => {
     const response = await request(app).post(`/users/${organization2.id}/${organizationUnknow.password}`).send(userOfUnknowOrg);
 
-    expect(response.body).toHaveProperty("message");
+    expect(response.body).toHaveProperty("id");
     expect(response.body.organization.id).toEqual(organization2.id);
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(201);
 
     userOfUnknowOrgCreated = response.body
-  });
-
-  test("POST /users -  should not be able to create a user without id organization", async () => {
-    const response = await request(app).post("/users").send(userToBeDeteleted);
-
-    expect(response.body).toHaveProperty("message");
-    expect(response.status).toBe(400);
-  });
-
-  test("POST /users -  should not be able to create a user without password's organization", async () => {
-    const response = await request(app).post(`/users/${organization.id}`).send(userToBeDeteleted);
-
-    expect(response.body).toHaveProperty("message");
-    expect(response.status).toBe(400);
   });
 
   test("POST /users -  should not be able to create a user with wrong password's organization", async () => {
@@ -161,7 +148,7 @@ describe("/users", () => {
     const response = await request(app).post(`/users/234354647/${organizationUnknow.password}`).send(userToBeDeteleted);
 
     expect(response.body).toHaveProperty("message");
-    expect(response.status).toBe(403);
+    expect(response.status).toBe(404);
   });
 
   /*------------*/
