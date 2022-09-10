@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { countUsersByHourService } from "../services/schedules/countUsersByHour.service";
+import { createScheduleService } from "../services/schedules/createSchedule.service";
 import { listSchedulesService } from "../services/schedules/listSchedules.service";
 import { listSchedulesByAreaService } from "../services/schedules/listSchedulesByArea.service";
 import { listSchedulesByDayAndHourService } from "../services/schedules/listSchedulesByDayAndHour.service";
@@ -65,3 +66,16 @@ export const listSchedulesByUserController = async(req: Request, res: Response) 
 
 }
 
+//Cria nova schedule
+
+export const createScheduleController = async(req: Request, res: Response) => {
+
+    const schedules = req.body;
+
+    const user_id = req.user.id;
+
+    const schedulesCreated = await createScheduleService({ schedules }, user_id );
+
+    return res.status(200).json(schedulesCreated);
+
+}
