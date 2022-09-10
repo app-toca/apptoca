@@ -13,9 +13,13 @@ export class Area_users {
   @PrimaryGeneratedColumn("uuid")
   readonly id: string;
 
-  @ManyToOne((type) => Areas, (area) => area.area_user)
+  @ManyToOne((type) => Areas, (area) => area.area_user, {
+    eager: true,
+  })
   area: Areas;
 
-  @ManyToOne((type) => User, (user) => user.area_user)
-  user: User[];
+  @ManyToOne((type) => User, (user) => user.area_user, {
+    eager: true,
+  })
+  user: User;
 }

@@ -5,6 +5,7 @@ import { meetingsRoutes } from "./meetings/meetings.routes";
 import { organizationsRoutes } from "./organizations/organizations.routes";
 import { usersRoutes } from "./users/users.routes";
 import { loginRoutes } from "./login/login.routes";
+import { administrationRoutes } from "./administration/administration.routes";
 
 export const appRoutes = (app: Express) => {
   app.use("/users", usersRoutes());
@@ -13,4 +14,5 @@ export const appRoutes = (app: Express) => {
   app.use("/comments", commentsRoutes());
   app.use("/areas", areasRoutes());
   app.use("/login", loginRoutes());
+  app.use("/administration", administrationRoutes())
 };

@@ -14,7 +14,9 @@ import isOwnerMiddleware from "../../middlewares/isOwner.middleware";
 const routes = Router();
 
 export const areasRoutes = () => {
-  routes.get("/", authenticationMiddleware, listAreasController);
+
+  routes.get("", authenticationMiddleware, listAreasController);
+
   routes.get("/:area_id", authenticationMiddleware, listOneAreaController);
   routes.get(
     "/:area_id/users",
