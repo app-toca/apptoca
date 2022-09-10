@@ -35,7 +35,7 @@ export const deleteuserController = async (req: Request, res: Response) => {
   const { user_id } = req.params;
   const { id, is_adm } = req.user;
 
-  await deleteUserService(user_id, id, is_adm);
+  await deleteUserService(user_id, is_adm);
 
   return res.status(204).send({ message: "User Deleted" });
 };
@@ -53,7 +53,7 @@ export const areasUserController = async (req: Request, res: Response) => {
   const { user_id } = req.params;
   const { id, is_adm } = req.user;
 
-  const areaUser = await areasUserService(user_id, id, is_adm);
+  const areaUser = await areasUserService(user_id, is_adm);
 
   res.status(200).send(areaUser);
 };
