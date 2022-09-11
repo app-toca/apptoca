@@ -5,7 +5,7 @@ import { AppError } from "../../error/global";
 
 const deleteCommentService = async (
   comment_id: string,
-  user_id: string
+  id: string
 ): Promise<DeleteResult> => {
   const commentsRepository = AppDataSource.getRepository(Comments);
   const comment = await commentsRepository.findOne({
@@ -14,7 +14,7 @@ const deleteCommentService = async (
   if (!comment) {
     throw new AppError(404, "Comment not found");
   }
-  if (comment.user.id !== user_id) {
+  if (comment.user.id !== id) {
     throw new AppError(400, "This comment doesn't belogn to this user");
   }
 

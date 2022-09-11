@@ -12,13 +12,9 @@ import authenticationMiddleware from "../../middlewares/authentication.middlewar
 const routes = Router();
 
 export const commentsRoutes = () => {
+  routes.get("/:user_id", authenticationMiddleware, listUserCommentsController);
   routes.get(
-    "/:user_id",
-    authenticationMiddleware,
-    listUserCommentsController
-  );
-  routes.get(
-    "/:post_id",
+    "/post/:post_id",
     authenticationMiddleware,
     listPostCommentsController
   );
