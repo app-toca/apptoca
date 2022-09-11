@@ -6,6 +6,8 @@ import {
   OneToMany,
   ManyToOne,
   PrimaryColumn,
+  OneToOne,
+  JoinColumn,
 } from "typeorm";
 import { Organizations } from "./Organizations.entity";
 import { Schedules } from "./Schedules.entity";
@@ -15,6 +17,7 @@ import { Area_users } from "./Area_users.entity";
 import { Posts } from "./Posts.entity";
 import { Exclude } from "class-transformer";
 import { v4 as uuid } from "uuid";
+import { Image } from "./Image.entity";
 
 @Entity("users")
 export class User {
@@ -55,9 +58,6 @@ export class User {
   @Column("boolean", { default: false })
   is_owner: boolean;
 
-  @Column({ type: "varchar" })
-  img: string;
-
   @CreateDateColumn()
   created_at: Date;
 
@@ -87,6 +87,12 @@ export class User {
     nullable: true,
   })
   posts: Posts[];
+
+  @OneToOne(() => Image, {
+    eager: true
+  })
+    @JoinColumn()
+  img: Image;
 
   constructor() {
     if (!this.id) {

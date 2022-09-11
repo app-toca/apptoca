@@ -7,6 +7,7 @@ import { usersRoutes } from "./users/users.routes";
 import { loginRoutes } from "./login/login.routes";
 import { administrationRoutes } from "./administration/administration.routes";
 import postRoutes from "./posts/post.routes";
+import uploadRoutes from "./uploads/upload.routes";
 
 export const appRoutes = (app: Express) => {
   app.use("/users", usersRoutes());
@@ -17,4 +18,5 @@ export const appRoutes = (app: Express) => {
   app.use("/login", loginRoutes());
   app.use("/administration", administrationRoutes())
   app.use("/posts", postRoutes())
+  app.use("/upload", uploadRoutes())
 };

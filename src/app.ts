@@ -4,8 +4,10 @@ import express, { NextFunction, Request, Response } from "express"
 import { appRoutes } from "./routes";
 import { AppError } from "./error/global";
 
+
 const app = express();
 app.use(express.json());
+
 
 
 //função que executa as rotas
