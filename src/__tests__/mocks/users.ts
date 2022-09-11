@@ -1,5 +1,4 @@
 import { IUserLoginRequest, IUserRequest } from "../../interfaces/users";
-import { IOrganizationRequest } from "../../interfaces/organizations";
 
 export const adminUser: IUserRequest = {
   name: "Ana",
@@ -10,7 +9,7 @@ export const adminUser: IUserRequest = {
   year: 2,
   course: "ESPN",
   phrase: "Nenhum obstáculo é grande demais para quem desiste",
-  img: "https://thumbs.dreamstime.com/b/love-coding-girl-women-hand-drawn-illustration-cute-monster-love-coding-girl-women-hand-drawn-illustration-cute-monster-144914862.jpg",
+  url: "https://thumbs.dreamstime.com/b/love-coding-girl-women-hand-drawn-illustration-cute-monster-love-coding-girl-women-hand-drawn-illustration-cute-monster-144914862.jpg",
 };
 
 export const userAdminLogin: IUserLoginRequest = {
@@ -27,7 +26,7 @@ export const nonAdminUser: IUserRequest = {
   year: 3,
   course: "RBD",
   phrase: "Não deixe para fazer hoje aquilo que pode procrastinar amanhã",
-  img: "https://thumbs.dreamstime.com/b/coding-fun-hand-drawn-vector-illustration-cute-programmer-cartoon-minimalism-style-cap-party-coding-fun-hand-drawn-157572614.jpg",
+  url: "https://thumbs.dreamstime.com/b/coding-fun-hand-drawn-vector-illustration-cute-programmer-cartoon-minimalism-style-cap-party-coding-fun-hand-drawn-157572614.jpg",
 };
 
 export const userNonAdminLogin: IUserLoginRequest = {
@@ -44,7 +43,7 @@ export const userOwner: IUserRequest = {
   year: 2,
   course: "ESPN",
   phrase: "Nenhum obstáculo é grande demais para quem desiste",
-  img: "https://thumbs.dreamstime.com/b/love-coding-girl-women-hand-drawn-illustration-cute-monster-love-coding-girl-women-hand-drawn-illustration-cute-monster-144914862.jpg",
+  url: "https://thumbs.dreamstime.com/b/love-coding-girl-women-hand-drawn-illustration-cute-monster-love-coding-girl-women-hand-drawn-illustration-cute-monster-144914862.jpg",
 };
 
 export const userOwnerLogin: IUserLoginRequest = {
@@ -61,7 +60,7 @@ export const userDifferentEmail: IUserRequest = {
   year: 3,
   course: "RBD",
   phrase: "Não deixe para fazer hoje aquilo que pode procrastinar amanhã",
-  img: "https://thumbs.dreamstime.com/b/coding-fun-hand-drawn-vector-illustration-cute-programmer-cartoon-minimalism-style-cap-party-coding-fun-hand-drawn-157572614.jpg",
+  url: "https://thumbs.dreamstime.com/b/coding-fun-hand-drawn-vector-illustration-cute-programmer-cartoon-minimalism-style-cap-party-coding-fun-hand-drawn-157572614.jpg",
 };
 
 export const userDifferentEmailLogin: IUserLoginRequest = {
@@ -78,12 +77,12 @@ export const userOfUnknowOrg: IUserRequest = {
   year: 3,
   course: "RBD",
   phrase: "Não deixe para fazer hoje aquilo que pode procrastinar amanhã",
-  img: "https://thumbs.dreamstime.com/b/coding-fun-hand-drawn-vector-illustration-cute-programmer-cartoon-minimalism-style-cap-party-coding-fun-hand-drawn-157572614.jpg",
+  url: "https://thumbs.dreamstime.com/b/coding-fun-hand-drawn-vector-illustration-cute-programmer-cartoon-minimalism-style-cap-party-coding-fun-hand-drawn-157572614.jpg",
 };
 
 export const userOfUnknowOrgLogin: IUserLoginRequest = {
-  email: "joao.ismart@gmail.com",
-  password: "senhaNãoTãoForte123",
+  email: "joao.porto.isNotSmart@mail.com",
+  password: "senhaNãoTãoForte13",
 };
 
 export const userToBeDeteleted: IUserRequest = {
@@ -95,15 +94,5 @@ export const userToBeDeteleted: IUserRequest = {
   year: 3,
   course: "RBD",
   phrase: "Não deixe para fazer hoje aquilo que pode procrastinar amanhã",
-  img: "https://thumbs.dreamstime.com/b/coding-fun-hand-drawn-vector-illustration-cute-programmer-cartoon-minimalism-style-cap-party-coding-fun-hand-drawn-157572614.jpg",
-};
-
-export const organizationToca: IOrganizationRequest = {
-  name: "Toca",
-  password: "Toca-0912",
-};
-
-export const organizationUnknow: IOrganizationRequest = {
-  name: "Unknow",
-  password: "unk-0913",
+  url: "https://thumbs.dreamstime.com/b/coding-fun-hand-drawn-vector-illustration-cute-programmer-cartoon-minimalism-style-cap-party-coding-fun-hand-drawn-157572614.jpg",
 };

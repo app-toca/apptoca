@@ -1,5 +1,6 @@
 import AppDataSource from "../../data-source";
 import { Areas } from "../../entities/Areas.entity";
+import { Organizations } from "../../entities/Organizations.entity";
 import { AppError } from "../../error/global";
 import { iAreaRequest } from "../../interfaces/areas";
 
@@ -13,19 +14,23 @@ const createAreaService = async ({
   organization,
 }: IRequestAreaOrganization): Promise<Areas> => {
   const areasRepository = AppDataSource.getRepository(Areas);
+  const orgRepo = AppDataSource.getRepository(Organizations);
 
   const areaAlreadyExists: Areas | null = await areasRepository.findOne({
     where: { name: name },
   });
 
-  if (areaAlreadyExists) {
+  const org = await orgRepo.findOneBy({ id: organization });
+
+  if (areaAlreadyExists && areaAlreadyExists.organization.id === organization) {
     throw new AppError(400, "Area already exists");
   }
+
 
   const area = new Areas();
   area.name = name;
   area.description = description;
-  area.organization = organization;
+  area.organization = org!;
 
   let areaCreated: Areas | null;
 

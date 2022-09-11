@@ -35,7 +35,7 @@ export const deleteuserController = async (req: Request, res: Response) => {
   const { user_id } = req.params;
   const { id, is_adm } = req.user;
 
-  await deleteUserService(user_id, id, is_adm);
+  await deleteUserService(user_id, is_adm, id);
 
   return res.status(204).send({ message: "User Deleted" });
 };
@@ -44,16 +44,16 @@ export const patchUserController = async (req: Request, res: Response) => {
   const { user_id } = req.params;
   const { id, is_owner } = req.user;
 
-  await patchUserService(user_id, req.body, id, is_owner);
+  const change = await patchUserService(user_id, req.body, id, is_owner);
 
-  return res.status(200).send("User updated");
+  return res.status(200).json({user: change,message: "User updated"});
 };
 
 export const areasUserController = async (req: Request, res: Response) => {
   const { user_id } = req.params;
   const { id, is_adm } = req.user;
 
-  const areaUser = await areasUserService(user_id, id, is_adm);
+  const areaUser = await areasUserService(user_id, is_adm, id);
 
   res.status(200).send(areaUser);
 };

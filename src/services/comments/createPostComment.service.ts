@@ -5,8 +5,17 @@ import { Posts } from "../../entities/Posts.entity";
 import { AppError } from "../../error/global";
 import { User } from "../../entities/User.entity";
 
+interface ICom {
+  user?: any;
+  post?: any;
+  area?: any;
+  id: string;
+  content: string;
+  comments?: any;
+}
+
 const createPostCommentService = async ({
-  user_id,
+  id,
   post_id,
   content,
 }: iCommentRequest) => {
@@ -23,7 +32,7 @@ const createPostCommentService = async ({
   }
 
   const user: User | null = await usersRepository.findOne({
-    where: { id: user_id },
+    where: { id: id },
   });
 
   if (!user) {
@@ -43,6 +52,18 @@ const createPostCommentService = async ({
     throw new AppError(error.statusCode, error.message);
   }
 
-  return createdComment;
+  let nCom: ICom;
+
+  nCom = createdComment;
+
+  delete nCom.user;
+  delete nCom.post;
+  delete nCom.comments;
+  delete nCom.area;
+  nCom.user = user.id;
+  nCom.post = post.id;
+  nCom.area = post.area.name;
+
+  return nCom;
 };
 export default createPostCommentService;

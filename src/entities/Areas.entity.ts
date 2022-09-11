@@ -21,21 +21,19 @@ export class Areas {
   @Column()
   description: string;
 
-  @ManyToOne(() => Organizations)
-  organization: string;
-
-  @OneToMany(() => Area_users, (area_user) => area_user.area, {
+  @ManyToOne(() => Organizations, {
     eager: true,
   })
-  area_user: Area_users;
+  organization: Organizations;
+
+  @OneToMany(() => Area_users, (area_user) => area_user.area)
+  area_user: Area_users[];
 
   @OneToMany(() => Meetings, (meetings) => meetings.area, {
     eager: true,
   })
   meetings: Meetings[];
 
-  @OneToMany(() => Posts, (posts) => posts.area, {
-    eager: true,
-  })
+  @OneToMany(() => Posts, (posts) => posts.area)
   posts: Posts[];
 }

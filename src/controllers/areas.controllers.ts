@@ -1,3 +1,4 @@
+import { instanceToPlain } from "class-transformer";
 import { Request, Response } from "express";
 import createAreaService from "../services/areas/createArea.service";
 import deleteAreaService from "../services/areas/deleteArea.service";
@@ -9,29 +10,29 @@ import updateAreaService from "../services/areas/updateArea.service";
 const listAreasController = async (req: Request, res: Response) => {
   const { organization } = req.user;
   const areas = await listAreasService(organization);
-  return res.status(200).json(areas);
+  return res.status(200).json(instanceToPlain(areas));
 };
 //acesso : todo usuário logado
 
 const listOneAreaController = async (req: Request, res: Response) => {
   const { area_id } = req.params;
   const area = await listOneAreaService(area_id);
-  return res.status(200).json(area);
+  return res.status(200).json(instanceToPlain(area));
 };
 //acesso : todo usuário logado
 
 const listUsersInAreaController = async (req: Request, res: Response) => {
   const { area_id } = req.params;
   const users = await listUsersInAreaService(area_id);
-  return res.status(200).json(users);
+  return res.status(200).json(instanceToPlain(users));
 };
 //acesso : todo usuário logado
 
 const createAreaController = async (req: Request, res: Response) => {
   const { name, description } = req.body;
   const { organization } = req.user;
-  const area = await createAreaService({ name, description, organization});
-  return res.status(201).json(area);
+  const area = await createAreaService({ name, description, organization });
+  return res.status(201).json(instanceToPlain(area));
 };
 //acesso : admins
 
@@ -43,9 +44,10 @@ const deleteAreaController = async (req: Request, res: Response) => {
 //acesso : admins
 
 const updateAreaController = async (req: Request, res: Response) => {
-  const { area_id, name, description } = req.params;
+  const { area_id } = req.params;
+  const { name, description } = req.body;
   const updatedArea = await updateAreaService({ area_id, name, description });
-  return res.status(200).json(updatedArea);
+  return res.status(200).json(instanceToPlain(updatedArea));
 };
 //acesso : admins
 

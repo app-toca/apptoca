@@ -5,6 +5,11 @@ import { meetingsRoutes } from "./meetings/meetings.routes";
 import { organizationsRoutes } from "./organizations/organizations.routes";
 import { usersRoutes } from "./users/users.routes";
 import { loginRoutes } from "./login/login.routes";
+import { administrationRoutes } from "./administration/administration.routes";
+import postRoutes from "./posts/post.routes";
+import uploadRoutes from "./uploads/upload.routes";
+import reactionRoutes from "./reactions/reactions.routes";
+
 
 export const appRoutes = (app: Express) => {
   app.use("/users", usersRoutes());
@@ -13,4 +18,8 @@ export const appRoutes = (app: Express) => {
   app.use("/comments", commentsRoutes());
   app.use("/areas", areasRoutes());
   app.use("/login", loginRoutes());
+  app.use("/administration", administrationRoutes())
+  app.use("/posts", postRoutes())
+  app.use("/upload", uploadRoutes())
+  app.use("/reactions", reactionRoutes())
 };

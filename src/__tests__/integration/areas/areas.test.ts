@@ -7,10 +7,9 @@ import {
   marketingAreaUnkown,
   marketingAreaUpdated,
 } from "../../mocks/areas";
+import { organizationToca, organizationUnknow } from "../../mocks/organization";
 import {
   nonAdminUser,
-  organizationToca,
-  organizationUnknow,
   userOwner,
   userOfUnknowOrg,
   userOfUnknowOrgLogin,
@@ -30,10 +29,10 @@ describe("/areas", () => {
       });
 
     const orgToca = await request(app)
-      .post("/organization")
+      .post("/organizations")
       .send(organizationToca);
     const orgUnknow = await request(app)
-      .post("/organization")
+      .post("/organizations")
       .send(organizationUnknow);
     await request(app)
       .post(`/users/${orgToca.body.id}/${organizationToca.password}`)
@@ -69,6 +68,7 @@ describe("/areas", () => {
     const userOfUnknowOrgLoginResponse = await request(app)
       .post("/login")
       .send(userOfUnknowOrgLogin);
+      
     const response = await request(app)
       .post("/areas")
       .set("Authorization", `Bearer ${userOfUnknowOrgLoginResponse.body.token}`)

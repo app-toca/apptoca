@@ -1,3 +1,5 @@
+import { Image } from "../../entities/Image.entity";
+
 export interface IUserRequest {
   name: string;
   nickname: string;
@@ -7,7 +9,7 @@ export interface IUserRequest {
   year: number;
   course: string;
   phrase: string;
-  img: string;
+  url?: string;
 }
 
 export interface IUserUpdate {
@@ -17,9 +19,12 @@ export interface IUserUpdate {
   age?: number;
   updated_at?: Date;
   phrase?: string;
-  img?: string;
+  img?: Image;
   course?: string;
   year?: number;
+  password?: string
+  is_adm?: boolean
+  is_active?: boolean
 }
 
 export interface IUserResponse {
@@ -34,7 +39,7 @@ export interface IUserResponse {
     is_adm: boolean
     is_owner: boolean
     is_active: boolean
-    img?: string
+    img?: Image
     created_at: Date
     updated_at: Date
     organization_id: string
