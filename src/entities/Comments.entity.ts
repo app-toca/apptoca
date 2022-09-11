@@ -10,7 +10,9 @@ export class Comments {
   @Column("varchar", { length: 500 })
   content: string;
 
-  @ManyToOne((type) => User, (user) => user.comments)
+  @ManyToOne((type) => User, (user) => user.comments, {
+    eager: true,
+  })
   user: User;
 
   @ManyToOne((type) => Posts, (post) => post.comments)
