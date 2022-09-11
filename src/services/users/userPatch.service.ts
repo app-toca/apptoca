@@ -7,28 +7,45 @@ export const patchUserService = async (
   user_id: string,
   req: IUserUpdate,
   id: string,
-  organization: string,
   is_owner: boolean
 ) => {
   const usersRepository = AppDataSource.getRepository(User);
 
   const userFind = await usersRepository.findOneBy({
-    id: id,
+    id: user_id,
   });
 
   if (!userFind) {
     throw new Error("User not exists");
   }
 
-  if (user_id !== userFind?.id || !is_owner || userFind.organization.id !== organization) {
+  if(!is_owner && req.is_adm) {
+    throw new AppError(403, "You don't have permission to change the is_adm property");
+  }
+
+  if (user_id !== userFind?.id && !is_owner) {
     throw new AppError(403, "You don't have permission to update this user")
   }
 
-    if(req.password) {
-      throw new AppError(403, "You can't change the password in this route");
-    }
+  if(is_owner && user_id !== userFind?.id && (Object.keys(req).length > 1 || !req.hasOwnProperty("is_adm"))) {
 
-    await usersRepository.update(id, req);
+    throw new AppError(403, "You don't have permission to change this properties of this user");
+    
+  }
+
+  if(req.email !== userFind.email) {
+    throw new AppError(400, "You can't change the email");
+  }
+
+  if(req.is_active) {
+    throw new AppError(403, "You can't change the property is_active in this route");
+  }
+
+  if(req.password) {
+    throw new AppError(403, "You can't change the password in this route");
+  }
+
+    await usersRepository.update(user_id, req);
 
     return req;
 };
