@@ -44,7 +44,8 @@ const deleteAreaController = async (req: Request, res: Response) => {
 //acesso : admins
 
 const updateAreaController = async (req: Request, res: Response) => {
-  const { area_id, name, description } = req.params;
+  const { area_id } = req.params;
+  const { name, description } = req.body;
   const updatedArea = await updateAreaService({ area_id, name, description });
   return res.status(200).json(instanceToPlain(updatedArea));
 };
