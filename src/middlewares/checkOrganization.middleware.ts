@@ -5,6 +5,7 @@ import { Comments } from "../entities/Comments.entity";
 import { Meetings } from "../entities/Meetings.entity";
 import { Posts } from "../entities/Posts.entity";
 import { User } from "../entities/User.entity";
+import { AppError } from "../error/global";
 
 const checkOrganizationMiddleware = async (
   req: Request,
@@ -20,11 +21,17 @@ const checkOrganizationMiddleware = async (
   const commentRepository = AppDataSource.getRepository(Comments);
   if (user_id) {
     const user = await userRepository.findOneBy({ id: user_id });
+
+    if(!user) {
+      throw new AppError(404, "User not found")
+    }
+
     if (user?.organization.id !== organization) {
       return res.status(403).json({
         message: "Você não tem permissão",
       });
     }
+
   }
   if (area_id) {
     const area = await areaRepository.findOneBy({ id: area_id });
