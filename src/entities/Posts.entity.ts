@@ -26,10 +26,14 @@ export class Posts {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @ManyToOne((type) => User, (user) => user.posts)
+  @ManyToOne((type) => User, (user) => user.posts, {
+    eager: true,
+  })
   user: User;
 
-  @ManyToOne((type) => Areas, (areas) => areas.posts)
+  @ManyToOne((type) => Areas, (areas) => areas.posts, {
+    eager: true,
+  })
   area: Areas;
 
   @OneToMany((type) => Comments, (comments) => comments.post, {
