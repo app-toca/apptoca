@@ -15,7 +15,7 @@ export const listSchedulesByAreaService = async({ area_id }: ISchedulesRequest) 
         throw new AppError(404, "Area not found!");
     }
 
-    const schedules = usersInArea.area_user.user.map(user => { user.id, user.name, user.schedule });
+    const schedules = usersInArea.area_user.map((area_user) => { area_user.user.id, area_user.user.name, area_user.user.schedule });
 
     return schedules;
 
