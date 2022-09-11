@@ -81,8 +81,8 @@ export const userOfUnknowOrg: IUserRequest = {
 };
 
 export const userOfUnknowOrgLogin: IUserLoginRequest = {
-  email: "joao.ismart@gmail.com",
-  password: "senhaNãoTãoForte123",
+  email: "joao.porto.isNotSmart@mail.com",
+  password: "senhaNãoTãoForte13",
 };
 
 export const userToBeDeteleted: IUserRequest = {

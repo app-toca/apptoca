@@ -68,6 +68,7 @@ describe("/areas", () => {
     const userOfUnknowOrgLoginResponse = await request(app)
       .post("/login")
       .send(userOfUnknowOrgLogin);
+      
     const response = await request(app)
       .post("/areas")
       .set("Authorization", `Bearer ${userOfUnknowOrgLoginResponse.body.token}`)

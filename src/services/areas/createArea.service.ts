@@ -20,11 +20,12 @@ const createAreaService = async ({
     where: { name: name },
   });
 
-  if (areaAlreadyExists) {
+  const org = await orgRepo.findOneBy({ id: organization });
+
+  if (areaAlreadyExists && areaAlreadyExists.organization.id === organization) {
     throw new AppError(400, "Area already exists");
   }
 
-  const org = await orgRepo.findOneBy({ id: organization });
 
   const area = new Areas();
   area.name = name;
