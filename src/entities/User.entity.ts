@@ -15,6 +15,7 @@ import { Area_users } from "./Area_users.entity";
 import { Posts } from "./Posts.entity";
 import { Exclude } from "class-transformer";
 import { v4 as uuid } from "uuid";
+import { Reaction } from "./Reactions.entity";
 
 @Entity("users")
 export class User {
@@ -87,6 +88,9 @@ export class User {
     nullable: true,
   })
   posts: Posts[];
+
+  @OneToMany(() => Reaction, (reactions) => reactions.post)
+  reactions: Reaction[];
 
   constructor() {
     if (!this.id) {

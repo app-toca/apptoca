@@ -10,6 +10,7 @@ import {
 import { User } from "./User.entity";
 import { Comments } from "./Comments.entity";
 import { Areas } from "./Areas.entity";
+import { Reaction } from "./Reactions.entity";
 
 @Entity("posts")
 export class Posts {
@@ -39,6 +40,11 @@ export class Posts {
     eager: true,
   })
   comments: Comments[];
+
+  @OneToMany(() => Reaction, (reactions) => reactions.post, {
+    eager: true,
+  })
+  reactions: Reaction[];
 }
 
 //@OneToMany((type) => Reactions, (reactions) => reactions.posts, {
