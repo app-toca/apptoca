@@ -34,8 +34,6 @@ export class Areas {
   })
   meetings: Meetings[];
 
-  @OneToMany(() => Posts, (posts) => posts.area, {
-    eager: true,
-  })
+  @OneToMany(() => Posts, (posts) => posts.area)
   posts: Posts[];
 }

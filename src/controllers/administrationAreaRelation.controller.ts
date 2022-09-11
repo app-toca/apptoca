@@ -14,9 +14,9 @@ export const deleteAdministrationAreaRelationController = async(req: Request, re
 
     const {area_id, user_id} = req.params
 
-    const deleted = await deleteAdministrationAreaRelationService(area_id, user_id)
+    await deleteAdministrationAreaRelationService(area_id, user_id)
 
-    return res.status(200).send(deleted)
+    return res.status(204).send()
 
 }
 
