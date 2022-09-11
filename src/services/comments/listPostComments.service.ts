@@ -23,7 +23,6 @@ interface IUserResponse {
   is_adm?: boolean;
   is_owner?: boolean;
   is_active?: boolean;
-  img?: string;
   created_at?: Date;
   updated_at?: Date;
   organization?: Organizations;
@@ -53,7 +52,6 @@ const listPostCommentService = async (post_id: string): Promise<IComment[]> => {
       delete c.user.is_adm &&
       delete c.user.is_owner &&
       delete c.user.is_active &&
-      delete c.user.img &&
       delete c.user.created_at &&
       delete c.user.updated_at &&
       delete c.user.organization &&
