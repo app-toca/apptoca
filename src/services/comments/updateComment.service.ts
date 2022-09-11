@@ -23,7 +23,6 @@ interface IUserResponse {
   is_adm?: boolean;
   is_owner?: boolean;
   is_active?: boolean;
-  img?: string;
   created_at?: Date;
   updated_at?: Date;
   organization?: Organizations;
@@ -73,7 +72,6 @@ const updateCommentService = async (
   delete com.user.is_adm;
   delete com.user.is_owner;
   delete com.user.is_active;
-  delete com.user.img;
   delete com.user.created_at;
   delete com.user.updated_at;
   delete com.user.organization;
