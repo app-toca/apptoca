@@ -4,6 +4,7 @@ import { IUserRequest } from "../../interfaces/users";
 import * as bycrypt from "bcryptjs";
 import { Organizations } from "../../entities/Organizations.entity";
 import { AppError } from "../../error/global";
+import { Image } from "../../entities/Image.entity";
 
 export const createUserService = async (
   {
@@ -15,13 +16,15 @@ export const createUserService = async (
     year,
     course,
     phrase,
-    img,
+    url
   }: IUserRequest,
   organizationId: string,
   password_org: string
 ) => {
+
   const usersRepository = AppDataSource.getRepository(User);
   const organizationRepository = AppDataSource.getRepository(Organizations);
+  const imagesRepository = AppDataSource.getRepository(Image)
 
   const findEmail = await usersRepository.findOneBy({
     email: email,
@@ -43,6 +46,17 @@ export const createUserService = async (
 
   const hashedPassword = await bycrypt.hash(password, 10);
 
+  const newImage = new Image()
+
+  
+  if(url) {
+    newImage.url = url
+  } else {
+    newImage.url = ""
+  }
+  await imagesRepository.create(newImage)
+  const imageUserCreated = await imagesRepository.save(newImage)
+  
   const newUser = usersRepository.create({
     name,
     nickname,
@@ -52,25 +66,23 @@ export const createUserService = async (
     year,
     course,
     phrase,
-    img,
+    img: imageUserCreated!,
     organization: organizationFind,
   });
-
+  
+  //await imagesRepository.update(imageUserCreated.id, {user: newUser})
+  
   const usersByOrganization = await usersRepository.find({
     where: {
-
-
-      organization: organizationFind,
-    },
-  });
-
-
+      organization: organizationFind
+    }
+  })
 
   if (usersByOrganization.length === 0) {
     newUser.is_owner = true;
     newUser.is_adm = true;
   }
-
+  
   await usersRepository.save(newUser);
 
   return newUser;
