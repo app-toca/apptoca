@@ -213,7 +213,7 @@ describe("/users", () => {
       .set("Authorization", `Bearer ${adminLoginResponse.body.token}`);
 
     expect(response.body).toHaveProperty("message");
-    expect(response.status).toBe(401);
+    expect(response.status).toBe(403);
     expect(findUser.body.is_adm).toBe(false);
   });
 
@@ -230,11 +230,11 @@ describe("/users", () => {
       .set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`);
 
     expect(response.body).toHaveProperty("message");
-    expect(response.status).toBe(401);
+    expect(response.status).toBe(403);
     expect(findUser.body.is_adm).toBe(false);
   });
 
-  test("PATCH users/:user_id -  should not be able to update another user if not being admin", async () => {
+  test("PATCH users/:user_id -  should not be able to update another user if not being owner", async () => {
     const nonAdminLoginResponse = await request(app)
       .post("/login")
       .send(userNonAdminLogin);
@@ -246,15 +246,15 @@ describe("/users", () => {
       .get(`/users/${userAdminCreated.id}`)
       .set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`);
 
-    expect(findUser.body.name).toBe(userAdminCreated.name);
-    expect(response.body).toHaveProperty("message");
-    expect(response.status).toBe(401);
+      expect(response.body).toHaveProperty("message");
+      expect(response.status).toBe(403);
+      expect(findUser.body.name).toBe(userAdminCreated.name);
   });
 
-  test("PATCH users/:user_id -  Must be able to update another user if being admin", async () => {
+  test("PATCH users/:user_id -  Should no be able to update another property of an user even being owner, only the property is_adm", async () => {
     const adminLoginResponse = await request(app)
       .post("/login")
-      .send(userAdminLogin);
+      .send(userOwnerLogin);
     const response = await request(app)
       .patch(`/users/${userNonAdminCreated.id}`)
       .send({ age: 24 })
@@ -263,13 +263,10 @@ describe("/users", () => {
       .get(`/users/${userNonAdminCreated.id}`)
       .set("Authorization", `Bearer ${adminLoginResponse.body.token}`);
 
-    expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty("user");
-    expect(response.body.user.age).toBe(24);
-    expect(findUser.body.user.is_adm).toBe(false);
-
+    expect(response.status).toBe(403);
+    expect(response.body).toHaveProperty("message");
+    expect(findUser.body.age).toBe(userNonAdminCreated.age);
     expect(findUser.body.is_adm).toBe(false);
-    expect(findUser.body.age).toBe(24);
   });
 
   test("PATCH users/:user_id -  Must be able to update your own user", async () => {
@@ -288,10 +285,10 @@ describe("/users", () => {
     expect(response.body).toHaveProperty("user");
     expect(response.body.user.course).toBe("TST");
     expect(response.body.user.nickname).toBe("elitepj");
-    expect(findUser.body.user.is_adm).toBe(false);
+    expect(findUser.body.is_adm).toBe(false);
 
     expect(findUser.body.is_adm).toBe(false);
-    expect(response.body.nickname).toBe("elitepj");
+    expect(response.body.user.nickname).toBe("elitepj");
     expect(findUser.body.course).toBe("TST");
   });
 
@@ -331,7 +328,7 @@ describe("/users", () => {
       .get("/users")
       .set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`);
 
-    expect(response.body).toHaveLength(4);
+    expect(response.body).toHaveLength(5);
   });
 
   test("GET /users/:user_id -  Must be able to list one user", async () => {
@@ -374,12 +371,12 @@ describe("/users", () => {
   test("GET /users/:user_id/areas -  should not be able to list areas of another user if isn't admin", async () => {
     const nonAdminLoginResponse = await request(app)
       .post("/login")
-      .send(userAdminLogin);
+      .send(userNonAdminLogin);
     const response = await request(app)
       .get(`/users/${userAdminCreated.id}/areas`)
       .set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`);
 
-    expect(response.status).toBe(401);
+    expect(response.status).toBe(403);
     expect(response.body).toHaveProperty("message");
   });
 
@@ -398,30 +395,30 @@ describe("/users", () => {
       .get("/users")
       .set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`);
     const response = await request(app)
-      .delete(`/users/${users.body[2].id}`)
+      .delete(`/users/${users.body[3].id}`)
       .set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`);
 
+    expect(response.status).toBe(403);
     expect(response.body).toHaveProperty("message");
-    expect(response.status).toBe(401);
   });
 
   test("DELETE /users/:user_id -  Must be able to soft delete your own user", async () => {
     const nonAdminLoginResponse = await request(app)
       .post("/login")
-      .send(userDifferentEmailLogin);
+      .send(userNonAdminLogin);
     const users = await request(app)
       .get("/users")
       .set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`);
     const response = await request(app)
-      .delete(`/users/${users.body[3].user_}`)
+      .delete(`/users/${userNonAdminCreated.id}`)
       .set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`);
 
     const findUser = await request(app)
-      .get("/users")
+      .get(`/users/${userNonAdminCreated.id}`)
       .set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`);
 
     expect(response.status).toBe(204);
-    expect(findUser.body[3].is_active).toBe(false);
+    expect(findUser.body.is_active).toBe(false);
   });
 
   test("DELETE /users/:user_id -  should be able to soft delete another user if being admin", async () => {
@@ -472,6 +469,8 @@ describe("/users", () => {
     const response = await request(app)
       .delete(`/users/${userOfUnknowOrgCreated.id}`)
       .set("Authorization", `Bearer ${adminLoginResponse.body.token}`);
+
+      console.log(response.body)
 
     expect(response.status).toBe(403);
     expect(response.body).toHaveProperty("message");
