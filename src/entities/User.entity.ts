@@ -56,7 +56,7 @@ export class User {
   @Column("boolean", { default: false })
   is_owner: boolean;
 
-  @Column({ type: "varchar" })
+  @Column({ type: "varchar", nullable: true })
   img: string;
 
   @CreateDateColumn()

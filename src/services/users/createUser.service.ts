@@ -59,9 +59,11 @@ export const createUserService = async (
   const usersByOrganization = await usersRepository.find({
     where: {
 
+
       organization: organizationFind,
     },
   });
+
 
 
   if (usersByOrganization.length === 0) {

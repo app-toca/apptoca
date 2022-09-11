@@ -20,6 +20,9 @@ export interface IUserUpdate {
   img?: string;
   course?: string;
   year?: number;
+  password?: string
+  is_adm?: boolean
+  is_active?: boolean
 }
 
 export interface IUserResponse {
