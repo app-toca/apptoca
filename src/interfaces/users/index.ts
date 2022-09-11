@@ -20,6 +20,7 @@ export interface IUserUpdate {
   img?: string;
   course?: string;
   year?: number;
+  password?: string
 }
 
 export interface IUserResponse {

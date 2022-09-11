@@ -42,9 +42,9 @@ export const deleteuserController = async (req: Request, res: Response) => {
 
 export const patchUserController = async (req: Request, res: Response) => {
   const { user_id } = req.params;
-  const { id, is_owner } = req.user;
+  const { id, organization, is_owner } = req.user;
 
-  await patchUserService(user_id, req.body, id, is_owner);
+  await patchUserService(user_id, req.body, id, organization, is_owner);
 
   return res.status(200).send("User updated");
 };

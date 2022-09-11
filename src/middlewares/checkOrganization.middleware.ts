@@ -28,7 +28,7 @@ const checkOrganizationMiddleware = async (
   }
   if (area_id) {
     const area = await areaRepository.findOneBy({ id: area_id });
-    if (area?.organization !== organization) {
+    if (area?.organization.id !== organization) {
       return res.status(403).json({
         message: "Você não tem permissão",
       });
@@ -36,7 +36,7 @@ const checkOrganizationMiddleware = async (
   }
   if (post_id) {
     const post = await postRepository.findOneBy({ id: post_id });
-    if (post?.area.organization !== organization) {
+    if (post?.area.organization.id !== organization) {
       return res.status(403).json({
         message: "Você não tem permissão",
       });
@@ -44,7 +44,7 @@ const checkOrganizationMiddleware = async (
   }
   if (meeting_id) {
     const meeting = await meetingRepository.findOneBy({ id: meeting_id });
-    if (meeting?.area.organization !== organization) {
+    if (meeting?.area.organization.id !== organization) {
       return res.status(403).json({
         message: "Você não tem permissão",
       });
@@ -52,7 +52,7 @@ const checkOrganizationMiddleware = async (
   }
   if (comment_id) {
     const comment = await commentRepository.findOneBy({ id: comment_id });
-    if (comment?.post.area.organization !== organization) {
+    if (comment?.post.area.organization.id !== organization) {
       return res.status(403).json({
         message: "Você não tem permissão",
       });
