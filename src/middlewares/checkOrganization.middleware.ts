@@ -22,53 +22,40 @@ const checkOrganizationMiddleware = async (
   if (user_id) {
     const user = await userRepository.findOneBy({ id: user_id });
 
-    if(!user) {
-      throw new AppError(404, "User not found")
+    if (!user) {
+      throw new AppError(404, "User not found");
     }
 
     if (user?.organization.id !== organization) {
-      return res.status(403).json({
-        message: "Você não tem permissão",
-      });
+      throw new AppError(401, "Unauthorizated");
     }
-
   }
   if (area_id) {
     const area = await areaRepository.findOneBy({ id: area_id });
     if (area?.organization.id !== organization) {
-      return res.status(403).json({
-        message: "Você não tem permissão",
-      });
+      throw new AppError(401, "Unauthorizated");
     }
   }
   if (post_id) {
     const post = await postRepository.findOneBy({ id: post_id });
     if (post?.area.organization.id !== organization) {
-      return res.status(403).json({
-        message: "Você não tem permissão",
-      });
+      throw new AppError(401, "Unauthorizated");
     }
   }
   if (meeting_id) {
     const meeting = await meetingRepository.findOneBy({ id: meeting_id });
     if (meeting?.area.organization.id !== organization) {
-      return res.status(403).json({
-        message: "Você não tem permissão",
-      });
+      throw new AppError(401, "Unauthorizated");
     }
   }
   if (comment_id) {
     const comment = await commentRepository.findOneBy({ id: comment_id });
     if (comment?.post.area.organization.id !== organization) {
-      return res.status(403).json({
-        message: "Você não tem permissão",
-      });
+      throw new AppError(401, "Unauthorizated");
     }
   }
   if (!organization) {
-    return res.status(403).json({
-      message: "Você não tem permissão",
-    });
+    throw new AppError(401, "Unauthorizated");
   }
   next();
 };
