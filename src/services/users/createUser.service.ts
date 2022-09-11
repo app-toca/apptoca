@@ -86,4 +86,4 @@ export const createUserService = async (
   await usersRepository.save(newUser);
 
   return newUser;
-};
+}; 

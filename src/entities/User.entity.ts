@@ -18,6 +18,8 @@ import { Posts } from "./Posts.entity";
 import { Exclude } from "class-transformer";
 import { v4 as uuid } from "uuid";
 import { Image } from "./Image.entity";
+import { Reaction } from "./Reactions.entity";
+
 
 @Entity("users")
 export class User {
@@ -88,11 +90,16 @@ export class User {
   })
   posts: Posts[];
 
+
   @OneToOne(() => Image, {
     eager: true
   })
     @JoinColumn()
   img: Image;
+
+  @OneToMany(() => Reaction, (reactions) => reactions.post)
+  reactions: Reaction[];
+
 
   constructor() {
     if (!this.id) {

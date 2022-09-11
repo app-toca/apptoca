@@ -1,19 +1,71 @@
 import AppDataSource from "../../data-source";
 import { AppError } from "../../error/global";
 import { Comments } from "../../entities/Comments.entity";
+import { User } from "../../entities/User.entity";
+import { Organizations } from "../../entities/Organizations.entity";
+import { Meetings } from "../../entities/Meetings.entity";
 
-const listUserCommentsService = async (user_id: string) => {
+interface IComment {
+  id: string;
+  content: string;
+  user: IUserResponse;
+}
+
+export interface IUserResponse {
+  id: string;
+  name?: string;
+  email?: string;
+  nickname?: string;
+  age?: number;
+  year?: number;
+  course?: string;
+  phrase?: string;
+  is_adm?: boolean;
+  is_owner?: boolean;
+  is_active?: boolean;
+  img?: string;
+  created_at?: Date;
+  updated_at?: Date;
+  organization?: Organizations;
+  meetings?: Meetings[];
+}
+
+const listUserCommentsService = async (
+  user_id: string
+): Promise<IComment[]> => {
   const commentsRepository = AppDataSource.getRepository(Comments);
 
   const comments = await commentsRepository.find({
-    relations: { user: true },
-    where: { id: user_id },
+    where: { user: { id: user_id } },
   });
 
   if (!comments) {
     throw new AppError(404, "Comments not found");
   }
 
-  return comments;
+  let com: IComment[];
+
+  com = comments;
+
+  com.map(
+    (c) =>
+      delete c.user.name &&
+      delete c.user.nickname &&
+      delete c.user.age &&
+      delete c.user.year &&
+      delete c.user.course &&
+      delete c.user.phrase &&
+      delete c.user.is_adm &&
+      delete c.user.is_owner &&
+      delete c.user.is_active &&
+      delete c.user.img &&
+      delete c.user.created_at &&
+      delete c.user.updated_at &&
+      delete c.user.organization &&
+      delete c.user.email &&
+      delete c.user.meetings
+  );
+
+  return com;
 };
 export default listUserCommentsService;

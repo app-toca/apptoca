@@ -46,7 +46,7 @@ export const patchUserController = async (req: Request, res: Response) => {
 
   await patchUserService(user_id, req.body, id, is_owner);
 
-  return res.status(200).send("User updated");
+  return res.status(200).json({message: "User updated"});
 };
 
 export const areasUserController = async (req: Request, res: Response) => {

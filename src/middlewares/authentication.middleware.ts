@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
+import AppDataSource from "../data-source";
+import { User } from "../entities/User.entity";
 
 const authenticationMiddleware = (
   req: Request,
