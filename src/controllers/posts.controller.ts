@@ -12,7 +12,7 @@ export const createPostController = async (req: Request, res: Response) => {
 
   const post = await createPostService(req.body, area_id, req.user.id);
 
-  return res.status(201).json(post);
+  return res.status(201).json(instanceToPlain(post));
 };
 
 export const getAllPostsController = async (req: Request, res: Response) => {
@@ -28,7 +28,7 @@ export const getOnePostController = async (req: Request, res: Response) => {
 
   const post = await getOnePostService(post_id);
 
-  return res.status(200).json(post);
+  return res.status(200).json(instanceToPlain(post));
 };
 
 export const getPostsByAreaController = async (req: Request, res: Response) => {
@@ -36,7 +36,7 @@ export const getPostsByAreaController = async (req: Request, res: Response) => {
 
   const posts = await getPostsByAreaService(area_id);
 
-  return res.status(200).json(posts);
+  return res.status(200).json(instanceToPlain(posts));
 };
 
 export const updatePostController = async (req: Request, res: Response) => {
@@ -44,7 +44,7 @@ export const updatePostController = async (req: Request, res: Response) => {
 
   const post = await updatePostService(post_id, req.user.id, req.body);
 
-  return res.status(200).json(post);
+  return res.status(200).json(instanceToPlain(post));
 };
 
 export const deletePostController = async (req: Request, res: Response) => {
