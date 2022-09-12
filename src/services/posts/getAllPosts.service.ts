@@ -1,15 +1,14 @@
-import AppDataSource from "../../data-source"
-import { Posts } from "../../entities/Posts.entity"
+import AppDataSource from "../../data-source";
+import { Posts } from "../../entities/Posts.entity";
 
+const getAllPostsService = async (organization: string) => {
+  const postsRepository = AppDataSource.getRepository(Posts);
 
-const getAllPostsService = async () => {
+  const posts = await postsRepository.find({
+    where: { area: { organization: { id: organization } } },
+  });
 
-    const postsRepository = AppDataSource.getRepository(Posts)
+  return posts;
+};
 
-    const posts = await postsRepository.find()
-
-    return posts 
-
-}
-
-export default getAllPostsService
+export default getAllPostsService;
