@@ -1,16 +1,9 @@
 import { Router } from "express";
+import { countUsersByHourController, createScheduleController, deleteSchedulesController, listSchedulesByAreaController, listSchedulesByDayAndHourController, listSchedulesByUserController, listSchedulesController } from "../../controllers/schedules.controllers";
 import authenticationMiddleware from "../../middlewares/authentication.middleware";
 import isAdmMiddleware from "../../middlewares/isAdm.middleware";
-import {
-  countUsersByHourController,
-  createScheduleController,
-  deleteSchedulesController,
-  listSchedulesByAreaController,
-  listSchedulesByDayAndHourController,
-  listSchedulesByUserController,
-  listSchedulesController
-} from "../../controllers/schedules.controllers";
 import updateSchedulesMiddlewares from "../../middlewares/updateSchedules.middleware";
+
 
 const routes = Router();
 
