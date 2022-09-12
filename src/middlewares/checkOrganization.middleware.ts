@@ -3,6 +3,7 @@ import AppDataSource from "../data-source";
 import { Areas } from "../entities/Areas.entity";
 import { Comments } from "../entities/Comments.entity";
 import { Meetings } from "../entities/Meetings.entity";
+import { Organizations } from "../entities/Organizations.entity";
 import { Posts } from "../entities/Posts.entity";
 import { User } from "../entities/User.entity";
 import { AppError } from "../error/global";
@@ -13,12 +14,15 @@ const checkOrganizationMiddleware = async (
   next: NextFunction
 ) => {
   const { organization } = req.user;
-  const { user_id, area_id, post_id, meeting_id, comment_id } = req.params;
+  const { user_id, area_id, post_id, meeting_id, comment_id, org_id } =
+    req.params;
   const userRepository = AppDataSource.getRepository(User);
   const areaRepository = AppDataSource.getRepository(Areas);
   const postRepository = AppDataSource.getRepository(Posts);
   const meetingRepository = AppDataSource.getRepository(Meetings);
   const commentRepository = AppDataSource.getRepository(Comments);
+  const orgRepository = AppDataSource.getRepository(Organizations);
+
   if (user_id) {
     const user = await userRepository.findOneBy({ id: user_id });
 
@@ -30,6 +34,14 @@ const checkOrganizationMiddleware = async (
       throw new AppError(401, "Unauthorizated");
     }
   }
+
+  if (org_id) {
+    const org = await orgRepository.findOneBy({ id: org_id });
+    if (org_id !== organization) {
+      throw new AppError(401, "Unauthorizated");
+    }
+  }
+
   if (area_id) {
     const area = await areaRepository.findOneBy({ id: area_id });
     if (area?.organization.id !== organization) {

@@ -13,20 +13,20 @@ const listOrganizationsController = async (req: Request, res: Response) => {
 const listOneOrganizationController = async (req: Request, res: Response) => {
   const { org_id } = req.params;
   const org = await listOneOrganizationService(org_id);
-  res.status(200).json(instanceToPlain(org));
+  res.status(200).json(org);
 };
 
 const createOrganizationController = async (req: Request, res: Response) => {
   const { name, password } = req.body;
   const org = await createOrganizationService({ name, password });
-  res.status(201).json(instanceToPlain(org));
+  res.status(201).json(org);
 };
 
 const updateOrganizationController = async (req: Request, res: Response) => {
   const { name } = req.body;
   const { org_id } = req.params;
   const org = await updateOrganizationService({ name, org_id });
-  res.status(200).json(instanceToPlain(org));
+  res.status(201).json(org);
 };
 
 //req.user.organization
