@@ -36,7 +36,7 @@ export const listSchedulesByAreaController = async (
 ) => {
   const { area_id } = req.params;
 
-  const schedules = await listSchedulesByAreaService({ area_id });
+  const schedules = await listSchedulesByAreaService(area_id);
 
   return res.status(200).json(schedules);
 };

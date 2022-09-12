@@ -14,7 +14,7 @@ export const schedulesRoutes = () => {
     authenticationMiddleware,
     listSchedulesByUserController
   );
-  routes.get("/users/:area_id", isAdmMiddleware, listSchedulesByAreaController);
+  routes.get("/areas/:area_id",authenticationMiddleware , isAdmMiddleware, listSchedulesByAreaController);
   routes.get(
     "/hours/days/areas/:day[0-6]/:hour/:area_id",
     isAdmMiddleware,
