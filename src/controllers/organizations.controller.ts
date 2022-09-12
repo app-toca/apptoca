@@ -19,7 +19,7 @@ const listOneOrganizationController = async (req: Request, res: Response) => {
 const createOrganizationController = async (req: Request, res: Response) => {
   const { name, password } = req.body;
   const org = await createOrganizationService({ name, password });
-  res.status(200).json(instanceToPlain(org));
+  res.status(201).json(instanceToPlain(org));
 };
 
 const updateOrganizationController = async (req: Request, res: Response) => {
