@@ -1,5 +1,5 @@
-import { IPostRequest } from "../../interfaces/posts";
+import { IPostTest } from "../../interfaces/posts";
 
-export const postTest: IPostRequest = {
-    content: 'Testando o primeiro post'
-}
+export const postTest: IPostTest = {
+  content: "Testando o primeiro post",
+};

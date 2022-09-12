@@ -1,6 +1,10 @@
-import { IUserLoginRequest, IUserRequest } from "../../interfaces/users";
+import {
+  IUserLoginRequest,
+  IUserRequest,
+  IUserTest,
+} from "../../interfaces/users";
 
-export const adminUser: IUserRequest = {
+export const adminUser: IUserTest = {
   name: "Ana",
   nickname: "Cisne",
   email: "anavitoriacisn314@gmail.com",
@@ -17,7 +21,7 @@ export const userAdminLogin: IUserLoginRequest = {
   password: "senhaFortíssima123",
 };
 
-export const nonAdminUser: IUserRequest = {
+export const nonAdminUser: IUserTest = {
   name: "João",
   nickname: "Porto",
   email: "joao.porto.ismart@gmail.com",
