@@ -21,5 +21,8 @@ export interface IMeetingTest {
 
 export interface IMeetingUpdateRequest {
   description?: string;
+  date_time?: string;
+  duration?: string;
+  ata?: string;
   meeting_id: string;
 }

@@ -13,8 +13,6 @@ interface IAreaOrg {
 }
 
 const listAreasService = async (organization: string): Promise<IAreaOrg[]> => {
-  console.log("aqui org", organization);
-
   const areasRepository = AppDataSource.getRepository(Areas);
   let areas: Areas[];
   try {

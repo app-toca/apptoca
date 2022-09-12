@@ -76,11 +76,17 @@ export const listOneMeetingController = async (req: Request, res: Response) => {
 //Atualiza uma meeting
 
 export const updateMeetingController = async (req: Request, res: Response) => {
-  const { description } = req.body;
+  const { description, date_time, duration, ata } = req.body;
 
   const { meeting_id } = req.params;
 
-  const meeting = await updateMeetingService({ meeting_id, description });
+  const meeting = await updateMeetingService({
+    meeting_id,
+    description,
+    date_time,
+    duration,
+    ata,
+  });
 
   return res.status(200).json(meeting);
 };

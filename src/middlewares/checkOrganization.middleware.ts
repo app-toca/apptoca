@@ -54,12 +54,17 @@ const checkOrganizationMiddleware = async (
       throw new AppError(401, "Unauthorizated");
     }
   }
+
   if (meeting_id) {
-    const meeting = await meetingRepository.findOneBy({ id: meeting_id });
-    if (meeting?.area.organization.id !== organization) {
+    const meeting = await meetingRepository.findOne({
+      relations: { area: { organization: true } },
+      where: { id: meeting_id, area: { organization: { id: organization } } },
+    });
+    if (!meeting) {
       throw new AppError(401, "Unauthorizated");
     }
   }
+
   if (comment_id) {
     const comment = await commentRepository.findOneBy({ id: comment_id });
     if (comment?.post.area.organization.id !== organization) {
@@ -69,6 +74,7 @@ const checkOrganizationMiddleware = async (
   if (!organization) {
     throw new AppError(401, "Unauthorizated");
   }
+
   next();
 };
 
