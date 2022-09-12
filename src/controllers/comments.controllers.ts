@@ -13,7 +13,6 @@ const listUserCommentsController = async (req: Request, res: Response) => {
 };
 const listPostCommentsController = async (req: Request, res: Response) => {
   const { post_id } = req.params;
-  console.log("chegou");
 
   const comments = await listPostCommentService(post_id);
   return res.status(200).json(instanceToPlain(comments));

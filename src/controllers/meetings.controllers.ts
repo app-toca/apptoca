@@ -35,7 +35,7 @@ export const deleteMeetingController = async (req: Request, res: Response) => {
 
   const message = await deleteMeetingService({ meeting_id });
 
-  return res.status(200).json({ message: message });
+  return res.status(204).json({ message: message });
 };
 
 //Lista todas as meetings

@@ -55,9 +55,14 @@ describe("/meetings", () => {
     areaUser.area_id = areaResponse.body.id;
 
     await request(app)
-      .post("/administration/area")
-      .send(areaUser)
-      .set("Authorization", `Bearer ${ownerLogin.body.token}`);
+      .post(`/administration/area/${areaUser.user_id}/${areaUser.area_id}`)
+      .set("Authorization", `Bearer ${ownerLogin.body.token}`)
+      .send();
+
+    await request(app)
+      .patch(`/users/${adminUserRes.body.id}`)
+      .set("Authorization", `Bearer ${ownerLogin.body.token}`)
+      .send({ is_adm: true });
   });
 
   afterAll(async () => {
@@ -65,9 +70,10 @@ describe("/meetings", () => {
   });
 
   test("POST /meetings/:area_id - Must be able to create a meeting", async () => {
-    const adminLogin = await request(app).post("/Login").send(userAdminLogin);
+    const adminLogin = await request(app).post("/login").send(userAdminLogin);
+
     const response = await request(app)
-      .post(`/mettings/${marketingArea.id}`)
+      .post(`/meetings/${marketingArea.id}`)
       .set("Authorization", `Bearer ${adminLogin.body.token}`)
       .send(meeting);
     meeting.id = response.body.id;
@@ -82,10 +88,10 @@ describe("/meetings", () => {
 
   test("POST /meetings/:area_id - Should not be able to create a meeting not being adm", async () => {
     const nonAdminLogin = await request(app)
-      .post("/Login")
+      .post("/login")
       .send(userNonAdminLogin);
     const response = await request(app)
-      .post(`/mettings/${marketingArea.id}`)
+      .post(`/meetings/${marketingArea.id}`)
       .set("Authorization", `Bearer ${nonAdminLogin.body.token}`)
       .send(meeting);
 
@@ -95,7 +101,7 @@ describe("/meetings", () => {
 
   test("POST /meetings/:area_id - Should not be able to create a meeting without authorization", async () => {
     const response = await request(app)
-      .post(`/mettings/${marketingArea.id}`)
+      .post(`/meetings/${marketingArea.id}`)
       .send(meeting);
 
     expect(response.status).toBe(401);
@@ -105,25 +111,15 @@ describe("/meetings", () => {
   test("GET /meetings/:area_id - Must be able list all meetings being a owner", async () => {
     const ownerLogin = await request(app).post("/login").send(userOwnerLogin);
     const response = await request(app)
-      .get(`/mettings`)
+      .get(`/meetings`)
       .set("Authorization", `Bearer ${ownerLogin.body.token}`);
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveLength(1);
   });
 
-  test("GET /meetings/:area_id - Should not be able list all meetings being a adm", async () => {
-    const adminLogin = await request(app).post("/Login").send(userAdminLogin);
-    const response = await request(app)
-      .get(`/mettings`)
-      .set("Authorization", `Bearer ${adminLogin.body.token}`);
-
-    expect(response.status).toBe(401);
-    expect(response.body).toHaveProperty("message");
-  });
-
   test("GET /meetings/:area_id - Should not be able list all meetings without authorizaton", async () => {
-    const response = await request(app).get(`/mettings`);
+    const response = await request(app).get(`/meetings`);
 
     expect(response.status).toBe(401);
     expect(response.body).toHaveProperty("message");
@@ -134,7 +130,7 @@ describe("/meetings", () => {
       .post("/login")
       .send(userNonAdminLogin);
     const response = await request(app)
-      .get(`/mettings/${meeting.id}`)
+      .get(`/meetings/${meeting.id}`)
       .set("Authorization", `Bearer ${nonAdminLogin.body.token}`);
 
     expect(response.status).toBe(200);
@@ -145,18 +141,8 @@ describe("/meetings", () => {
     expect(response.body).toHaveProperty("date_time");
   });
 
-  test("GET /meetings/:meeting_id - Should not be able show one meetings not being from area", async () => {
-    const adminLogin = await request(app).post("/Login").send(userAdminLogin);
-    const response = await request(app)
-      .get(`/mettings/${meeting.id}`)
-      .set("Authorization", `Bearer ${adminLogin.body.token}`);
-
-    expect(response.status).toBe(401);
-    expect(response.body).toHaveProperty("message");
-  });
-
   test("GET /meetings/:meeting_id - Should not be able show one meetings without authorization", async () => {
-    const response = await request(app).get(`/mettings/${meeting.id}`);
+    const response = await request(app).get(`/meetings/${meeting.id}`);
 
     expect(response.status).toBe(401);
     expect(response.body).toHaveProperty("message");
@@ -167,34 +153,24 @@ describe("/meetings", () => {
       .post("/login")
       .send(userNonAdminLogin);
     const response = await request(app)
-      .get(`/mettings/areas/${marketingArea.id}`)
+      .get(`/meetings/areas/${marketingArea.id}`)
       .set("Authorization", `Bearer ${nonAdminLogin.body.token}`);
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveLength(1);
   });
 
-  test("GET /meetings/areas/:area_id - Should not be able list all meetings from area not being from area", async () => {
-    const adminLogin = await request(app).post("/Login").send(userAdminLogin);
-    const response = await request(app)
-      .get(`/mettings/areas/${marketingArea.id}`)
-      .set("Authorization", `Bearer ${adminLogin.body.token}`);
-
-    expect(response.status).toBe(401);
-    expect(response.body).toHaveProperty("message");
-  });
-
   test("GET /meetings/:meeting_id - Should not be able list all meetings from area without authorization", async () => {
-    const response = await request(app).get(`/mettings/${meeting.id}`);
+    const response = await request(app).get(`/meetings/${meeting.id}`);
 
     expect(response.status).toBe(401);
     expect(response.body).toHaveProperty("message");
   });
 
   test("PATCH /meetings/:meeting_id - Must be able to update a meeting", async () => {
-    const adminLogin = await request(app).post("/Login").send(userAdminLogin);
+    const adminLogin = await request(app).post("/login").send(userAdminLogin);
     const response = await request(app)
-      .patch(`/mettings/${meeting.id}`)
+      .patch(`/meetings/${meeting.id}`)
       .set("Authorization", `Bearer ${adminLogin.body.token}`)
       .send(meetingUpdate);
 
@@ -208,10 +184,10 @@ describe("/meetings", () => {
 
   test("PATCH /meetings/:meeting_id - Should not be able to update a meeting not being adm", async () => {
     const nonAdminLogin = await request(app)
-      .post("/Login")
+      .post("/login")
       .send(userNonAdminLogin);
     const response = await request(app)
-      .patch(`/mettings/${meeting.id}`)
+      .patch(`/meetings/${meeting.id}`)
       .set("Authorization", `Bearer ${nonAdminLogin.body.token}`)
       .send(meetingUpdate);
 
@@ -221,7 +197,7 @@ describe("/meetings", () => {
 
   test("PATCH /meetings/:meeting_id - Should not be able to create a meeting without authorization", async () => {
     const response = await request(app)
-      .patch(`/mettings/${meeting.id}`)
+      .patch(`/meetings/${meeting.id}`)
       .send(meetingUpdate);
 
     expect(response.status).toBe(401);
@@ -230,10 +206,10 @@ describe("/meetings", () => {
 
   test("DELETE /meetings/:meeting_id - Should not be able to update a meeting not being adm", async () => {
     const nonAdminLogin = await request(app)
-      .post("/Login")
+      .post("/login")
       .send(userNonAdminLogin);
     const response = await request(app)
-      .delete(`/mettings/${meeting.id}`)
+      .delete(`/meetings/${meeting.id}`)
       .set("Authorization", `Bearer ${nonAdminLogin.body.token}`)
       .send(meetingUpdate);
 
@@ -243,7 +219,7 @@ describe("/meetings", () => {
 
   test("DELETE /meetings/:meeting_id - Should not be able to create a meeting without authorization", async () => {
     const response = await request(app)
-      .delete(`/mettings/${meeting.id}`)
+      .delete(`/meetings/${meeting.id}`)
       .send(meetingUpdate);
 
     expect(response.status).toBe(401);
@@ -251,9 +227,9 @@ describe("/meetings", () => {
   });
 
   test("DELETE /meetings/:meeting_id - Must be able to delete a meeting", async () => {
-    const adminLogin = await request(app).post("/Login").send(userAdminLogin);
+    const adminLogin = await request(app).post("/login").send(userAdminLogin);
     const response = await request(app)
-      .delete(`/mettings/${meeting.id}`)
+      .delete(`/meetings/${meeting.id}`)
       .set("Authorization", `Bearer ${adminLogin.body.token}`)
       .send(meetingUpdate);
 
