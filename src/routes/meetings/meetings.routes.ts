@@ -21,7 +21,12 @@ export const meetingsRoutes = () => {
     isAdmMiddleware,
     createMeetingController
   );
-  routes.get("", authenticationMiddleware, listAllMeetingsController);
+  routes.get(
+    "",
+    authenticationMiddleware,
+    checkOrganizationMiddleware,
+    listAllMeetingsController
+  );
   routes.get(
     "/:meeting_id",
     authenticationMiddleware,
@@ -30,17 +35,20 @@ export const meetingsRoutes = () => {
   routes.get(
     "/areas/:area_id",
     authenticationMiddleware,
+    checkOrganizationMiddleware,
     listMeetingsByAreaController
   );
   routes.patch(
     "/:meeting_id",
     authenticationMiddleware,
+    checkOrganizationMiddleware,
     isAdmMiddleware,
     updateMeetingController
   );
   routes.delete(
     "/:meeting_id",
     authenticationMiddleware,
+    checkOrganizationMiddleware,
     isAdmMiddleware,
     deleteMeetingController
   );
