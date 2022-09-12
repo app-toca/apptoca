@@ -8,9 +8,9 @@ import {
   listSchedulesByAreaController,
   listSchedulesByDayAndHourController,
   listSchedulesByUserController,
-  listSchedulesController,
-  updateScheduleController,
+  listSchedulesController
 } from "../../controllers/schedules.controllers";
+import updateSchedulesMiddlewares from "../../middlewares/updateSchedules.middleware";
 
 const routes = Router();
 
@@ -29,7 +29,7 @@ export const schedulesRoutes = () => {
   );
   routes.get("/:area_id/report", isAdmMiddleware, countUsersByHourController);
   routes.post("", authenticationMiddleware, createScheduleController);
-  routes.patch("", authenticationMiddleware, updateScheduleController);
+  routes.patch("", authenticationMiddleware, updateSchedulesMiddlewares, createScheduleController);
   routes.delete("", authenticationMiddleware, deleteSchedulesController);
 
   return routes;
