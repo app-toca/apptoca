@@ -8,7 +8,7 @@ export interface IMeetingRequest {
   ata: string;
   date_time: Date;
   area_id: string;
-  user_id: string;
+  id: string;
 }
 
 export interface IMeetingTest {
