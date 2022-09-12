@@ -19,8 +19,9 @@ const updateSchedulesMiddlewares = async (req: Request, res: Response, next: Nex
   }
 
   const schedulesFounded = await schedulesRepository.find({
-    relations: { user: true },
-    where: { user: { id: user_id } },
+    relations: { user: false, day: true, hour: true },
+    where: { user: { id: user.id } },
+    select: { day: { name: true }, hour: { hour: true } },
   });
 
   if (schedulesFounded.length === 0) {
