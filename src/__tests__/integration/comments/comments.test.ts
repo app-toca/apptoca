@@ -2,6 +2,7 @@ import request from "supertest";
 import { DataSource } from "typeorm";
 import app from "../../../app";
 import AppDataSource from "../../../data-source";
+<<<<<<< HEAD
 import { marketingArea } from "../../mocks/areas";
 import { comment, comment2, commentUpdate } from "../../mocks/comments";
 import { organizationToca } from "../../mocks/organization";
@@ -10,6 +11,13 @@ import {
   adminUser,
   nonAdminUser,
   userAdminLogin,
+=======
+import { comment } from "../../mocks/comments";
+import { organizationToca } from "../../mocks/organization";
+import { postTest } from "../../mocks/posts";
+import {
+  nonAdminUser,
+>>>>>>> dfe0f57299abcb5dc46805797268c555567acb28
   userNonAdminLogin,
   userOwner,
   userOwnerLogin,
@@ -33,6 +41,7 @@ describe("/areas", () => {
     await request(app)
       .post(`/users/${orgToca.body.id}/${organizationToca.password}`)
       .send(userOwner);
+<<<<<<< HEAD
     const nonAdmimRes = await request(app)
       .post(`/users/${orgToca.body.id}/${organizationToca.password}`)
       .send(nonAdminUser);
@@ -66,6 +75,16 @@ describe("/areas", () => {
 
     await request(app)
       .post(`/administration/${nonAdminUser.id}/${marketingArea.id}`)
+=======
+    await request(app)
+      .post(`/users/${orgToca.body.id}/${organizationToca.password}`)
+      .send(nonAdminUser);
+
+    const ownerLogin = await request(app).post("/login").send(userOwnerLogin);
+    const response = await request(app)
+      .post(`/posts/$`)
+      .send(postTest)
+>>>>>>> dfe0f57299abcb5dc46805797268c555567acb28
       .set("Authorization", `Bearer ${ownerLogin.body.token}`);
   });
 
@@ -78,7 +97,11 @@ describe("/areas", () => {
       .post("/login")
       .send(userNonAdminLogin);
     const response = await request(app)
+<<<<<<< HEAD
       .post(`/comments/${postTest.id}`)
+=======
+      .post("/")
+>>>>>>> dfe0f57299abcb5dc46805797268c555567acb28
       .set("Authorization", `Bearer ${nonAdminLogin.body.token}`)
       .send(comment);
     comment.id = response.body.id;
@@ -88,6 +111,7 @@ describe("/areas", () => {
     expect(response.body).toHaveProperty("content");
     expect(response.body).toHaveProperty("create_at");
   });
+<<<<<<< HEAD
 
   test("POST /comments/:post_id - Must be able to create a new comment from same user", async () => {
     const nonAdminLogin = await request(app)
@@ -231,4 +255,6 @@ describe("/areas", () => {
 
     expect(response.status).toBe(204);
   });
+=======
+>>>>>>> dfe0f57299abcb5dc46805797268c555567acb28
 });
