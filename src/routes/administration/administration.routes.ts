@@ -11,7 +11,7 @@ const routes = Router();
 
 export const administrationRoutes = () => {
   routes.post(
-    "/area",
+    "/area/:user_id/:area_id",
     authenticationMiddleware,
     checkOrganizationMiddleware,
     isAdmMiddleware,
