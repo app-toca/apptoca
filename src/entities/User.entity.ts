@@ -20,7 +20,6 @@ import { v4 as uuid } from "uuid";
 import { Image } from "./Image.entity";
 import { Reaction } from "./Reactions.entity";
 
-
 @Entity("users")
 export class User {
   @PrimaryColumn("uuid")
@@ -83,6 +82,7 @@ export class User {
   @OneToMany(() => Meetings, (meeting) => meeting.user, {
     eager: true,
   })
+  @Exclude()
   meetings: Meetings[];
 
   @OneToMany(() => Posts, (post) => post.user, {
@@ -90,16 +90,14 @@ export class User {
   })
   posts: Posts[];
 
-
   @OneToOne(() => Image, {
-    eager: true
+    eager: true,
   })
-    @JoinColumn()
+  @JoinColumn()
   img: Image;
 
   @OneToMany(() => Reaction, (reactions) => reactions.post)
   reactions: Reaction[];
-
 
   constructor() {
     if (!this.id) {

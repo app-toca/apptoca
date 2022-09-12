@@ -14,7 +14,7 @@ export const createMeetingController = async (req: Request, res: Response) => {
 
   const { description, duration, ata, date_time } = req.body;
 
-  const user_id = req.body.id;
+  const { id } = req.user;
 
   const meeting = await createMeetingService({
     area_id,
@@ -22,7 +22,7 @@ export const createMeetingController = async (req: Request, res: Response) => {
     date_time,
     description,
     duration,
-    user_id,
+    id,
   });
 
   return res.status(201).json(instanceToPlain(meeting));
@@ -44,7 +44,8 @@ export const listAllMeetingsController = async (
   req: Request,
   res: Response
 ) => {
-  const meetings = await listAllMeetingsService();
+  const { organization } = req.user;
+  const meetings = await listAllMeetingsService(organization);
 
   return res.status(200).json(meetings);
 };
