@@ -1,10 +1,8 @@
-import { Schedules } from "../../entities/Schedules.entity"
-
 export interface ISchedulesRequest {
     user_id?: string,
     area_id?: string,
     hour?: string,
-    day?: string
+    day?: number
 }
 
 export interface IReportSchedule {
@@ -14,5 +12,5 @@ export interface IReportSchedule {
   }
 
 export interface ISchedulesArray {
-    schedules: Schedules[];
+    schedules: ISchedulesRequest[];
 }

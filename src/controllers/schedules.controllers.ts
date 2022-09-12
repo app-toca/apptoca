@@ -77,7 +77,7 @@ export const createScheduleController = async (req: Request, res: Response) => {
 
   const schedulesCreated = await createScheduleService({ schedules }, user_id);
 
-  return res.status(200).json(schedulesCreated);
+  return res.status(201).json(schedulesCreated);
 };
 
 //Atualiza as schedules do usuário

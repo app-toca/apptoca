@@ -8,8 +8,4 @@ export class Hours {
 
     @Column({  })
     hour: string;
-
-    @OneToOne(() => Schedules)
-    @JoinColumn()
-    schedule: Schedules;
 }

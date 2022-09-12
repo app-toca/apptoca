@@ -21,17 +21,31 @@ export const createScheduleService = async (
     throw new AppError(404, "User not found!");
   }
 
-  const schedulesSaved = await schedules.map(async (schedules) => {
-    const day = await daysRepository.create({ name: schedules.day.name });
-    const hour = await hoursRepository.create({ hour: schedules.hour.hour });
-    const schedule = await schedulesRepository.create({ day, hour, user });
-
+  schedules.forEach(async (scheduleInArray) => {
+    const day = daysRepository.create({ name: scheduleInArray.day });
     await daysRepository.save(day);
-    await hoursRepository.save(hour);
-    await schedulesRepository.save(schedule);
 
-    return schedule;
+    const hour = hoursRepository.create({ hour: scheduleInArray.hour });
+    await hoursRepository.save(hour);
+
+    const schedule = schedulesRepository.create({
+      day: day,
+      hour: hour,
+      user: user,
+    });
+    await schedulesRepository.save(schedule);
   });
 
-  return schedulesSaved;
+  const schedulesSaved = await schedulesRepository.find({
+    relations: { user: false, day: true, hour: true },
+    where: { user: { id: user.id } },
+    select: { day: { name: true }, hour: { hour: true } },
+  });
+
+  const reqReturn = schedulesSaved.map((schedule) => {
+    const { id, ...rest } = schedule;
+    return rest;
+  } );
+
+  return reqReturn;
 };

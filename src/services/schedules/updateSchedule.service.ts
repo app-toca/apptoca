@@ -30,18 +30,6 @@ export const updateScheduleService = async (
     throw new AppError(404, "Schedules not founded for this user!");
   }
 
-  // const schedulesUpdated = await schedules.map(async(schedule, index) => {
-  //     const scheduleUpdated = await schedulesRepository.createQueryBuilder().update().set({
-  //         day: schedule.day.name?,
-  //         hour: schedule.hour.hour?
-  //     }).where({
-  //         id: schedulesFounded[index].id
-  //     }).returning("*").execute();
-  //     return scheduleUpdated;
-  // });
-
-  // return schedulesUpdated;
-
   await schedulesFounded.forEach((schedule) => {
     schedulesRepository
       .createQueryBuilder()
@@ -52,10 +40,10 @@ export const updateScheduleService = async (
       .execute();
   });
 
-  const schedulesCreated = await schedules.map(async (schedules) => {
-    const day = await daysRepository.create({ name: schedules.day.name });
-    const hour = await hoursRepository.create({ hour: schedules.hour.hour });
-    const schedule = await schedulesRepository.create({ day, hour, user });
+  const schedulesCreated = schedules.map(async (scheduleInArray) => {
+    const day = daysRepository.create({ name: scheduleInArray.day });
+    const hour = hoursRepository.create({ hour: scheduleInArray.hour });
+    const schedule = schedulesRepository.create({ day, hour, user });
 
     await daysRepository.save(day);
     await hoursRepository.save(hour);

@@ -13,7 +13,7 @@ export const listSchedulesByUserService = async({ user_id }: ISchedulesRequest) 
         throw new AppError(404, "User not found!");
     }
 
-    const schedules = await userRepository.findOne({ where: { id: user_id }, relations: { schedule: true } });
+    const schedules = await userRepository.find({ where: { id: user_id }, relations: { schedule: true } });
 
     return schedules;
 

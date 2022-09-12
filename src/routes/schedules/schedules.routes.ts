@@ -15,38 +15,22 @@ import {
 const routes = Router();
 
 export const schedulesRoutes = () => {
-  routes.get("/schedules", isAdmMiddleware, listSchedulesController);
+  routes.get("", isAdmMiddleware, listSchedulesController);
   routes.get(
-    "/schedules/users/:user_id",
+    "/users/:user_id",
     authenticationMiddleware,
     listSchedulesByUserController
   );
+  routes.get("/users/:area_id", isAdmMiddleware, listSchedulesByAreaController);
   routes.get(
-    "/schedules/users/:area_id",
-    isAdmMiddleware,
-    listSchedulesByAreaController
-  );
-  routes.get(
-    "/schedules/hours/days/areas/:day[0-6]/:hour/:area_id",
+    "/hours/days/areas/:day[0-6]/:hour/:area_id",
     isAdmMiddleware,
     listSchedulesByDayAndHourController
   );
-  routes.get(
-    "/schedules/:area_id/report",
-    isAdmMiddleware,
-    countUsersByHourController
-  );
-  routes.post("/schedules", authenticationMiddleware, createScheduleController);
-  routes.patch(
-    "/schedules",
-    authenticationMiddleware,
-    updateScheduleController
-  );
-  routes.delete(
-    "/schedules",
-    authenticationMiddleware,
-    deleteSchedulesController
-  );
+  routes.get("/:area_id/report", isAdmMiddleware, countUsersByHourController);
+  routes.post("", authenticationMiddleware, createScheduleController);
+  routes.patch("", authenticationMiddleware, updateScheduleController);
+  routes.delete("", authenticationMiddleware, deleteSchedulesController);
 
   return routes;
 };
