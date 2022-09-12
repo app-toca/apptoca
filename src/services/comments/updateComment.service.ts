@@ -4,6 +4,7 @@ import { AppError } from "../../error/global";
 import { UpdateResult } from "typeorm";
 import { Organizations } from "../../entities/Organizations.entity";
 import { Meetings } from "../../entities/Meetings.entity";
+import { Image } from "../../entities/Image.entity";
 
 interface IComment {
   id: string;
@@ -22,6 +23,7 @@ interface IUserResponse {
   phrase?: string;
   is_adm?: boolean;
   is_owner?: boolean;
+  img?: Image;
   is_active?: boolean;
   created_at?: Date;
   updated_at?: Date;
@@ -77,6 +79,7 @@ const updateCommentService = async (
   delete com.user.organization;
   delete com.user.email;
   delete com.user.meetings;
+  delete com.user.img;
 
   return com;
 };

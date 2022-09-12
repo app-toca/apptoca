@@ -4,6 +4,7 @@ import { Comments } from "../../entities/Comments.entity";
 import { User } from "../../entities/User.entity";
 import { Organizations } from "../../entities/Organizations.entity";
 import { Meetings } from "../../entities/Meetings.entity";
+import { Image } from "../../entities/Image.entity";
 
 interface IComment {
   id: string;
@@ -21,6 +22,7 @@ export interface IUserResponse {
   course?: string;
   phrase?: string;
   is_adm?: boolean;
+  img?: Image;
   is_owner?: boolean;
   is_active?: boolean;
   created_at?: Date;
@@ -61,7 +63,8 @@ const listUserCommentsService = async (
       delete c.user.updated_at &&
       delete c.user.organization &&
       delete c.user.email &&
-      delete c.user.meetings
+      delete c.user.meetings &&
+      delete c.user.img
   );
 
   return com;
