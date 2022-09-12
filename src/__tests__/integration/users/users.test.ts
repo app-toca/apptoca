@@ -246,9 +246,9 @@ describe("/users", () => {
       .get(`/users/${userAdminCreated.id}`)
       .set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`);
 
-      expect(response.body).toHaveProperty("message");
-      expect(response.status).toBe(403);
-      expect(findUser.body.name).toBe(userAdminCreated.name);
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(403);
+    expect(findUser.body.name).toBe(userAdminCreated.name);
   });
 
   test("PATCH users/:user_id -  Should no be able to update another property of an user even being owner, only the property is_adm", async () => {
@@ -470,9 +470,9 @@ describe("/users", () => {
       .delete(`/users/${userOfUnknowOrgCreated.id}`)
       .set("Authorization", `Bearer ${adminLoginResponse.body.token}`);
 
-      console.log(response.body)
+    console.log(response.body);
 
-    expect(response.status).toBe(403);
+    expect(response.status).toBe(401);
     expect(response.body).toHaveProperty("message");
   });
 });
