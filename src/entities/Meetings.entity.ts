@@ -19,11 +19,11 @@ export class Meetings {
   @CreateDateColumn()
   created_at: Date;
 
-  @Column({type: 'date'})
-  date_time: Date
+  @Column({ type: "date" })
+  date_time: Date;
 
   @Column()
-  duration: string
+  duration: string;
 
   @Column("varchar")
   ata: string;
