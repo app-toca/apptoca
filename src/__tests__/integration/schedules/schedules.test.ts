@@ -55,18 +55,22 @@ describe("/schedules", () => {
 
     userNonAdminCreated = responseUserNonAdmin.body;
 
-    const responseArea = await request(app).post(`/areas`).send(marketingArea);
+    const adminLoginResponse = await request(app)
+      .post("/login")
+      .send(userOwnerLogin);
+
+    const responseArea = await request(app).post(`/areas`).send(marketingArea).set("Authorization", `Bearer ${adminLoginResponse.body.token}`);
 
     marketingAreaCreated = responseArea.body;
   });
 
   const scheduleNonAdminUser = [
-    { name: 1, hour: "20:00" },
-    { name: 0, hour: "21:00" },
+    { day: 1, hour: "20:00" },
+    { day: 0, hour: "21:00" },
   ];
   const scheduleAdminUser = [
-    { name: 1, hour: "20:00" },
-    { name: 2, hour: "17:00" },
+    { day: 1, hour: "20:00" },
+    { day: 2, hour: "17:00" },
   ];
 
   test("POST /schedules -  Must be able to add a schedule", async () => {
@@ -87,11 +91,9 @@ describe("/schedules", () => {
 
     expect(response.body).toHaveLength(2);
     expect(response.status).toBe(201);
-    expect(response.body[0]).toHaveProperty("id");
-    expect(response.body[0]).toHaveProperty("user_id");
-    expect(response.body[0].user_id).toBe(userNonAdminCreated.id);
-    expect(response.body[0]).toHaveProperty("day_id");
-    expect(response.body[0]).toHaveProperty("hour_id");
+    expect(response.body[0]).not.toHaveProperty("id");
+    expect(response.body[0]).toHaveProperty("day");
+    expect(response.body[0]).toHaveProperty("hour");
     expect(response2.status).toBe(201);
   });
 
@@ -101,7 +103,7 @@ describe("/schedules", () => {
       .send(scheduleNonAdminUser);
 
     expect(response.status).toBe(401);
-    expect(response.body[0]).toHaveProperty("message");
+    expect(response.body).toHaveProperty("message");
   });
 
   test("GET /schedules/users/:user_id -  Must be able to list your own schedule", async () => {
@@ -115,10 +117,8 @@ describe("/schedules", () => {
     expect(response.body).toHaveLength(2);
     expect(response.status).toBe(200);
     expect(response.body[0]).toHaveProperty("id");
-    expect(response.body[0]).toHaveProperty("user_id");
-    expect(response.body[0].user_id).toBe(userNonAdminCreated.id);
-    expect(response.body[0]).toHaveProperty("day_id");
-    expect(response.body[0]).toHaveProperty("hour_id");
+    expect(response.body[0]).toHaveProperty("day");
+    expect(response.body[0]).toHaveProperty("hour");
   });
 
   test("GET /schedules/users/:user_id -  should not be able to list a user's schedule without authentication", async () => {
@@ -153,10 +153,8 @@ describe("/schedules", () => {
     expect(response.body).toHaveLength(2);
     expect(response.status).toBe(200);
     expect(response.body[0]).toHaveProperty("id");
-    expect(response.body[0]).toHaveProperty("user_id");
-    expect(response.body[0].user_id).toBe(userNonAdminCreated.id);
-    expect(response.body[0]).toHaveProperty("day_id");
-    expect(response.body[0]).toHaveProperty("hour_id");
+    expect(response.body[0]).toHaveProperty("day");
+    expect(response.body[0]).toHaveProperty("hour");
   });
 
   test("GET /schedules -  Must be able to list all schedules if being admin", async () => {
@@ -167,13 +165,11 @@ describe("/schedules", () => {
       .get(`/schedules`)
       .set("Authorization", `Bearer ${adminLoginResponse.body.token}`);
 
-    expect(response.body).toHaveLength(3);
+    expect(response.body).toHaveLength(4);
     expect(response.status).toBe(200);
     expect(response.body[0]).toHaveProperty("id");
-    expect(response.body[0]).toHaveProperty("user_id");
-    expect(response.body[0].user_id).toBe(userNonAdminCreated.id);
-    expect(response.body[0]).toHaveProperty("day_id");
-    expect(response.body[0]).toHaveProperty("hour_id");
+    expect(response.body[0]).toHaveProperty("day");
+    expect(response.body[0]).toHaveProperty("hour");
   });
 
   test("GET /schedules -  Should not be able to list all schedules if being non admin", async () => {
@@ -193,23 +189,17 @@ describe("/schedules", () => {
       .post("/login")
       .send(userOwnerLogin);
     const responseAreaUser = await request(app)
-      .post("/administration/area")
-      .send({
-        user_id: userNonAdminCreated.id,
-        area_id: marketingAreaCreated.id,
-      })
+      .post(`/administration/area/${userNonAdminCreated.id}/${marketingAreaCreated.id}`)
       .set("Authorization", `Bearer ${adminLoginResponse.body.token}`);
     const response = await request(app)
       .get(`/schedules/areas/${marketingAreaCreated.id}`)
       .set("Authorization", `Bearer ${adminLoginResponse.body.token}`);
 
-    expect(response.body).toHaveLength(2);
     expect(response.status).toBe(200);
+    expect(response.body).toHaveLength(2);
     expect(response.body[0]).toHaveProperty("id");
-    expect(response.body[0]).toHaveProperty("user_id");
-    expect(response.body[0].user_id).toBe(userNonAdminCreated.id);
-    expect(response.body[0]).toHaveProperty("day_id");
-    expect(response.body[0]).toHaveProperty("hour_id");
+    expect(response.body[0]).toHaveProperty("day");
+    expect(response.body[0]).toHaveProperty("hour");
   });
 
   test("GET /schedules/areas/:area_id - Should not be able to list schedules of users in some area if not being admin", async () => {
@@ -236,14 +226,13 @@ describe("/schedules", () => {
       .post("/login")
       .send(userOwnerLogin);
     const response = await request(app)
-      .get(`/schedules/hours/days/areas/0/20:00/${marketingAreaCreated.id}`)
+      .get(`/schedules/hours/days/areas/0/21:00/${marketingAreaCreated.id}`)
       .set("Authorization", `Bearer ${adminLoginResponse.body.token}`);
 
-    expect(response.body).toHaveLength(2);
+    expect(response.body).toHaveLength(1);
     expect(response.status).toBe(200);
     expect(response.body[0]).toHaveProperty("id");
-    expect(response.body[0]).toHaveProperty("name");
-    expect(response.body[0]).toHaveProperty("email");
+    expect(response.body[0]).toHaveProperty("user");
   });
 
   test("GET /schedules/hours/days/areas/:day[0-6]/:hour/:area_id - Should not be able to list users in some area that have some schedule if not being admin", async () => {
@@ -266,12 +255,13 @@ describe("/schedules", () => {
       .get(`/schedules/${marketingAreaCreated.id}/report`)
       .set("Authorization", `Bearer ${adminLoginResponse.body.token}`);
 
-    expect(response.body).toHaveLength(3);
+
+    expect(response.body).toHaveLength(2);
     expect(response.status).toBe(200);
     expect(response.body[0]).toHaveProperty("day");
     expect(response.body[0]).toHaveProperty("hour");
     expect(response.body[0]).toHaveProperty("qtt_users");
-    expect(response.body[0].qtt_users).toBe(2);
+    expect(response.body[0].qtt_users).toBe(1);
   });
 
   test("GET /schedules/:area_id/report - Should not be able to to get the report of hours by quantity of users if not being admin", async () => {
@@ -287,9 +277,9 @@ describe("/schedules", () => {
   });
 
   const scheduleNonAdminUserChanged = [
-    { name: 4, hour: "21:00" },
-    { name: 5, hour: "16:00" },
-    { name: 3, hour: "18:00" },
+    { day: 4, hour: "21:00" },
+    { day: 5, hour: "16:00" },
+    { day: 3, hour: "18:00" },
   ];
 
   test("PATCH /schedules -  Must be able to change a schedule", async () => {
@@ -302,12 +292,9 @@ describe("/schedules", () => {
       .set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`);
 
     expect(response.body).toHaveLength(3);
-    expect(response.status).toBe(200);
-    expect(response.body[0]).toHaveProperty("id");
-    expect(response.body[0]).toHaveProperty("user_id");
-    expect(response.body[0].user_id).toBe(userNonAdminCreated.id);
-    expect(response.body[0]).toHaveProperty("day_id");
-    expect(response.body[0]).toHaveProperty("hour_id");
+    expect(response.status).toBe(201);
+    expect(response.body[0]).toHaveProperty("day");
+    expect(response.body[0]).toHaveProperty("hour");
   });
 
   test("DELETE /schedules -  Must be able to delete all schedule", async () => {

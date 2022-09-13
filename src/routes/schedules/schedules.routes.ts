@@ -8,19 +8,17 @@ import updateSchedulesMiddlewares from "../../middlewares/updateSchedules.middle
 const routes = Router();
 
 export const schedulesRoutes = () => {
-  routes.get("", isAdmMiddleware, listSchedulesController);
-  routes.get(
-    "/users/:user_id",
-    authenticationMiddleware,
-    listSchedulesByUserController
+  routes.get("", authenticationMiddleware, isAdmMiddleware, listSchedulesController);
+  routes.get("/users/:user_id", authenticationMiddleware,listSchedulesByUserController
   );
   routes.get("/areas/:area_id",authenticationMiddleware , isAdmMiddleware, listSchedulesByAreaController);
   routes.get(
-    "/hours/days/areas/:day[0-6]/:hour/:area_id",
+    "/hours/days/areas/:day/:hour/:area_id",
+    authenticationMiddleware,
     isAdmMiddleware,
     listSchedulesByDayAndHourController
   );
-  routes.get("/:area_id/report", isAdmMiddleware, countUsersByHourController);
+  routes.get("/:area_id/report", authenticationMiddleware, isAdmMiddleware, countUsersByHourController);
   routes.post("", authenticationMiddleware, createScheduleController);
   routes.patch("", authenticationMiddleware, updateSchedulesMiddlewares, createScheduleController);
   routes.delete("", authenticationMiddleware, deleteSchedulesController);

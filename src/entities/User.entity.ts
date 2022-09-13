@@ -70,7 +70,9 @@ export class User {
   })
   organization: Organizations;
 
-  @OneToMany(() => Schedules, (schedules) => schedules.user)
+  @OneToMany(() => Schedules, (schedules) => schedules.user, {
+    eager: true
+  })
   schedule: Schedules;
 
   @OneToMany(() => Comments, (comment) => comment.user)

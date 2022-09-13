@@ -27,6 +27,7 @@ export const areasUserService = async (user_id: string, is_adm: boolean, id: str
     }
   })
 
+
   const areas = areasUser.map((el) => {
     const {area, ...rest} = el
     return area
