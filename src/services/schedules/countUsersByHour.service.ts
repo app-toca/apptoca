@@ -6,8 +6,8 @@ export const countUsersByHourService = async ({ area_id }: any) => {
   const schedulesRepository = AppDataSource.getRepository(Schedules);
 
   const schedules = await schedulesRepository.find({
-    relations: { user: { area_user: true } },
-    where: { user: { area_user: { area: { id: area_id } } } },
+    where: { user: {area_user: { area: { id: area_id}}} },
+    relations: { hour: true, day: true }
   });
 
   const result = schedules.reduce((acc: IReportSchedule[], child) => {

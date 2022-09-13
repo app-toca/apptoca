@@ -13,14 +13,20 @@ const routes = Router();
 
 export const organizationsRoutes = () => {
   routes.get("", listOrganizationsController);
-  routes.get("/:org_id", listOneOrganizationController);
+  routes.get(
+    "/:org_id",
+    authenticationMiddleware,
+    checkOrganizationMiddleware,
+    listOneOrganizationController
+  );
   routes.post("", createOrganizationController);
-  routes.patch("/:org_id",
+  routes.patch(
+    "/:org_id",
     authenticationMiddleware,
     isOwnerMiddleware,
     checkOrganizationMiddleware,
     updateOrganizationController
   );
 
-  return routes
+  return routes;
 };

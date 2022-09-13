@@ -58,7 +58,12 @@ describe("/administration/area", () => {
 
     userNonAdminCreated = responseUserNonAdmin.body;
 
-    const responseArea = await request(app).post(`/areas`).send(marketingArea);
+    const loginAdmin = await request(app).post("/login").send(userOwnerLogin);
+
+    const responseArea = await request(app)
+      .post(`/areas`)
+      .send(marketingArea)
+      .set("Authorization", `Bearer ${loginAdmin.body.token}`);
 
     marketingAreaCreated = responseArea.body;
 
@@ -75,15 +80,15 @@ describe("/administration/area", () => {
     userOfUnknowOrgCreated = responseUserOrg2.body;
   });
 
-  test("POST /administration/area -  Must be able to create the relation with user and area", async () => {
+  test("POST /administration/area/:user_id/:area_id -  Must be able to create the relation with user and area", async () => {
     const loginAdmin = await request(app).post("/login").send(userOwnerLogin);
+
     const body = {
       user_id: userNonAdminCreated.id,
       area_id: marketingAreaCreated.id,
     };
     const response = await request(app)
-      .post("/administration/area")
-      .send(body)
+      .post(`/administration/area/${body.user_id}/${body.area_id}`)
       .set("Authorization", `Bearer ${loginAdmin.body.token}`);
 
     const responseAreasOfUser = await request(app)
@@ -94,7 +99,7 @@ describe("/administration/area", () => {
     expect(responseAreasOfUser.body).toHaveLength(1);
   });
 
-  test("POST /administration/area -  Should not be able to create the relation with user and area if not being an admin user", async () => {
+  test("POST /administration/area/:user_id/:area_id -  Should not be able to create the relation with user and area if not being an admin user", async () => {
     const loginNonAdmin = await request(app)
       .post("/login")
       .send(userNonAdminLogin);
@@ -103,54 +108,50 @@ describe("/administration/area", () => {
       area_id: marketingAreaCreated.id,
     };
     const response = await request(app)
-      .post("/administration/area")
-      .send(body)
+      .post(`/administration/area/${body.user_id}/${body.area_id}`)
       .set("Authorization", `Bearer ${loginNonAdmin.body.token}`);
 
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(401);
   });
 
-  test("POST /administration/area -  Should not be able to create the relation with user and area if pass an invalid user_id", async () => {
+  test("POST /administration/area/:user_id/:area_id -  Should not be able to create the relation with user and area if pass an invalid user_id", async () => {
     const loginAdmin = await request(app).post("/login").send(userOwnerLogin);
     const body = { user_id: "54796665646", area_id: marketingAreaCreated.id };
     const response = await request(app)
-      .post("/administration/area")
-      .send(body)
+      .post(`/administration/area/${body.user_id}/${body.area_id}`)
       .set("Authorization", `Bearer ${loginAdmin.body.token}`);
 
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(404);
   });
 
-  test("POST /administration/area -  Should not be able to create the relation with user and area if pass an invalid area_id", async () => {
+  test("POST /administration/area/:user_id/:area_id -  Should not be able to create the relation with user and area if pass an invalid area_id", async () => {
     const loginAdmin = await request(app).post("/login").send(userOwnerLogin);
     const body = { user_id: userNonAdminCreated.id, area_id: "13242565" };
     const response = await request(app)
-      .post("/administration/area")
-      .send(body)
+      .post(`/administration/area/${body.user_id}/${body.area_id}`)
       .set("Authorization", `Bearer ${loginAdmin.body.token}`);
 
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(404);
   });
 
-  test("POST /administration/area -  Should not be able to create the relation with user and area if the user is from another organization", async () => {
+  test("POST /administration/area/:user_id/:area_id -  Should not be able to create the relation with user and area if the user is from another organization", async () => {
     const loginAdmin = await request(app).post("/login").send(userOwnerLogin);
     const body = {
       user_id: userOfUnknowOrgCreated.id,
       area_id: marketingAreaCreated.id,
     };
     const response = await request(app)
-      .post("/administration/area")
-      .send(body)
+      .post(`/administration/area/${body.user_id}/${body.area_id}`)
       .set("Authorization", `Bearer ${loginAdmin.body.token}`);
 
     expect(response.body).toHaveProperty("message");
-    expect(response.status).toBe(403);
+    expect(response.status).toBe(401);
   });
 
-  test("DELETE /administration/area/:user_id/:area_id -  Must be able to create the relation with user and area", async () => {
+  test("DELETE /administration/area/:user_id/:area_id -  Must be able to delete the relation with user and area", async () => {
     const loginAdmin = await request(app).post("/login").send(userOwnerLogin);
     const response = await request(app)
       .delete(
@@ -166,7 +167,7 @@ describe("/administration/area", () => {
     expect(responseAreasOfUser.body).toHaveLength(0);
   });
 
-  test("DELETE /administration/area/:user_id/:area_id -  Should not be able to create the relation without authentication", async () => {
+  test("DELETE /administration/area/:user_id/:area_id -  Should not be able to delete the relation without authentication", async () => {
     const response = await request(app).delete(
       `/administration/area/${userNonAdminCreated.id}/${marketingAreaCreated.id}`
     );

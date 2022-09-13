@@ -9,8 +9,4 @@ export class Days {
 
     @Column({  })
     name: number;
-
-    @OneToOne(() => Schedules)
-    @JoinColumn()
-    schedule: Schedules;
 }

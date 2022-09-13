@@ -7,7 +7,7 @@ import { UpdateResult } from "typeorm";
 const updateOrganizationService = async ({
   org_id,
   name,
-}: IOrganizationUpdateRequest): Promise<UpdateResult> => {
+}: IOrganizationUpdateRequest): Promise<Organizations> => {
   const organizationsRepository = AppDataSource.getRepository(Organizations);
 
   const org: Organizations | null = await organizationsRepository.findOne({
@@ -16,6 +16,14 @@ const updateOrganizationService = async ({
 
   if (!org) {
     throw new AppError(404, "Organization not found");
+  }
+
+  const orgAlreadyexists = await organizationsRepository.findOne({
+    where: { name: name },
+  });
+
+  if (orgAlreadyexists) {
+    throw new AppError(400, "This name already belongs to other organization");
   }
 
   let orgUpdated: UpdateResult | null;
@@ -28,6 +36,10 @@ const updateOrganizationService = async ({
     throw new AppError(error.statusCode, error.message);
   }
 
-  return orgUpdated;
+  const orgUp = await organizationsRepository.findOne({
+    where: { id: org_id },
+  });
+
+  return orgUp!;
 };
 export default updateOrganizationService;

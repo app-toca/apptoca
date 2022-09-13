@@ -1,52 +1,27 @@
 import { Router } from "express";
+import { countUsersByHourController, createScheduleController, deleteSchedulesController, listSchedulesByAreaController, listSchedulesByDayAndHourController, listSchedulesByUserController, listSchedulesController } from "../../controllers/schedules.controllers";
 import authenticationMiddleware from "../../middlewares/authentication.middleware";
 import isAdmMiddleware from "../../middlewares/isAdm.middleware";
-import {
-  countUsersByHourController,
-  createScheduleController,
-  deleteSchedulesController,
-  listSchedulesByAreaController,
-  listSchedulesByDayAndHourController,
-  listSchedulesByUserController,
-  listSchedulesController,
-  updateScheduleController,
-} from "../../controllers/schedules.controllers";
+import updateSchedulesMiddlewares from "../../middlewares/updateSchedules.middleware";
+
 
 const routes = Router();
 
 export const schedulesRoutes = () => {
-  routes.get("/schedules", isAdmMiddleware, listSchedulesController);
+  routes.get("", authenticationMiddleware, isAdmMiddleware, listSchedulesController);
+  routes.get("/users/:user_id", authenticationMiddleware,listSchedulesByUserController
+  );
+  routes.get("/areas/:area_id",authenticationMiddleware , isAdmMiddleware, listSchedulesByAreaController);
   routes.get(
-    "/schedules/users/:user_id",
+    "/hours/days/areas/:day/:hour/:area_id",
     authenticationMiddleware,
-    listSchedulesByUserController
-  );
-  routes.get(
-    "/schedules/users/:area_id",
-    isAdmMiddleware,
-    listSchedulesByAreaController
-  );
-  routes.get(
-    "/schedules/hours/days/areas/:day[0-6]/:hour/:area_id",
     isAdmMiddleware,
     listSchedulesByDayAndHourController
   );
-  routes.get(
-    "/schedules/:area_id/report",
-    isAdmMiddleware,
-    countUsersByHourController
-  );
-  routes.post("/schedules", authenticationMiddleware, createScheduleController);
-  routes.patch(
-    "/schedules",
-    authenticationMiddleware,
-    updateScheduleController
-  );
-  routes.delete(
-    "/schedules",
-    authenticationMiddleware,
-    deleteSchedulesController
-  );
+  routes.get("/:area_id/report", authenticationMiddleware, isAdmMiddleware, countUsersByHourController);
+  routes.post("", authenticationMiddleware, createScheduleController);
+  routes.patch("", authenticationMiddleware, updateSchedulesMiddlewares, createScheduleController);
+  routes.delete("", authenticationMiddleware, deleteSchedulesController);
 
   return routes;
 };

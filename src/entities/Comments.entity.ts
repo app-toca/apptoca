@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { User } from "./User.entity";
 import { Posts } from "./Posts.entity";
 
@@ -14,6 +20,9 @@ export class Comments {
     eager: true,
   })
   user: User;
+
+  @CreateDateColumn()
+  created_at: Date;
 
   @ManyToOne((type) => Posts, (post) => post.comments)
   post: Posts;

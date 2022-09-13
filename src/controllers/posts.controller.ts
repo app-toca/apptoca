@@ -1,67 +1,56 @@
-import { Request, Response } from 'express'
-import createPostService from "../services/posts/createPost.service"
-import deletePostService from '../services/posts/deletePost.service'
-import getAllPostsService from '../services/posts/getAllPosts.service'
-import getOnePostService from '../services/posts/getOnePost.service'
-import getPostsByAreaService from '../services/posts/getPostsByArea.service'
-import updatePostService from '../services/posts/updatePost.service'
+import { instanceToPlain } from "class-transformer";
+import { Request, Response } from "express";
+import createPostService from "../services/posts/createPost.service";
+import deletePostService from "../services/posts/deletePost.service";
+import getAllPostsService from "../services/posts/getAllPosts.service";
+import getOnePostService from "../services/posts/getOnePost.service";
+import getPostsByAreaService from "../services/posts/getPostsByArea.service";
+import updatePostService from "../services/posts/updatePost.service";
 
+export const createPostController = async (req: Request, res: Response) => {
+  const { area_id } = req.params;
 
-export const createPostController  = async(req: Request, res: Response) => {
+  const post = await createPostService(req.body, area_id, req.user.id);
 
-    const { area_id } = req.params 
+  return res.status(201).json(instanceToPlain(post));
+};
 
-    const post = await createPostService(req.body, area_id ,req.user.id)
+export const getAllPostsController = async (req: Request, res: Response) => {
+  const { organization } = req.user;
 
-    return res.status(201).json(post)
+  const posts = await getAllPostsService(organization);
 
-}
+  return res.status(200).json(instanceToPlain(posts));
+};
 
-export const getAllPostsController  = async(req: Request, res: Response) => {
+export const getOnePostController = async (req: Request, res: Response) => {
+  const { post_id } = req.params;
 
+  const post = await getOnePostService(post_id);
 
-    const posts = await getAllPostsService()
+  return res.status(200).json(instanceToPlain(post));
+};
 
-    return res.status(200).json(posts)
+export const getPostsByAreaController = async (req: Request, res: Response) => {
+  const { area_id } = req.params;
 
-}
+  const posts = await getPostsByAreaService(area_id);
 
-export const getOnePostController  = async(req: Request, res: Response) => {
+  return res.status(200).json(instanceToPlain(posts));
+};
 
-    const { post_id } = req.params
+export const updatePostController = async (req: Request, res: Response) => {
+  const { post_id } = req.params;
 
-    const post = await getOnePostService(post_id)
+  const post = await updatePostService(post_id, req.user.id, req.body);
 
-    return res.status(200).json(post)
+  return res.status(200).json(instanceToPlain(post));
+};
 
-}
+export const deletePostController = async (req: Request, res: Response) => {
+  const { post_id } = req.params;
 
-export const getPostsByAreaController  = async(req: Request, res: Response) => {
+  await deletePostService(post_id, req.user.id);
 
-    const { area_id } = req.params
-
-    const posts = await getPostsByAreaService(area_id)
-
-    return res.status(200).json(posts)
-
-}
-
-export const updatePostController  = async(req: Request, res: Response) => {
-
-    const { post_id } = req.params
-
-    const post = await updatePostService(post_id, req.user.id, req.body)
-
-    return res.status(200).json(post)
-
-}
-
-export const deletePostController  = async(req: Request, res: Response) => {
-
-    const { post_id } = req.params
-
-    await deletePostService(post_id, req.user.id)
-
-    return res.status(204).send()
-
-}
+  return res.status(204).send();
+};

@@ -8,6 +8,7 @@ const updateAreaService = async ({
   area_id,
   name,
   description,
+  organization,
 }: iAreaUpdateRequest): Promise<Areas> => {
   const areaRepository = AppDataSource.getRepository(Areas);
 
@@ -17,6 +18,10 @@ const updateAreaService = async ({
 
   if (!area) {
     throw new AppError(404, "Area not found");
+  }
+
+  if (area.organization.id !== organization) {
+    throw new AppError(401, "Unauthorized");
   }
 
   let areaUpdated: UpdateResult | null;

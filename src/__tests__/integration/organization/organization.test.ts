@@ -69,10 +69,10 @@ describe("/organizations", () => {
   });
 
   test("GET /organizations - Must be able to list all organizations", async () => {
-    const response = await request(app).get("/organizatins");
+    const response = await request(app).get("/organizations");
 
     expect(response.status).toBe(200);
-    expect(response.body).toHaveLength(2);
+    expect(response.body).toHaveLength(3);
     expect(response.body[0]).not.toHaveProperty("password");
   });
 
@@ -152,7 +152,7 @@ describe("/organizations", () => {
       .patch(`/organizations/${organizationUnknow.id}`)
       .send(organizationToca);
 
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(401);
     expect(response.body).toHaveProperty("message");
   });
 });

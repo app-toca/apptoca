@@ -4,6 +4,7 @@ import { Posts } from "../../entities/Posts.entity";
 import { AppError } from "../../error/global";
 import { Organizations } from "../../entities/Organizations.entity";
 import { Meetings } from "../../entities/Meetings.entity";
+import { Image } from "../../entities/Image.entity";
 
 interface IComment {
   id: string;
@@ -21,6 +22,7 @@ interface IUserResponse {
   course?: string;
   phrase?: string;
   is_adm?: boolean;
+  img?: Image;
   is_owner?: boolean;
   is_active?: boolean;
   created_at?: Date;
@@ -56,7 +58,8 @@ const listPostCommentService = async (post_id: string): Promise<IComment[]> => {
       delete c.user.updated_at &&
       delete c.user.organization &&
       delete c.user.email &&
-      delete c.user.meetings
+      delete c.user.meetings &&
+      delete c.user.img
   );
 
   return com;
