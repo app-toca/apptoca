@@ -76,12 +76,12 @@ export const createUserService = async (
     },
   });
 
-  console.log("aqui");
+
   if (usersByOrganization.length === 0) {
     newUser.is_owner = true;
     newUser.is_adm = true;
   }
-  console.log("aqui2");
+  
 
   await usersRepository.save(newUser);
 
