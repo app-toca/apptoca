@@ -47,11 +47,13 @@ describe("/areas", () => {
       .post("/areas")
       .set("Authorization", `Bearer ${ownerLogin.body.token}`)
       .send(marketingArea);
+
     marketingArea.id = areaResponse.body.id;
 
-    await request(app)
-      .post(`/administration/${adminUser.id}/${marketingArea.id}`)
+    const areaUser = await request(app)
+      .post(`/administration/area/${adminUser.id}/${marketingArea.id}`)
       .set("Authorization", `Bearer ${ownerLogin.body.token}`);
+
     await request(app)
       .patch(`/users/${adminUser.id}`)
       .set("Authorization", `Bearer ${ownerLogin.body.token}`)
@@ -64,10 +66,11 @@ describe("/areas", () => {
       .send(postTest);
     postTest.id = postResponse.body.id;
 
-    await request(app)
-      .post(`/administration/${nonAdminUser.id}/${marketingArea.id}`)
+    const areaUserNonAdmin = await request(app)
+      .post(`/administration/area/${nonAdminUser.id}/${marketingArea.id}`)
       .set("Authorization", `Bearer ${ownerLogin.body.token}`);
   });
+
 
   afterAll(async () => {
     await connection.destroy();
