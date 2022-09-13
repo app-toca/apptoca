@@ -43,7 +43,10 @@ const checkOrganizationMiddleware = async (
   }
 
   if (area_id) {
-    const area = await areaRepository.findOneBy({ id: area_id });
+    const area = await areaRepository.findOneBy({
+      organization: { id: organization },
+    });
+
     if (area?.organization.id !== organization) {
       throw new AppError(401, "Unauthorizated");
     }
