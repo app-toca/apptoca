@@ -34,7 +34,9 @@ export const updateReactionController = async (req: Request, res: Response) => {
     req.body
   );
 
-  return res.status(200).json(reaction);
+  const { id, type, created_at, updated_at } = reaction;
+
+  return res.status(200).json({ id, type, created_at, updated_at });
 };
 
 export const deleteReactionController = async (req: Request, res: Response) => {
