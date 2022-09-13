@@ -36,15 +36,21 @@ const createPostCommentService = async ({
 
   const user: User | null = await usersRepository.findOne({
     where: { id: id },
-  });
-
-  const areaUser = await areasRepository.find({
-    relations: { user: true },
-    where: { user: { id: id } },
+    relations: {area_user: { area:true}}
   });
 
   if (!user) {
     throw new AppError(404, "User not found");
+  }
+
+
+  const areaUser = await areasRepository.find({
+    relations: { user: true, area:true },
+    where: { user: { id: id }, area: {id: post.area.id} },
+  });
+
+  if(areaUser.length == 0 /*&& !user?.is_owner*/) {
+    throw new AppError(401, "You don't have access to this area post");
   }
 
   const newComment = new Comments();
