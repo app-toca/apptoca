@@ -13,6 +13,8 @@ import {
   userAdminLogin,
   userNonAdminLogin,
   userOwner,
+  userOwnerLogin,
+  adminUser,
 } from "../../mocks/users";
 import { IPostResponse } from "../../../interfaces/posts";
 import { Schedules } from "../../../entities/Schedules.entity";
@@ -22,6 +24,7 @@ let userNonAdminCreated: IUserResponse;
 let userOwnerCreated: IUserResponse;
 let marketingAreaCreated: iAreaResponse;
 let postCreated: IPostResponse;
+let adminUserCreated: IUserResponse;
 
 describe("/posts", () => {
   let connection: DataSource;
@@ -53,25 +56,46 @@ describe("/posts", () => {
 
     userOwnerCreated = responseUserOwner.body;
 
+    const responseUserAdmin = await request(app)
+      .post(`/users/${organization.id}/${organizationToca.password}`)
+      .send(adminUser);
+
+    adminUserCreated = responseUserAdmin.body;
+
     const responseUserNonAdmin = await request(app)
       .post(`/users/${organization.id}/${organizationToca.password}`)
       .send(nonAdminUser);
 
     userNonAdminCreated = responseUserNonAdmin.body;
 
-    const responseArea = await request(app).post(`/areas`).send(marketingArea);
+    const ownerLoginResponse = await request(app)
+      .post("/login")
+      .send(userOwnerLogin);
+    // console.log(ownerLoginResponse.body);
+
+    const responseArea = await request(app)
+      .post(`/areas`)
+      .send(marketingArea)
+      .set("Authorization", `Bearer ${ownerLoginResponse.body.token}`);
 
     marketingAreaCreated = responseArea.body;
+
+    await request(app)
+      .patch(`/users/${adminUserCreated.id}`)
+      .set("Authorization", `Bearer ${ownerLoginResponse.body.token}`)
+      .send({ is_adm: true });
   });
 
-  test("POST /posts -  Must be able to create a post with an admin user", async () => {
+  test("POST /posts/:area_id -  Must be able to create a post with an admin user", async () => {
     const adminLoginResponse = await request(app)
       .post("/login")
       .send(userAdminLogin);
     const response = await request(app)
-      .post("/posts")
+      .post(`/posts/${marketingAreaCreated.id}`)
       .send(postTest)
       .set("Authorization", `Bearer ${adminLoginResponse.body.token}`);
+
+    postCreated = response.body;
 
     expect(response.body).toHaveProperty("id");
     expect(response.body).toHaveProperty("created_at");
@@ -81,20 +105,18 @@ describe("/posts", () => {
     expect(response.status).toBe(201);
   });
 
-  test("POST /posts -  should not be able to create a post if not being admin", async () => {
+  test("POST /posts/:area_id -  Should not be able to create a post if not being admin", async () => {
     const nonAdminLoginResponse = await request(app)
       .post("/login")
       .send(userNonAdminLogin);
     const response = await request(app)
-      .post("/posts")
+      .post(`/posts/${marketingAreaCreated.id}`)
       .send(postTest)
       .set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`);
 
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(401);
   });
-
-  /*-------------*/
 
   test("PATCH /posts/:post_id -  should not be able to update a post if not being admin", async () => {
     const nonAdminLoginResponse = await request(app)
@@ -134,18 +156,20 @@ describe("/posts", () => {
     const adminLoginResponse = await request(app)
       .post("/login")
       .send(userAdminLogin);
+
     const response = await request(app)
       .patch(`/posts/${postCreated.id}`)
       .send({ content: "Testando patch do meu post" })
       .set("Authorization", `Bearer ${adminLoginResponse.body.token}`);
+
+    postCreated = response.body;
+
     const findPost = await request(app)
       .get(`/posts/${postCreated.id}`)
       .set("Authorization", `Bearer ${adminLoginResponse.body.token}`);
 
     expect(findPost.body.content).toBe("Testando patch do meu post");
     expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty("post");
-    expect(response.body.content).toBe("Testando patch do meu post");
   });
 
   test("PATCH - /posts/:post_id  should not be able to update post with invalid id", async () => {
@@ -253,7 +277,7 @@ describe("/posts", () => {
       .set("Authorization", `Bearer ${adminLoginResponse.body.token}`);
 
     expect(response.status).toBe(204);
-    expect(findPost.body.status).toBe(404);
+    expect(findPost.status).toBe(404);
   });
 
   test("DELETE - /posts/:post_id  should not be able to delete post with invalid id", async () => {
