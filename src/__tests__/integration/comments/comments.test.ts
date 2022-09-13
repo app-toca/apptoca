@@ -86,7 +86,7 @@ describe("/areas", () => {
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty("id");
     expect(response.body).toHaveProperty("content");
-    expect(response.body).toHaveProperty("create_at");
+    expect(response.body).toHaveProperty("created_at");
   });
 
   test("POST /comments/:post_id - Must be able to create a new comment from same user", async () => {
@@ -102,7 +102,7 @@ describe("/areas", () => {
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty("id");
     expect(response.body).toHaveProperty("content");
-    expect(response.body).toHaveProperty("create_at");
+    expect(response.body).toHaveProperty("created_at");
   });
 
   test("POST /comments/:post_id - Should not be able to create a comment from other area", async () => {
@@ -139,8 +139,9 @@ describe("/areas", () => {
     const nonAdminLogin = await request(app)
       .post("/login")
       .send(userNonAdminLogin);
+
     const response = await request(app)
-      .get(`/comments/${postTest.id}`)
+      .get(`/comments/post/${postTest.id}`)
       .set("Authorization", `Bearer ${nonAdminLogin.body.token}`);
 
     expect(response.status).toBe(200);
@@ -166,7 +167,7 @@ describe("/areas", () => {
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("id");
     expect(response.body).toHaveProperty("content");
-    expect(response.body).toHaveProperty("create_at");
+    expect(response.body).toHaveProperty("created_at");
     expect(response.body.content).toBe(commentUpdate.content);
   });
 
