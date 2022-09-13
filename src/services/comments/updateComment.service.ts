@@ -46,7 +46,7 @@ const updateCommentService = async (
   }
 
   if (comment.user.id !== id) {
-    throw new AppError(400, "This comment doesn't belogn to this user");
+    throw new AppError(401, "This comment doesn't belogn to this user");
   }
 
   try {

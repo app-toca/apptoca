@@ -470,8 +470,6 @@ describe("/users", () => {
       .delete(`/users/${userOfUnknowOrgCreated.id}`)
       .set("Authorization", `Bearer ${adminLoginResponse.body.token}`);
 
-    console.log(response.body);
-
     expect(response.status).toBe(401);
     expect(response.body).toHaveProperty("message");
   });
