@@ -30,6 +30,7 @@ export const areasUserService = async (
     },
   });
 
+
   const areas = areasUser.map((el) => {
     const { area, ...rest } = el;
     return area;

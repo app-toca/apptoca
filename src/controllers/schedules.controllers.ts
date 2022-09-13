@@ -6,7 +6,6 @@ import { listSchedulesService } from "../services/schedules/listSchedules.servic
 import { listSchedulesByAreaService } from "../services/schedules/listSchedulesByArea.service";
 import { listSchedulesByDayAndHourService } from "../services/schedules/listSchedulesByDayAndHour.service";
 import { listSchedulesByUserService } from "../services/schedules/listSchedulesByUser.service";
-import { updateScheduleService } from "../services/schedules/updateSchedule.service";
 
 //Retorna os usuário por hora contabilizados
 
@@ -16,7 +15,7 @@ export const countUsersByHourController = async (
 ) => {
   const { area_id } = req.params;
 
-  const usersQuantity = countUsersByHourService({ area_id });
+  const usersQuantity = await countUsersByHourService({ area_id });
 
   return res.status(200).json(usersQuantity);
 };
@@ -24,6 +23,7 @@ export const countUsersByHourController = async (
 //Lista todas as schedules
 
 export const listSchedulesController = async (req: Request, res: Response) => {
+
   const schedules = await listSchedulesService();
 
   return res.status(200).json(schedules);
@@ -37,7 +37,7 @@ export const listSchedulesByAreaController = async (
 ) => {
   const { area_id } = req.params;
 
-  const schedules = await listSchedulesByAreaService({ area_id });
+  const schedules = await listSchedulesByAreaService(area_id);
 
   return res.status(200).json(schedules);
 };
@@ -48,9 +48,9 @@ export const listSchedulesByDayAndHourController = async (
   req: Request,
   res: Response
 ) => {
-  const { hour, day } = req.params;
+  const { hour, day, area_id } = req.params;
 
-  const schedules = await listSchedulesByDayAndHourService(hour, Number(day));
+  const schedules = await listSchedulesByDayAndHourService(hour, Number(day), area_id);
 
   return res.status(200).json(schedules);
 };
@@ -62,8 +62,9 @@ export const listSchedulesByUserController = async (
   res: Response
 ) => {
   const { user_id } = req.params;
+  const { is_adm, id } = req.user
 
-  const schedules = listSchedulesByUserService({ user_id });
+  const schedules = await listSchedulesByUserService({ user_id }, is_adm, id );
 
   return res.status(200).json(schedules);
 };
@@ -77,19 +78,7 @@ export const createScheduleController = async (req: Request, res: Response) => {
 
   const schedulesCreated = await createScheduleService({ schedules }, user_id);
 
-  return res.status(200).json(schedulesCreated);
-};
-
-//Atualiza as schedules do usuário
-
-export const updateScheduleController = async (req: Request, res: Response) => {
-  const schedules = req.body;
-
-  const user_id = req.user.id;
-
-  const schedulesUpdated = await updateScheduleService({ schedules }, user_id);
-
-  return res.status(200).json(schedulesUpdated);
+  return res.status(201).json(schedulesCreated);
 };
 
 //Deleta as schedules do usuário
@@ -100,7 +89,7 @@ export const deleteSchedulesController = async (
 ) => {
   const user_id = req.user.id;
 
-  const deleted = deleteSchedulesService(user_id);
+  const deleted = await deleteSchedulesService(user_id);
 
-  return res.status(200).json(deleted);
+  return res.status(204).send();
 };
