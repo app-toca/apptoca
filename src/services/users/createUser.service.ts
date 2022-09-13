@@ -16,15 +16,14 @@ export const createUserService = async (
     year,
     course,
     phrase,
-    url
+    url,
   }: IUserRequest,
   organizationId: string,
   password_org: string
 ) => {
-
   const usersRepository = AppDataSource.getRepository(User);
   const organizationRepository = AppDataSource.getRepository(Organizations);
-  const imagesRepository = AppDataSource.getRepository(Image)
+  const imagesRepository = AppDataSource.getRepository(Image);
 
   const findEmail = await usersRepository.findOneBy({
     email: email,
@@ -46,17 +45,16 @@ export const createUserService = async (
 
   const hashedPassword = await bycrypt.hash(password, 10);
 
-  const newImage = new Image()
+  const newImage = new Image();
 
-  
-  if(url) {
-    newImage.url = url
+  if (url) {
+    newImage.url = url;
   } else {
-    newImage.url = ""
+    newImage.url = "";
   }
-  await imagesRepository.create(newImage)
-  const imageUserCreated = await imagesRepository.save(newImage)
-  
+  await imagesRepository.create(newImage);
+  const imageUserCreated = await imagesRepository.save(newImage);
+
   const newUser = usersRepository.create({
     name,
     nickname,
@@ -69,21 +67,23 @@ export const createUserService = async (
     img: imageUserCreated!,
     organization: organizationFind,
   });
-  
+
   //await imagesRepository.update(imageUserCreated.id, {user: newUser})
-  
+
   const usersByOrganization = await usersRepository.find({
     where: {
-      organization: organizationFind
-    }
-  })
+      organization: organizationFind,
+    },
+  });
 
+  console.log("aqui");
   if (usersByOrganization.length === 0) {
     newUser.is_owner = true;
     newUser.is_adm = true;
   }
-  
+  console.log("aqui2");
+
   await usersRepository.save(newUser);
 
   return newUser;
-}; 
+};

@@ -1,47 +1,46 @@
+import { Request, Response } from "express";
+import createReactionService from "../services/reactions/createReaction.service";
+import deleteReactionService from "../services/reactions/deleteReaction.service";
+import getReactionsOfPostService from "../services/reactions/getReactionsOfPost.service";
+import updateReactionService from "../services/reactions/updateReaction.service";
 
-import { Request, Response } from 'express'
-import createReactionService from '../services/reactions/createReaction.service'
-import deleteReactionService from '../services/reactions/deleteReaction.service'
-import getReactionsOfPostService from '../services/reactions/getReactionsOfPost.service'
-import updateReactionService from '../services/reactions/updateReaction.service'
+export const createReactionController = async (req: Request, res: Response) => {
+  const { post_id } = req.params;
 
+  const reaction = await createReactionService(req.body, post_id, req.user.id);
 
-export const createReactionController = async(req: Request, res: Response) => {
+  const { id, type, created_at, updated_at } = reaction;
 
-    const { post_id } = req.params 
+  return res.status(201).json({ id, type, created_at, updated_at });
+};
 
-    const reaction = await createReactionService(req.body, post_id ,req.user.id)
+export const getReactionsOfPostController = async (
+  req: Request,
+  res: Response
+) => {
+  const { post_id } = req.params;
 
-    return res.status(201).json(reaction)
+  const reactions = await getReactionsOfPostService(post_id);
 
-}
+  return res.status(200).json(reactions);
+};
 
-export const getReactionsOfPostController = async(req: Request, res: Response) => {
+export const updateReactionController = async (req: Request, res: Response) => {
+  const { reaction_id } = req.params;
 
-    const { post_id } = req.params 
+  const reaction = await updateReactionService(
+    reaction_id,
+    req.user.id,
+    req.body
+  );
 
-    const reactions = await getReactionsOfPostService(post_id)
+  return res.status(200).json(reaction);
+};
 
-    return res.status(200).json(reactions)
+export const deleteReactionController = async (req: Request, res: Response) => {
+  const { reaction_id } = req.params;
 
-}
+  await deleteReactionService(reaction_id, req.user.id);
 
-export const updateReactionController  = async(req: Request, res: Response) => {
-
-    const { reaction_id } = req.params
-
-    const reaction = await updateReactionService(reaction_id, req.user.id, req.body)
-
-    return res.status(200).json(reaction)
-
-}
-
-export const deleteReactionController  = async(req: Request, res: Response) => {
-
-    const { reaction_id } = req.params
-
-    await deleteReactionService(reaction_id, req.user.id)
-
-    return res.status(204).send()
-
-}
+  return res.status(204).send();
+};
