@@ -1,9 +1,37 @@
 {
-  "name": "apptoca",
+  "name": "myo",
   "version": "1.0.0",
+  "description": "Api to manage your organization, do posts, meetings and manage your team.",
   "main": "server.ts",
   "author": "grupoDaGlr",
   "license": "MIT",
+  "apidoc": {
+    "name": "MYO - Manage your organization",
+    "url": "https://app-toca.herokuapp.com",
+    "header": {
+      "title": "Introduction",
+      "filename": "header.md"
+    },
+    "footer": {
+      "title": "Best pratices",
+      "filename": "footer.md"
+    },
+    "order": [
+      "Organization",
+      "Session",
+      "Users",
+      "Administration",
+      "Schedules",
+      "Areas",
+      "Posts",
+      "Meetings",
+      "Comments",
+      "Reactions"
+    ],
+    "template": {
+      "showRequiredLabels": true
+    }
+  },
   "scripts": {
     "dev": "ts-node-dev --ignore-watch node_modules src/server.ts",
     "build": "tsc",
@@ -28,6 +56,7 @@
   },
   "dependencies": {
     "@types/multer": "^1.4.7",
+    "apidoc": "^0.53.0",
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.5.1",
     "cloudinary": "^1.31.0",
