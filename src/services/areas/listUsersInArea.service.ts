@@ -2,34 +2,40 @@ import AppDataSource from "../../data-source";
 import { Areas } from "../../entities/Areas.entity";
 import { User } from "../../entities/User.entity";
 import { AppError } from "../../error/global";
-const listUsersInAreaService = async (area_id: string): Promise<User[]> => {
-    const areaRepository = await AppDataSource.getRepository(Areas)
-    const usersRepository = await AppDataSource.getRepository(User)
+import { IUsersInArea } from "../../interfaces/areas";
 
-    const area = await areaRepository.findOneBy({
-      id: area_id
-  })
+const listUsersInAreaService = async (
+  area_id: string
+): Promise<IUsersInArea[]> => {
+  const areaRepository = await AppDataSource.getRepository(Areas);
+  const usersRepository = await AppDataSource.getRepository(User);
 
-  if(!area) {
-      throw new AppError(404, "Area not found")
+  const area = await areaRepository.findOneBy({
+    id: area_id,
+  });
 
+  if (!area) {
+    throw new AppError(404, "Area not found");
   }
 
-  const users = usersRepository.find({
+  const users = await usersRepository.find({
     relations: {
-      area_user:true
+      area_user: true,
     },
     where: {
       area_user: {
-        area: area
-      } 
-    }
+        area: { id: area_id },
+      },
+    },
+  });
 
-  })
+  const a = users.map((user) => {
+    const { id, nickname, is_adm, img } = user;
+    const uss = { id, nickname, is_adm, img };
+    return uss;
+  });
 
-  return users
-
-
+  return a;
 };
 
 export default listUsersInAreaService;
