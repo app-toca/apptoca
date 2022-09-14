@@ -1,3 +1,4 @@
+import { instanceToPlain } from "class-transformer";
 import { Request, Response } from "express";
 import createAdministrationAreaRelationService from "../services/administration/createAdministrationAreaRelation.service";
 import deleteAdministrationAreaRelationService from "../services/administration/deleteAdministrationAreaRelation.service";
@@ -13,7 +14,7 @@ export const createAdministrationAreaRelationController = async (
     user_id,
   });
 
-  return res.status(201).json(areaUsers);
+  return res.status(201).json(instanceToPlain(areaUsers));
 };
 
 export const deleteAdministrationAreaRelationController = async (
