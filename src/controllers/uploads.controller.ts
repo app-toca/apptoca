@@ -7,5 +7,5 @@ export const uploadImageController = async (req: Request, res: Response) => {
 
     const newImage = await uploadImageService(req.file, id);
   
-    return res.status(201).json(/*newImage*/);
+    return res.status(201).json({url:newImage.url});
   };
