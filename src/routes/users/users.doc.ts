@@ -254,4 +254,6 @@
  *
  * @apiParam {string} user_id Organization unique ID.
  *
+ * @apiSuccess (Success 204) No_content
+ *
  */
