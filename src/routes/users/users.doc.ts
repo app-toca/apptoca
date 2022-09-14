@@ -208,7 +208,6 @@
  *
  * @apiBody {string} [name] Name of the User.
  * @apiBody {string} [nickname] Nickname of the User.
- * @apiBody {string} [email] Email of the User (UNIQUE).
  * @apiBody {string} [password] Password of the User.
  * @apiBody {number} [age] Age of the User.
  * @apiBody {number} [year] Time of the User in Organization.
@@ -242,6 +241,8 @@
  *	"created_at": "2022-09-14T11:25:37.587Z",
  *	"updated_at": "2022-09-14T11:25:37.587Z"
  * }
+ *
+ * @apiError {400} Send_Different_email You can't change your email.
  *
  */
 
