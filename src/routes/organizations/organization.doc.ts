@@ -26,11 +26,7 @@
  * @apiGroup Organization
  * @apiPermission Member
  *
- * @apiHeader (UserToken) {string} Authorization The token can be generated from your user profile.
- * @apiHeaderExample {Header} Header-Example
- * {
- *    Authorization: "Bearer 8070b..."
- * }
+ * @apiUse HeaderToken
  *
  *
  * @apiParam {string} org_id Organization unique ID.
@@ -83,6 +79,8 @@
  * @apiName UpdateOrganization
  * @apiGroup Organization
  * @apiPermission Owner
+ *
+ * @apiUse HeaderToken
  *
  * @apiParam {string} org_id Organization unique ID.
  *

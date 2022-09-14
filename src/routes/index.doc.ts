@@ -29,3 +29,21 @@
 /**
  * @apiDefine ReactOwner Only owner of the reactions
  */
+
+/**
+ * @apiDefine AdminAndOwner Admin of the organization and Request's Onwer
+ */
+
+/**
+ * @apiDefine OwnerAndOwner Owner of the organization and Request's Onwer
+ */
+
+/**
+ * @apiDefine HeaderToken
+ *
+ * @apiHeader {string} Authorization The token can be generated from your user profile.
+ * @apiHeaderExample {Header} Header-Example
+ * {
+ *    Authorization: "Bearer 8070b..."
+ * }
+ */
