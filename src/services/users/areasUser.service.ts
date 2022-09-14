@@ -30,10 +30,12 @@ export const areasUserService = async (
     },
   });
 
-
   const areas = areasUser.map((el) => {
     const { area, ...rest } = el;
-    return area;
+
+    const { meetings, organization, ...aaa } = area;
+
+    return { ...aaa };
   });
 
   return areas;
