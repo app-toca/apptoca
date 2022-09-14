@@ -50,26 +50,26 @@ const createAdministrationAreaRelationService = async ({
   const areaRepository = await AppDataSource.getRepository(Areas);
   const usersRepository = await AppDataSource.getRepository(User);
 
-  const user = await usersRepository.findOneBy({
+  const u = await usersRepository.findOneBy({
     id: user_id,
   });
 
-  if (!user) {
+  if (!u) {
     throw new AppError(404, "User not found");
   }
 
-  const area = await areaRepository.findOneBy({
+  const a = await areaRepository.findOneBy({
     id: area_id,
   });
 
-  if (!area) {
+  if (!a) {
     throw new AppError(404, "Area not found");
   }
 
   const areaUsers = new Area_users();
 
-  areaUsers.user = user!;
-  areaUsers.area = area!;
+  areaUsers.user = u!;
+  areaUsers.area = a!;
 
   await areaUsersRepository.create(areaUsers);
   const areaUsersCreated = await areaUsersRepository.save(areaUsers);
