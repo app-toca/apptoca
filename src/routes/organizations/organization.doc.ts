@@ -79,7 +79,6 @@
  * @apiName UpdateOrganization
  * @apiGroup Organization
  * @apiPermission Owner
- *
  * @apiUse HeaderToken
  *
  * @apiParam {string} org_id Organization unique ID.

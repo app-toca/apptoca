@@ -31,11 +31,11 @@
  */
 
 /**
- * @apiDefine AdminAndOwner Admin of the organization and Request's Onwer
+ * @apiDefine AdminAndOwner Admin of the organization or Request's Onwer
  */
 
 /**
- * @apiDefine OwnerAndOwner Owner of the organization and Request's Onwer
+ * @apiDefine OwnerAndOwner Owner of the organization or Request's Onwer
  */
 
 /**
