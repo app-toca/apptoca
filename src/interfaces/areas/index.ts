@@ -1,4 +1,6 @@
 import { Image } from "../../entities/Image.entity";
+import { Meetings } from "../../entities/Meetings.entity";
+import { Organizations } from "../../entities/Organizations.entity";
 
 export interface iAreaRequest {
   name: string;
@@ -27,4 +29,11 @@ export interface IUsersInArea {
   nickname: string;
   is_adm: boolean;
   img: Image;
+}
+
+export interface IAreaUpReturn {
+  id: string;
+  name: string;
+  description: string;
+  organization: Organizations;
 }
