@@ -19,12 +19,13 @@
  * @apiSuccess (Success 201) {string} extraInfo.extraInfo.phrase Phrase of the User.
  * @apiSuccess (Success 201) {boolean} extraInfo.extraInfo.is_active=true Status of the User.
  * @apiSuccess (Success 201) {boolean} extraInfo.extraInfo.is_owner Is the user owner of the Organization?
- * @apiSuccess (Success 201) {boolean} extraInfo.extraInfo.is_admin=false Is the User admin?
+ * @apiSuccess (Success 201) {boolean} extraInfo.extraInfo.is_admin Is the User admin?
  * @apiSuccess (Success 201) {string} extraInfo.extraInfo.created_at Created Date.
  * @apiSuccess (Success 201) {string} extraInfo.extraInfo.updated_at Updated Date.
  * @apiSuccess (Success 201) {object} extraInfo.extraInfo.organization Organization of the User.
  * @apiSuccess (Success 201) {object} extraInfo.extraInfo.img Perfil image of the User.
  *
+ * @apiError {403} Incorrect_email_or_password Incorrect email or password.
  *
  */
 
