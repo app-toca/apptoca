@@ -13,6 +13,7 @@ const routes = Router();
 
 export const organizationsRoutes = () => {
   routes.get("", listOrganizationsController);
+
   routes.get(
     "/:org_id",
     authenticationMiddleware,
