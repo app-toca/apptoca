@@ -165,11 +165,13 @@ describe("/schedules", () => {
       .get(`/schedules`)
       .set("Authorization", `Bearer ${adminLoginResponse.body.token}`);
 
-    expect(response.body).toHaveLength(4);
+    expect(response.body).toHaveLength(2);
     expect(response.status).toBe(200);
-    expect(response.body[0]).toHaveProperty("id");
-    expect(response.body[0]).toHaveProperty("day");
-    expect(response.body[0]).toHaveProperty("hour");
+    expect(response.body[0].schedules[0]).toHaveProperty("id");
+    expect(response.body[0].schedules[0]).toHaveProperty("day");
+    expect(response.body[0].schedules[0]).toHaveProperty("hour");
+    expect(response.body[0].schedules).toHaveLength(2);
+
   });
 
   test("GET /schedules -  Should not be able to list all schedules if being non admin", async () => {

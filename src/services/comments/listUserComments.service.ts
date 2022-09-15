@@ -5,6 +5,7 @@ import { User } from "../../entities/User.entity";
 import { Organizations } from "../../entities/Organizations.entity";
 import { Meetings } from "../../entities/Meetings.entity";
 import { Image } from "../../entities/Image.entity";
+import { desconstructPost, desconstructUser } from "../../util/desconstruct";
 
 interface IComment {
   id: string;
@@ -35,38 +36,37 @@ const listUserCommentsService = async (
   user_id: string
 ): Promise<IComment[]> => {
   const commentsRepository = AppDataSource.getRepository(Comments);
+  const userRepository = AppDataSource.getRepository(User)
+
+  const users = await userRepository.find()
+
+  const user = users.find(u => u.id === user_id)
+
+  if(!user) {
+    throw new AppError(404, "User not found")
+  }
 
   const comments = await commentsRepository.find({
     where: { user: { id: user_id } },
+    relations: { user: true, post: true} 
   });
 
-  if (!comments) {
+  if (comments.length == 0) {
     throw new AppError(404, "Comments not found");
   }
 
-  let com: IComment[];
+  const cleanComments = comments.map(
 
-  com = comments;
-
-  com.map(
-    (c) =>
-      delete c.user.name &&
-      delete c.user.nickname &&
-      delete c.user.age &&
-      delete c.user.year &&
-      delete c.user.course &&
-      delete c.user.phrase &&
-      delete c.user.is_adm &&
-      delete c.user.is_owner &&
-      delete c.user.is_active &&
-      delete c.user.created_at &&
-      delete c.user.updated_at &&
-      delete c.user.organization &&
-      delete c.user.email &&
-      delete c.user.meetings &&
-      delete c.user.img
+    (comment) => {
+      const userC = desconstructUser(comment.user)
+      const postC = desconstructPost(comment.post)
+    
+      return {...comment, user: userC, post: postC};
+    }
   );
 
-  return com;
+  return cleanComments;
+
+  
 };
 export default listUserCommentsService;
