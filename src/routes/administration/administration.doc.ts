@@ -26,6 +26,7 @@
   "id": "1eb63c51-5170-4ca5-b6e8-89034983c774"
 }
  *
+ * @apiUse CheckOrganizationErrors
  */
 
 /**
@@ -39,4 +40,6 @@
  * @apiParam {string} area_id Area password.
  *
  * @apiSuccess (Success 204) No_content
+ *
+ * @apiUse CheckOrganizationErrors
  */

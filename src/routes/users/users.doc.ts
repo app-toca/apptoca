@@ -132,6 +132,8 @@
  * }
  * ]
  *
+ * @apiUse CheckOrganizationErrors
+ *
  */
 
 /**

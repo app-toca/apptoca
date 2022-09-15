@@ -47,3 +47,11 @@
  *    Authorization: "Bearer 8070b..."
  * }
  */
+
+/**
+ * @apiDefine CheckOrganizationErrors
+ *
+ * @apiError {401} Unauthorizated Not have acess to other organizations.
+ * @apiError {404} User_not_found User not found.
+ * @apiError {401} Invalid_Token Invalid Token.
+ */

@@ -51,6 +51,7 @@
 	"created_at": "2022-09-14T19:41:07.286Z"
 }
  *
+ * @apiUse CheckOrganizationErrors
  */
 
 /**
@@ -85,6 +86,7 @@
 	}
 ]
  *
+ * @apiUse CheckOrganizationErrors
  */
 
 /**
@@ -113,6 +115,7 @@
 	"ata": "https://url"
 }
  *
+ * @apiUse CheckOrganizationErrors
  */
 
 /**
@@ -149,6 +152,7 @@
 }
 ]
  *
+ * @apiUse CheckOrganizationErrors
  */
 
 /**
@@ -182,6 +186,7 @@
 	"ata": "https://url"
 }
  *
+ * @apiUse CheckOrganizationErrors
  */
 
 /**
@@ -195,4 +200,5 @@
  *
  * @apiSuccess (Success 204) No_content
  *
+ * @apiUse CheckOrganizationErrors
  */

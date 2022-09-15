@@ -36,6 +36,7 @@
 	"updated_at": "2022-09-14T14:56:03.149Z"
 }
  *
+ * @apiUse CheckOrganizationErrors
  */
 
 /**
@@ -88,6 +89,7 @@
 	}
 ]
  *
+ * @apiUse CheckOrganizationErrors
  */
 
 /**
@@ -145,6 +147,7 @@
 	"reactions": []
 }
  *
+ * @apiUse CheckOrganizationErrors
  */
 
 /**
@@ -206,6 +209,7 @@
 	}
 ]
  *
+ * @apiUse CheckOrganizationErrors
  */
 
 /**
@@ -269,6 +273,7 @@
 	}
 ]
  *
+ * @apiUse CheckOrganizationErrors
  */
 
 /**
@@ -282,4 +287,5 @@
  *
  * @apiSuccess (Success 204) No_content
  *
+ * @apiUse CheckOrganizationErrors
  */

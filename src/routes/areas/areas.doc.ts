@@ -26,6 +26,8 @@
 	"id": "e3419c6..."
 }
  *
+ * @apiUse CheckOrganizationErrors
+ * 
  */
 
 /**
@@ -56,6 +58,7 @@
 	}
 ]
  *
+ * @apiUse CheckOrganizationErrors
  */
 
 /**
@@ -88,6 +91,7 @@
 	"meetings": []
 }
  *
+ * @apiUse CheckOrganizationErrors
  */
 
 /**
@@ -124,6 +128,7 @@
   }
 ]
  *
+ * @apiUse CheckOrganizationErrors
  */
 
 /**
@@ -156,6 +161,7 @@
 	"id": "e3419c6..."
 }
  *
+ * @apiUse CheckOrganizationErrors
  */
 
 /**
@@ -169,4 +175,5 @@
  *
  * @apiSuccess (Success 204) No_content
  *
+ * @apiUse CheckOrganizationErrors
  */

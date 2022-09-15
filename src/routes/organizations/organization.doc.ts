@@ -49,6 +49,8 @@
  *	      "status": "error",
  *	      "message": "Unauthorizated"
  *     }
+ *
+ * @apiUse CheckOrganizationErrors
  */
 
 /**
@@ -97,6 +99,7 @@
  *    "id": "8070b3e3-5..."
  * }
  *
+ * @apiUse CheckOrganizationErrors
  * @apiError {400} Organization_Already_Exists Exists other organization with the same name.
  * @apiError {404} Organization_Not_Found Organization not found.
  */
