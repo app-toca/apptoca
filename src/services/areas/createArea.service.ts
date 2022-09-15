@@ -17,12 +17,12 @@ const createAreaService = async ({
   const orgRepo = AppDataSource.getRepository(Organizations);
 
   const areaAlreadyExists: Areas | null = await areasRepository.findOne({
-    where: { name: name },
+    where: { name: name, organization: { id: organization} },
   });
-
+  
   const org = await orgRepo.findOneBy({ id: organization });
 
-  if (areaAlreadyExists && areaAlreadyExists.organization.id === organization) {
+  if (areaAlreadyExists) {
     throw new AppError(400, "Area already exists");
   }
 

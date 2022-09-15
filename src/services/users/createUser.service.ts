@@ -38,9 +38,9 @@ export const createUserService = async (
   });
 
   if (!organizationFind) {
-    throw new AppError(404, "Invalid Id");
+    throw new AppError(404, "Organization not found");
   } else if (organizationFind?.password !== password_org) {
-    throw new AppError(401, "Invalid Password");
+    throw new AppError(401, "Invalid Organization's Password");
   }
 
   const hashedPassword = await bycrypt.hash(password, 10);

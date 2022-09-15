@@ -24,7 +24,7 @@ export const countUsersByHourController = async (
 
 export const listSchedulesController = async (req: Request, res: Response) => {
 
-  const schedules = await listSchedulesService();
+  const schedules = await listSchedulesService(req.user.organization);
 
   return res.status(200).json(schedules);
 };

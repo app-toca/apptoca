@@ -5,6 +5,7 @@ import { Organizations } from "../../entities/Organizations.entity";
 import { Posts } from "../../entities/Posts.entity";
 import { AppError } from "../../error/global";
 import { IPostRequest } from "../../interfaces/posts";
+import { desconstructArea, desconstructUser } from "../../util/desconstruct";
 
 interface IPost {
   user?: IUserR;
@@ -78,43 +79,14 @@ const updatePostService = async (
 
   await postsRepository.update(post_id, changes);
 
-  const p = await postsRepository.findOneBy({
+  const postChanged = await postsRepository.findOneBy({
     id: post_id,
   });
 
-  let nP: IPost;
+  const user = desconstructUser(postChanged!.user)
+  const area = desconstructArea(postChanged!.area)
+  return { ...postChanged,user, area}
 
-  nP = p!;
-
-  delete nP.user?.age;
-  delete nP.user?.year;
-  delete nP.user?.course;
-  delete nP.user?.phrase;
-  delete nP.user?.is_adm;
-  delete nP.user?.is_owner;
-  delete nP.user?.is_active;
-  delete nP.user?.created_at;
-  delete nP.user?.updated_at;
-  delete nP.user?.organization;
-  delete nP.user?.email;
-  delete nP.user?.meetings;
-  delete nP.area?.description;
-  delete nP.area?.organization;
-  delete nP.area?.meetings;
-  nP.comments?.map((p) => {
-    delete p.user?.age &&
-      delete p.user?.year &&
-      delete p.user?.course &&
-      delete p.user?.phrase &&
-      delete p.user?.is_adm &&
-      delete p.user?.is_owner &&
-      delete p.user?.is_active &&
-      delete p.user?.created_at &&
-      delete p.user?.updated_at &&
-      delete p.user?.organization;
-  });
-
-  return nP;
 };
 
 export default updatePostService;
