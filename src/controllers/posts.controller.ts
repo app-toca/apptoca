@@ -34,7 +34,7 @@ export const getOnePostController = async (req: Request, res: Response) => {
 export const getPostsByAreaController = async (req: Request, res: Response) => {
   const { area_id } = req.params;
 
-  const posts = await getPostsByAreaService(area_id);
+  const posts = await getPostsByAreaService(area_id, req.user.organization);
 
   return res.status(200).json(instanceToPlain(posts));
 };

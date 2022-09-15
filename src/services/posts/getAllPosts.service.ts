@@ -12,7 +12,7 @@ const getAllPostsService = async (organization: string) => {
   const postArray = posts.map((post) => {
     const user = desconstructUser(post.user);
     const area = desconstructArea(post.area);
-    return { user, area };
+    return { ...post, user, area };
   });
 
   return postArray;

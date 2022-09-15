@@ -2,11 +2,13 @@ import AppDataSource from "../../data-source";
 import { Schedules } from "../../entities/Schedules.entity";
 import { User } from "../../entities/User.entity";
 
-export const listSchedulesService = async () => {
+export const listSchedulesService = async (organization_id: string) => {
   const schedulesRepository = AppDataSource.getRepository(Schedules);
   const userRepository = AppDataSource.getRepository(User);
 
-  const users = await userRepository.find();
+  const users = await userRepository.find({
+    where: {organization: { id: organization_id}}
+  });
 
   const schedulesByUser = users.map(async (user) => {
     const userFiltered = await userRepository.findOne({
@@ -55,5 +57,7 @@ export const listSchedulesService = async () => {
 
   const final = await Promise.all(usersFormated);
 
-  return final;
+  const finalRemoveEmptySchedules = final.filter((user) => user.schedules.length > 0)
+
+  return finalRemoveEmptySchedules;
 };

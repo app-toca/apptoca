@@ -30,6 +30,7 @@ const postRoutes = () => {
   routes.get(
     "/areas/:area_id",
     authenticationMiddleware,
+    checkOrganizationMiddleware,
     getPostsByAreaController
   );
   routes.patch(

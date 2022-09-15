@@ -66,9 +66,9 @@ export const listMeetingsByAreaController = async (
 //Lista uma meeting específica
 
 export const listOneMeetingController = async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const { meeting_id } = req.params;
 
-  const meeting = await listOneMeetingService({ id });
+  const meeting = await listOneMeetingService({ meeting_id });
 
   return res.status(200).json(meeting);
 };

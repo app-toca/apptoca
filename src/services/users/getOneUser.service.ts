@@ -18,13 +18,6 @@ export const getOneUserService = async (id: string) => {
   }
 
   const {
-    schedule,
-    is_active,
-    is_adm,
-    is_owner,
-    organization,
-    img,
-    meetings,
     password,
     ...rest
   } = userFind;
