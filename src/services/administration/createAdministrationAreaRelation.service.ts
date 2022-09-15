@@ -8,6 +8,7 @@ import { Schedules } from "../../entities/Schedules.entity";
 import { User } from "../../entities/User.entity";
 import { AppError } from "../../error/global";
 import { IAdministrationAreaRequest } from "../../interfaces/administration";
+import { desconstructUser } from "../../util/desconstruct";
 
 interface IUserR {
   id: string;
@@ -37,9 +38,9 @@ interface IArea {
 }
 
 interface IRes {
-  user: IUserR;
-  area: IArea;
-  id: string;
+  user?: IUserR;
+  area?: IArea;
+  id?: string;
 }
 
 const createAdministrationAreaRelationService = async ({
@@ -66,6 +67,14 @@ const createAdministrationAreaRelationService = async ({
     throw new AppError(404, "Area not found");
   }
 
+  const relation = await areaUsersRepository.find({
+    where: { user: { id: user_id}, area: { id: area_id }}
+  })
+
+  if(relation.length > 0) {
+    throw new AppError(400, "Relation already exists")
+  }
+
   const areaUsers = new Area_users();
 
   areaUsers.user = u!;
@@ -74,31 +83,8 @@ const createAdministrationAreaRelationService = async ({
   await areaUsersRepository.create(areaUsers);
   const areaUsersCreated = await areaUsersRepository.save(areaUsers);
 
-  let c: IRes;
 
-  c = areaUsersCreated!;
-
-  delete c.user.name;
-  delete c.user.nickname;
-  delete c.user.age;
-  delete c.user.year;
-  delete c.user.course;
-  delete c.user.phrase;
-  delete c.user.is_adm;
-  delete c.user.is_owner;
-  delete c.user.is_active;
-  delete c.user.created_at;
-  delete c.user.updated_at;
-  delete c.user.organization;
-  delete c.user.email;
-  delete c.user.meetings;
-  delete c.user.img;
-  delete c.area.meetings;
-  delete c.area.name;
-  delete c.area.description;
-  delete c.area.organization;
-
-  return c;
+  return {message: "Relation created with success"};
 };
 
 export default createAdministrationAreaRelationService;

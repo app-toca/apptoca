@@ -9,7 +9,7 @@ import { instanceToPlain } from "class-transformer";
 import { areasUserService } from "../services/users/areasUser.service";
 
 export const getAllUsersController = async (req: Request, res: Response) => {
-  const users = await getAllUsersService();
+  const users = await getAllUsersService(req.user.organization);
 
   return res.status(200).send(instanceToPlain(users));
 };

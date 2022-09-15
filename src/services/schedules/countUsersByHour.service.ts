@@ -30,6 +30,9 @@ export const countUsersByHourService = async ({ area_id }: any) => {
     return acc;
 }, []); 
 
-return result;
+
+const resultOrdered = result.sort((a,b) => b.qtt_users! - a.qtt_users!)
+
+return resultOrdered;
 
 }

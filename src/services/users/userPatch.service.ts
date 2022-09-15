@@ -60,5 +60,5 @@ export const patchUserService = async (
 
   const { meetings, schedule, organization, password, ...rest } = userFind;
 
-  return { ...req, ...rest };
+  return { ...rest, ...req };
 };
