@@ -8,15 +8,15 @@ import "dotenv/config";
 const loginService = async (email: string, password: string) => {
   const usersRepository = AppDataSource.getRepository(User);
 
-  const user: User | null = await usersRepository.findOne({
+  const u: User | null = await usersRepository.findOne({
     where: { email: email },
   });
 
-  if (!user) {
+  if (!u) {
     throw new AppError(403, "Incorrect email or password");
   }
 
-  const passwordMatch = await bcrypt.compare(password, user.password);
+  const passwordMatch = await bcrypt.compare(password, u.password);
 
   if (!passwordMatch) {
     throw new AppError(403, "Incorrect email or password");
@@ -24,14 +24,23 @@ const loginService = async (email: string, password: string) => {
 
   const token = jwt.sign(
     {
-      is_adm: user.is_adm,
-      is_owner: user.is_owner,
-      id: user.id,
-      organization: user.organization.id,
+      is_adm: u.is_adm,
+      is_owner: u.is_owner,
+      id: u.id,
+      organization: u.organization.id,
     },
     process.env.SECRET_KEY!,
     { expiresIn: "24h" }
   );
+
+  const desconstruct = (a: User) => {
+    const { organization, schedule, meetings, password, ...rest } = a;
+
+    return { ...rest };
+  };
+
+  const user = desconstruct(u);
+
   return { user, token };
 };
 

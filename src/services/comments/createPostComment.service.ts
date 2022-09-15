@@ -6,6 +6,7 @@ import { AppError } from "../../error/global";
 import { User } from "../../entities/User.entity";
 import { Areas } from "../../entities/Areas.entity";
 import { Area_users } from "../../entities/Area_users.entity";
+import { desconstructArea, desconstructPost, desconstructUser } from "../../util/desconstruct";
 
 interface ICom {
   user?: any;
@@ -26,9 +27,9 @@ const createPostCommentService = async ({
   const postsRepository = AppDataSource.getRepository(Posts);
   const areasRepository = AppDataSource.getRepository(Area_users);
 
-  const post: Posts | null = await postsRepository.findOne({
-    where: { id: post_id },
-  });
+  const posts = await postsRepository.find()
+
+  const post = posts.find(pos => pos.id === post_id)
 
   if (!post) {
     throw new AppError(404, "Post not found");
@@ -36,15 +37,27 @@ const createPostCommentService = async ({
 
   const user: User | null = await usersRepository.findOne({
     where: { id: id },
-  });
-
-  const areaUser = await areasRepository.find({
-    relations: { user: true },
-    where: { user: { id: id } },
+    relations: {area_user: { area:true}}
   });
 
   if (!user) {
     throw new AppError(404, "User not found");
+  }
+
+  if(user.organization.id !== post.area.organization.id) {
+    throw new AppError(403, "You don't have access to this post");
+  }
+
+
+  const areaUser = await areasRepository.find({
+    relations: { user: true, area:true },
+    where: { user: { id: id }, area: {id: post.area.id} },
+  });
+
+  const areaPost = areaUser.find(ar => ar.area.id == post.area.id)
+
+  if(!areaPost && !user?.is_owner) {
+    throw new AppError(401, "You don't have access to this area post");
   }
 
   const newComment = new Comments();
@@ -58,18 +71,11 @@ const createPostCommentService = async ({
     throw new AppError(error.statusCode, error.message);
   }
 
-  let nCom: ICom;
 
-  nCom = newComment;
+  const comment = newComment
+  const userC = desconstructUser(comment.user)
+  const postC = desconstructPost(comment.post)
 
-  delete nCom.user;
-  delete nCom.post;
-  delete nCom.comments;
-  delete nCom.area;
-  nCom.user = user.id;
-  nCom.post = post.id;
-  nCom.area = post.area.name;
-
-  return nCom;
+  return {...comment, user: userC, post: postC};
 };
 export default createPostCommentService;

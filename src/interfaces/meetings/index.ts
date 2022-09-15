@@ -1,5 +1,5 @@
 export interface IOneMeetingRequest {
-  id: string;
+  meeting_id: string;
 }
 
 export interface IMeetingRequest {

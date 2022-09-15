@@ -3,13 +3,14 @@ import AppDataSource from "../../data-source";
 import { Areas } from "../../entities/Areas.entity";
 import { AppError } from "../../error/global";
 import { iAreaUpdateRequest } from "../../interfaces/areas";
+import { IAreaUpReturn } from "../../interfaces/areas";
 
 const updateAreaService = async ({
   area_id,
   name,
   description,
   organization,
-}: iAreaUpdateRequest): Promise<Areas> => {
+}: iAreaUpdateRequest): Promise<IAreaUpReturn> => {
   const areaRepository = AppDataSource.getRepository(Areas);
 
   const area: Areas | null = await areaRepository.findOne({
@@ -43,6 +44,8 @@ const updateAreaService = async ({
     throw new AppError(404, "Area not found");
   }
 
-  return areaUpdatedd;
+  const { meetings, ...rest } = areaUpdatedd;
+
+  return { ...rest };
 };
 export default updateAreaService;
