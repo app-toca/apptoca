@@ -1,7 +1,7 @@
 {
   "name": "myo",
   "version": "1.0.0",
-  "description": "Api to manage your organization, do posts, meetings and manage your team.",
+  "description": "API for better spreading information in your organization, post and comment your news for your team.",
   "main": "server.ts",
   "author": "grupoDaGlr",
   "license": "MIT",
