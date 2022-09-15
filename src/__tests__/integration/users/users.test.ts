@@ -328,7 +328,7 @@ describe("/users", () => {
       .get("/users")
       .set("Authorization", `Bearer ${nonAdminLoginResponse.body.token}`);
 
-    expect(response.body).toHaveLength(5);
+    expect(response.body).toHaveLength(4);
   });
 
   test("GET /users/:user_id -  Must be able to list one user", async () => {
